@@ -1,6 +1,7 @@
 import {
   GraduationCap, BookOpen, CalendarDays, FileDown,
-  Archive, Mail, LogIn, LogOut, Shield,
+  Archive, Mail, LogIn, LogOut, Shield, UserPlus,
+  LayoutDashboard, Send,
 } from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
 import { useLocation } from 'react-router-dom';
@@ -20,6 +21,11 @@ const publicNav = [
   { title: 'Contact Us', url: '/contact', icon: Mail },
 ];
 
+const studentNav = [
+  { title: 'Dashboard', url: '/dashboard', icon: LayoutDashboard },
+  { title: 'Submit Application', url: '/submit', icon: Send },
+];
+
 const adminNav = [
   { title: 'Admin Panel', url: '/admin', icon: Shield },
 ];
@@ -28,7 +34,7 @@ export function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === 'collapsed';
   const location = useLocation();
-  const { isAdmin, user, signOut } = useAuth();
+  const { isAdmin, isStudent, user, signOut } = useAuth();
   const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
 
   return (
@@ -66,6 +72,26 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
+        {isStudent && (
+          <SidebarGroup>
+            <SidebarGroupLabel>Student</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {studentNav.map((item) => (
+                  <SidebarMenuItem key={item.url}>
+                    <SidebarMenuButton asChild isActive={isActive(item.url)}>
+                      <NavLink to={item.url} activeClassName="bg-sidebar-accent text-sidebar-accent-foreground">
+                        <item.icon className="mr-2 h-4 w-4 shrink-0" />
+                        {!collapsed && <span>{item.title}</span>}
+                      </NavLink>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
+
         {isAdmin && (
           <SidebarGroup>
             <SidebarGroupLabel>Administration</SidebarGroupLabel>
@@ -99,12 +125,20 @@ export function AppSidebar() {
             {!collapsed && 'Sign Out'}
           </Button>
         ) : (
-          <SidebarMenuButton asChild>
-            <NavLink to="/login" activeClassName="bg-sidebar-accent">
-              <LogIn className="mr-2 h-4 w-4" />
-              {!collapsed && 'Admin Login'}
-            </NavLink>
-          </SidebarMenuButton>
+          <div className="space-y-1">
+            <SidebarMenuButton asChild>
+              <NavLink to="/login" activeClassName="bg-sidebar-accent">
+                <LogIn className="mr-2 h-4 w-4" />
+                {!collapsed && 'Sign In'}
+              </NavLink>
+            </SidebarMenuButton>
+            <SidebarMenuButton asChild>
+              <NavLink to="/signup" activeClassName="bg-sidebar-accent">
+                <UserPlus className="mr-2 h-4 w-4" />
+                {!collapsed && 'Sign Up'}
+              </NavLink>
+            </SidebarMenuButton>
+          </div>
         )}
       </SidebarFooter>
     </Sidebar>
