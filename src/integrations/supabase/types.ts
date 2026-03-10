@@ -140,6 +140,48 @@ export type Database = {
         }
         Relationships: []
       }
+      student_submissions: {
+        Row: {
+          abstract: string | null
+          created_at: string
+          degree_type: string
+          department: string
+          description: string
+          file_url: string | null
+          id: string
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          abstract?: string | null
+          created_at?: string
+          degree_type: string
+          department: string
+          description: string
+          file_url?: string | null
+          id?: string
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          abstract?: string | null
+          created_at?: string
+          degree_type?: string
+          department?: string
+          description?: string
+          file_url?: string | null
+          id?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       templates: {
         Row: {
           category: string
@@ -202,7 +244,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin" | "user"
+      app_role: "admin" | "user" | "student"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -330,7 +372,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "user"],
+      app_role: ["admin", "user", "student"],
     },
   },
 } as const
