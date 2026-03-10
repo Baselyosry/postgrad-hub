@@ -61,7 +61,7 @@ const StudentDashboard = () => {
             <div className="space-y-3"><SkeletonCard /><SkeletonCard /></div>
           ) : !submissions?.length ? (
             <EmptyState
-              icon={FileText}
+              icon={<FileText className="h-12 w-12 text-muted-foreground/50" />}
               title="No submissions yet"
               description="Submit your first application or thesis proposal to get started."
             />
