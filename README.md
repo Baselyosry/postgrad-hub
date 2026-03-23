@@ -1,4 +1,8 @@
-# Welcome to your Lovable project
+# Postgraduate Hub
+
+A postgraduate studies management portal for the MUST department. Students and visitors can browse admissions, schedules, templates, research archive, and submit inquiries. Admins have access to a dashboard and inquiry management.
+
+For full technical documentation, see [PROJECT_DOCUMENTATION.md](./PROJECT_DOCUMENTATION.md).
 
 ## Project info
 
@@ -59,6 +63,7 @@ This project is built with:
 - React
 - shadcn-ui
 - Tailwind CSS
+- Supabase (Auth, PostgreSQL, Storage)
 
 ## How can I deploy this project?
 

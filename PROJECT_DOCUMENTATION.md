@@ -31,6 +31,9 @@ A single web application that acts as the main hub for a postgraduate studies de
 | **Contact** | Form to submit an inquiry (name, email, message); stored in the database; admins see them in the Admin Panel. |
 | **Admin Panel** | Login-only dashboard: stats (inquiries, archive/schedules/templates counts) and recent inquiries list. |
 | **Login** | Email/password sign-in for admins; redirects to Admin Panel. |
+| **SignUp** | Student registration flow. |
+| **Student Dashboard** | Post-login dashboard for students. |
+| **Submit Application** | Application submission flow. |
 
 ---
 
@@ -55,7 +58,8 @@ A single web application that acts as the main hub for a postgraduate studies de
 ┌─────────────────────────────────────────────────────────────────┐
 │  FRONTEND (Vite + React + TypeScript)                            │
 │  • Pages: Index, Admissions, Schedules, Templates, Archive,     │
-│    Contact, Login, Admin, NotFound                                │
+│    Contact, Login, SignUp, Admin, StudentDashboard, Submit,     │
+│    NotFound                                                       │
 │  • AuthContext (session, user, isAdmin, signIn, signOut)         │
 │  • React Query for data fetching                                 │
 └────────────────────────────┬────────────────────────────────────┘
@@ -80,8 +84,8 @@ Based on the actual repository layout:
 | Path | Purpose | Contents |
 |------|--------|----------|
 | **`/src`** | All application source code | React components, pages, hooks, contexts, styles. |
-| **`/src/pages`** | One component per main screen | `Index.tsx`, `Admissions.tsx`, `Schedules.tsx`, `Templates.tsx`, `ArchivePage.tsx`, `Contact.tsx`, `Login.tsx`, `Admin.tsx`, `NotFound.tsx`. |
-| **`/src/components`** | Reusable UI and layout | `PageHeader.tsx`, `NavLink.tsx`, `EmptyState.tsx`, `ResearchCard.tsx`, `SkeletonCard.tsx`, `ErrorBoundary.tsx`, plus `layout/` (e.g. `AppLayout.tsx`, `AppSidebar.tsx`) and `ui/` (shadcn components: button, card, input, etc.). |
+| **`/src/pages`** | One component per main screen | `Index.tsx`, `Admissions.tsx`, `Schedules.tsx`, `Templates.tsx`, `ArchivePage.tsx`, `Contact.tsx`, `Login.tsx`, `SignUp.tsx`, `Admin.tsx`, `StudentDashboard.tsx`, `SubmitApplication.tsx`, `NotFound.tsx`. |
+| **`/src/components`** | Reusable UI and layout | `PageHeader.tsx`, `NavLink.tsx`, `EmptyState.tsx`, `ResearchCard.tsx`, `SkeletonCard.tsx`, `ErrorBoundary.tsx`, plus `layout/` (`AppLayout.tsx`, `PublicLayout.tsx`, `AdminLayout.tsx`, `AppSidebar.tsx`) and `ui/` (shadcn components: button, card, input, etc.). |
 | **`/src/components/ui`** | shadcn/ui primitives | Many small components (button, card, input, dialog, tabs, etc.). **Prefer not modifying** unless you need a local override; use composition in your own components instead. |
 | **`/src/contexts`** | React context providers | `AuthContext.tsx` — provides `session`, `user`, `isAdmin`, `loading`, `signIn`, `signOut`. |
 | **`/src/hooks`** | Custom React hooks | `useArchiveData.ts` (archive list with search/type filter), `useDebounce.ts`, `use-mobile.tsx`, `use-toast.ts` (and `use-toast.ts` in components/ui). |
@@ -102,10 +106,15 @@ Based on the actual repository layout:
 ### Safer to edit
 - **`src/pages/*.tsx`** — Page layout and behavior (e.g. wording, layout, adding fields that already exist in DB).
 - **`src/components/PageHeader.tsx`, `EmptyState.tsx`, `ResearchCard.tsx`, `SkeletonCard.tsx`, `NavLink.tsx`** — Project-specific components.
-- **`src/components/layout/AppLayout.tsx`, `AppSidebar.tsx`** — Layout and navigation (e.g. adding a nav item).
+- **`src/components/layout/AppLayout.tsx`, `PublicLayout.tsx`, `AdminLayout.tsx`, `AppSidebar.tsx`** — Layout and navigation (e.g. adding a nav item).
 - **`src/hooks/useArchiveData.ts`, `useDebounce.ts`** — When you need different data or behavior.
 - **`src/index.css`** — Theme variables (colors, fonts); avoid removing Tailwind layers.
 - **New components** under `src/components/` (not under `ui/` if you want to keep shadcn intact).
+
+### Layout components (public vs admin)
+- **`AppLayout`**: Route switcher—uses `PublicLayout` for all routes except `/admin/*`; uses `AdminLayout` for admin routes.
+- **`PublicLayout`**: Public header with logo, nav (Home, Admissions, Schedules, Archive, Templates, Contact). Header uses a centered three-column grid: logo left, nav center, spacer right. Logo text "MUST · Postgraduate Portal" is hidden on small screens (`sm:inline`).
+- **`AdminLayout`**: Admin-specific layout with sidebar (if applicable).
 
 ---
 
@@ -115,7 +124,7 @@ Based on the actual repository layout:
 1. **Browser** loads the app (Vite dev server or built static files).
 2. **React** mounts; **AuthProvider** runs, calls `supabase.auth.getSession()` and subscribes to `onAuthStateChange`.
 3. **Session** (if any) is stored in state; **admin** flag is set by calling `has_role(userId, 'admin')` (RPC on `user_roles`).
-4. **AppLayout** and **AppSidebar** render; sidebar shows "Admin Login" or "Sign Out" and optional "Admin Panel" based on `user` and `isAdmin`.
+4. **AppLayout** chooses layout by route: `PublicLayout` for public pages (header with logo + nav), `AdminLayout` for `/admin/*`. For admin routes, sidebar shows "Admin Login" or "Sign Out" and optional "Admin Panel" based on `user` and `isAdmin`.
 5. **Router** shows the page for the current URL (e.g. `/` → Index, `/archive` → ArchivePage).
 
 ### When a user logs in (admin)
@@ -328,3 +337,16 @@ npm run dev
 | **Edit with care** | Supabase client/types, AuthContext, migrations, App routing and config |
 
 This documentation reflects the **current state** of the repository. If something is missing or unclear in the codebase, assumptions are stated in the sections above. For anything not covered, check the code in the paths referenced in this document.
+
+---
+
+## 11. Recent Changes (Changelog)
+
+### Public layout header (PublicLayout.tsx)
+- **Header layout**: Switched from centered flex column/row to a three-column grid (`grid-cols-[1fr_auto_1fr]`)—logo left, nav centered, spacer right.
+- **Responsive logo text**: "MUST · Postgraduate Portal" is now hidden on small screens (`hidden sm:inline`) so only the logo image shows on mobile.
+- **Accessibility**: Added `aria-hidden` spacer div for symmetry on larger screens.
+
+### Pages and routes
+- **SignUp** (`/signup`), **StudentDashboard** (`/dashboard`), **SubmitApplication** (`/submit`) added to routing and documentation.
+- **Layout split**: `AppLayout` uses `PublicLayout` for public routes and `AdminLayout` for `/admin/*`.
