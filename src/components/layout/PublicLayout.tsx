@@ -16,13 +16,12 @@ export function PublicLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <header className="sticky top-0 z-50 flex h-16 items-center justify-center border-b border-primary/20 bg-must-navy px-4 shadow-md md:px-8">
-        <div className="flex w-full max-w-6xl flex-col items-center justify-center gap-4 sm:flex-row sm:gap-8">
-          <Link to="/" className="flex shrink-0 items-center gap-3 text-white hover:text-white/90 transition-colors">
-            <img src="/logo.png" alt="MUST" className="h-10 w-auto" />
-            <span className="font-heading text-lg font-bold">MUST · Postgraduate Portal</span>
-          </Link>
-          <nav className="flex items-center justify-center gap-1 overflow-x-auto py-2 scrollbar-hide">
+      <header className="sticky top-0 z-50 grid h-16 grid-cols-[1fr_auto_1fr] items-center border-b border-primary/20 bg-must-navy px-4 shadow-md md:px-8">
+        <Link to="/" className="flex w-fit items-center gap-3 text-white hover:text-white/90 transition-colors">
+          <img src="/logo.png" alt="MUST" className="h-10 w-auto shrink-0" />
+          <span className="hidden font-heading text-lg font-bold sm:inline">MUST · Postgraduate Portal</span>
+        </Link>
+        <nav className="flex items-center justify-center gap-1 overflow-x-auto py-2 scrollbar-hide">
           {publicNav.map((item) => (
             <Link
               key={item.url}
@@ -37,8 +36,8 @@ export function PublicLayout({ children }: { children: ReactNode }) {
               {item.title}
             </Link>
           ))}
-          </nav>
-        </div>
+        </nav>
+        <div className="hidden sm:block" aria-hidden />
       </header>
       <main className="flex-1 p-4 md:p-8">{children}</main>
     </div>
