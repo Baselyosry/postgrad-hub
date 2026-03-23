@@ -6,46 +6,51 @@
 
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 215 25% 15%;
+    /* MUST University Alumni - Pure white main, light gray sections */
+    --background: 0 0% 100%;
+    --foreground: 217 28% 17%;
 
     --card: 0 0% 100%;
-    --card-foreground: 215 25% 15%;
+    --card-foreground: 217 28% 17%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 15%;
+    --popover-foreground: 217 28% 17%;
 
-    --primary: 220 60% 25%;
-    --primary-foreground: 210 40% 98%;
+    /* Deep Navy Blue #003366 - navbar, headings, primary buttons */
+    --primary: 210 100% 20%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 215 20% 93%;
-    --secondary-foreground: 220 60% 25%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 210 100% 20%;
 
-    --muted: 210 15% 95%;
-    --muted-foreground: 215 15% 50%;
+    /* Muted gray for dates/notes */
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
 
-    --accent: 200 75% 45%;
+    /* Professional Green #2E8B57 - hover states, accents, badges */
+    --accent: 152 39% 34%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 214 20% 88%;
-    --input: 214 20% 88%;
-    --ring: 220 60% 25%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 210 100% 20%;
 
     --radius: 0.625rem;
 
-    --sidebar-background: 220 60% 25%;
-    --sidebar-foreground: 210 40% 95%;
-    --sidebar-primary: 200 75% 55%;
+    /* Sidebar - Deep Navy */
+    --sidebar-background: 210 100% 20%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 152 39% 34%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 50% 32%;
-    --sidebar-accent-foreground: 210 40% 95%;
-    --sidebar-border: 220 45% 35%;
-    --sidebar-ring: 200 75% 55%;
+    --sidebar-accent: 210 100% 25%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 210 50% 30%;
+    --sidebar-ring: 152 39% 34%;
 
-    --success: 152 60% 40%;
+    --success: 152 39% 34%;
     --success-foreground: 0 0% 100%;
 
     --warning: 38 92% 50%;
@@ -119,11 +124,15 @@
 @layer utilities {
   .heading-gradient {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(220 60% 25%), hsl(200 75% 45%));
+    background-image: linear-gradient(135deg, #003366, #004080);
+  }
+
+  .section-alt {
+    @apply bg-[#F9FAFB];
   }
 
   .dark .heading-gradient {
-    background-image: linear-gradient(135deg, hsl(200 75% 55%), hsl(200 75% 75%));
+    background-image: linear-gradient(135deg, #003366, #2E8B57);
   }
 
   .card-hover {
@@ -131,5 +140,9 @@
   }
   .card-hover:hover {
     @apply shadow-lg -translate-y-1;
+  }
+
+  .btn-must:hover {
+    @apply bg-[#2E8B57];
   }
 }

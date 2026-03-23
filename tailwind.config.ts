@@ -14,6 +14,9 @@ export default {
     },
     extend: {
       colors: {
+        "must-navy": "#003366",
+        "must-green": "#2E8B57",
+        "must-gray": "#F9FAFB",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
