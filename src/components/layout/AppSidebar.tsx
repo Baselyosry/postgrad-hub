@@ -16,10 +16,10 @@ import { Button } from '@/components/ui/button';
 const adminNav = [
   { title: 'Admin Dashboard', url: '/admin', icon: Shield },
   { title: 'Admissions', url: '/admissions', icon: BookOpen },
-  { title: 'Schedules', url: '/schedules', icon: CalendarDays },
-  { title: 'Templates', url: '/templates', icon: FileDown },
-  { title: 'Research Archive', url: '/archive', icon: Archive },
-  { title: 'Contact Inquiries', url: '/contact', icon: Mail },
+  { title: 'Schedules', url: '/admin/schedules', icon: CalendarDays },
+  { title: 'Templates', url: '/admin/templates', icon: FileDown },
+  { title: 'Research Archive', url: '/admin/archive', icon: Archive },
+  { title: 'Contact Inquiries', url: '/admin/inquiries', icon: Mail },
 ];
 
 const studentNav = [

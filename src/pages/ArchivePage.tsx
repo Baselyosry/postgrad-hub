@@ -5,15 +5,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ResearchCard } from '@/components/ResearchCard';
 import { SkeletonCard } from '@/components/SkeletonCard';
 import { EmptyState } from '@/components/EmptyState';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { getErrorMessage } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import { useArchiveData } from '@/hooks/useArchiveData';
-import { Search } from 'lucide-react';
+import { Search, AlertCircle } from 'lucide-react';
 import { useDebounce } from '@/hooks/useDebounce';
 
 const ArchivePage = () => {
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
   const debouncedSearch = useDebounce(search, 300);
-  const { data, isLoading } = useArchiveData(debouncedSearch, typeFilter);
+  const { data, isLoading, isError, error, refetch } = useArchiveData(debouncedSearch, typeFilter);
 
   return (
     <div>
@@ -44,6 +47,19 @@ const ArchivePage = () => {
           </SelectContent>
         </Select>
       </div>
+
+      {isError && (
+        <Alert variant="destructive" className="mb-6">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Failed to load archive</AlertTitle>
+          <AlertDescription>
+            {getErrorMessage(error)}
+            <Button variant="outline" size="sm" className="mt-2" onClick={() => refetch()}>
+              Retry
+            </Button>
+          </AlertDescription>
+        </Alert>
+      )}
 
       {isLoading ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

@@ -5,11 +5,13 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { SkeletonCard } from '@/components/SkeletonCard';
 import { EmptyState } from '@/components/EmptyState';
-import { FileText, Download } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { getErrorMessage } from '@/lib/utils';
+import { FileText, Download, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Templates = () => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['templates'],
     queryFn: async () => {
       const { data, error } = await supabase.from('templates').select('*').order('created_at', { ascending: false });
@@ -24,6 +26,19 @@ const Templates = () => {
         title="Document Download Center"
         description="Download standardized academic forms, proposal templates, and thesis formatting guides."
       />
+
+      {isError && (
+        <Alert variant="destructive" className="mb-6">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Failed to load templates</AlertTitle>
+          <AlertDescription>
+            {getErrorMessage(error)}
+            <Button variant="outline" size="sm" className="mt-2" onClick={() => refetch()}>
+              Retry
+            </Button>
+          </AlertDescription>
+        </Alert>
+      )}
 
       {isLoading ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

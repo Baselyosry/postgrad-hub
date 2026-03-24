@@ -5,7 +5,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { SkeletonCard } from '@/components/SkeletonCard';
 import { EmptyState } from '@/components/EmptyState';
-import { CalendarDays, BookOpen, FlaskConical } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { getErrorMessage } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { CalendarDays, BookOpen, FlaskConical, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const categories = [
@@ -15,7 +18,7 @@ const categories = [
 ] as const;
 
 const Schedules = () => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['schedules'],
     queryFn: async () => {
       const { data, error } = await supabase.from('schedules').select('*').order('created_at', { ascending: false });
@@ -30,6 +33,19 @@ const Schedules = () => {
         title="Academic Schedules & Plans"
         description="View study dates, exam timetables, and the faculty's strategic research plan."
       />
+
+      {isError && (
+        <Alert variant="destructive" className="mb-4">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Failed to load schedules</AlertTitle>
+          <AlertDescription>
+            {getErrorMessage(error)}
+            <Button variant="outline" size="sm" className="mt-2" onClick={() => refetch()}>
+              Retry
+            </Button>
+          </AlertDescription>
+        </Alert>
+      )}
 
       <Tabs defaultValue="study" className="space-y-6">
         <TabsList>

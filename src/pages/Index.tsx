@@ -25,7 +25,10 @@ import {
   Send,
   ExternalLink,
   Mail,
+  AlertCircle,
 } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { getErrorMessage } from '@/lib/utils';
 import { SkeletonCard } from '@/components/SkeletonCard';
 
 const heroSlides = [
@@ -67,7 +70,7 @@ const contactSchema = z.object({
 type ContactFormData = z.infer<typeof contactSchema>;
 
 const Index = () => {
-  const { data: schedules, isLoading: loadingSchedules } = useQuery({
+  const { data: schedules, isLoading: loadingSchedules, isError: schedulesError, error: schedulesErr, refetch: refetchSchedules } = useQuery({
     queryKey: ['schedules'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -79,7 +82,7 @@ const Index = () => {
     },
   });
 
-  const { data: archive, isLoading: loadingArchive } = useQuery({
+  const { data: archive, isLoading: loadingArchive, isError: archiveError, error: archiveErr, refetch: refetchArchive } = useQuery({
     queryKey: ['archive', '', 'all'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -92,7 +95,7 @@ const Index = () => {
     },
   });
 
-  const { data: researchPapers } = useQuery({
+  const { data: researchPapers, isError: researchError, error: researchErr } = useQuery({
     queryKey: ['archive', '', 'research'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -106,7 +109,7 @@ const Index = () => {
     },
   });
 
-  const { data: templates, isLoading: loadingTemplates } = useQuery({
+  const { data: templates, isLoading: loadingTemplates, isError: templatesError, error: templatesErr, refetch: refetchTemplates } = useQuery({
     queryKey: ['templates'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -139,6 +142,14 @@ const Index = () => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
   });
+
+  const dataError = schedulesError || archiveError || researchError || templatesError;
+  const dataErrorMessage = getErrorMessage(schedulesErr ?? archiveErr ?? researchErr ?? templatesErr);
+  const refetchData = () => {
+    refetchSchedules();
+    refetchArchive();
+    refetchTemplates();
+  };
 
   const theses = archive?.filter((a) => a.type === 'master' || a.type === 'phd') ?? [];
   const schedulesByCategory = {
@@ -180,6 +191,21 @@ const Index = () => {
           <CarouselNext className="right-4 border-white/30 bg-white/20 text-white hover:bg-white/30 hover:text-white" />
         </Carousel>
       </section>
+
+      {dataError && (
+        <div className="container mx-auto max-w-6xl px-6 py-4">
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Unable to load content</AlertTitle>
+            <AlertDescription>
+              {dataErrorMessage}
+              <Button variant="outline" size="sm" className="mt-2 ml-2" onClick={refetchData}>
+                Retry
+              </Button>
+            </AlertDescription>
+          </Alert>
+        </div>
+      )}
 
       {/* Section A: Admissions */}
       <section className="border-b border-border bg-white py-24">
