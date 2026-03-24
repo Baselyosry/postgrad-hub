@@ -27,19 +27,28 @@ const Contact = () => {
 
   const mutation = useMutation({
     mutationFn: async (formData: FormData) => {
-      const { error } = await supabase.from('inquiries').insert([{
+      const { data, error } = await supabase.from('inquiries').insert([{
         name: formData.name,
         email: formData.email,
         message: formData.message,
-      }]);
+      }]).select('id');
       if (error) throw error;
+      return data;
     },
     onSuccess: () => {
       toast({ title: 'Inquiry submitted', description: 'We will get back to you soon.' });
       reset();
     },
-    onError: () => {
-      toast({ title: 'Submission failed', description: 'Please try again later.', variant: 'destructive' });
+    onError: (err: Error) => {
+      console.error('[Contact] Submission failed:', err);
+      const msg = err instanceof Error ? err.message : 'Unknown error';
+      toast({
+        title: 'Submission failed',
+        description: msg.includes('fetch') || msg.includes('network')
+          ? 'Check your connection and Supabase env (VITE_SUPABASE_URL, VITE_SUPABASE_PUBLISHABLE_KEY).'
+          : msg,
+        variant: 'destructive',
+      });
     },
   });
 

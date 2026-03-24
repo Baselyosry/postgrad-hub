@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button';
 
 const adminNav = [
   { title: 'Admin Dashboard', url: '/admin', icon: Shield },
-  { title: 'Admissions', url: '/admissions', icon: BookOpen },
+  { title: 'Admissions', url: '/admin/admissions', icon: BookOpen },
   { title: 'Schedules', url: '/admin/schedules', icon: CalendarDays },
   { title: 'Templates', url: '/admin/templates', icon: FileDown },
   { title: 'Research Archive', url: '/admin/archive', icon: Archive },

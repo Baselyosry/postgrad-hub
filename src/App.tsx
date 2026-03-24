@@ -22,6 +22,7 @@ const AdminArchive = lazy(() => import("./pages/admin/AdminArchive"));
 const AdminSchedules = lazy(() => import("./pages/admin/AdminSchedules"));
 const AdminTemplates = lazy(() => import("./pages/admin/AdminTemplates"));
 const AdminInquiries = lazy(() => import("./pages/admin/AdminInquiries"));
+const AdminAdmissions = lazy(() => import("./pages/admin/AdminAdmissions"));
 const StudentDashboard = lazy(() => import("./pages/StudentDashboard"));
 const SubmitApplication = lazy(() => import("./pages/SubmitApplication"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -59,6 +60,7 @@ const App = () => (
                   <Route path="/admin/schedules" element={<AdminSchedules />} />
                   <Route path="/admin/templates" element={<AdminTemplates />} />
                   <Route path="/admin/inquiries" element={<AdminInquiries />} />
+                  <Route path="/admin/admissions" element={<AdminAdmissions />} />
                   <Route path="/dashboard" element={<StudentDashboard />} />
                   <Route path="/submit" element={<SubmitApplication />} />
                   <Route path="*" element={<NotFound />} />

@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import { Footer } from './Footer';
 
 const publicNav = [
   { title: 'Home', url: '/' },
@@ -40,6 +41,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
         <div className="hidden sm:block" aria-hidden />
       </header>
       <main className="flex-1 p-4 md:p-8">{children}</main>
+      <Footer />
     </div>
   );
 }

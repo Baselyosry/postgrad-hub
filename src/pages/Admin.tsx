@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { SkeletonCard } from '@/components/SkeletonCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Mail, Archive, CalendarDays, FileDown, FileText, CheckCircle, XCircle } from 'lucide-react';
+import { Mail, Archive, CalendarDays, FileDown, FileText, CheckCircle, XCircle, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { toast } from '@/hooks/use-toast';
@@ -73,6 +73,16 @@ const Admin = () => {
     enabled: isAdmin,
   });
 
+  const { data: admissionsCount } = useQuery({
+    queryKey: ['admin-admissions-count'],
+    queryFn: async () => {
+      const { count, error } = await supabase.from('admissions').select('*', { count: 'exact', head: true });
+      if (error) throw error;
+      return count ?? 0;
+    },
+    enabled: isAdmin,
+  });
+
   const updateStatus = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
       const { error } = await supabase.from('student_submissions').update({ status }).eq('id', id);
@@ -99,6 +109,7 @@ const Admin = () => {
     { label: 'Archive Entries', value: archiveCount ?? 0, icon: Archive },
     { label: 'Schedules', value: schedulesCount ?? 0, icon: CalendarDays },
     { label: 'Templates', value: templatesCount ?? 0, icon: FileDown },
+    { label: 'Admissions', value: admissionsCount ?? 0, icon: BookOpen },
   ];
 
   return (
@@ -122,6 +133,12 @@ const Admin = () => {
           <Link to="/admin/templates" className="gap-2">
             <FileDown className="h-4 w-4" />
             Manage Templates
+          </Link>
+        </Button>
+        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+          <Link to="/admin/admissions" className="gap-2">
+            <BookOpen className="h-4 w-4" />
+            Manage Admissions
           </Link>
         </Button>
       </div>
