@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { SkeletonCard } from '@/components/SkeletonCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Mail, Archive, CalendarDays, FileDown, FileText, CheckCircle, XCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { toast } from '@/hooks/use-toast';
 
@@ -104,10 +105,31 @@ const Admin = () => {
     <div>
       <PageHeader title="Admin Dashboard" description="Manage your postgraduate portal content and student submissions." />
 
+      <div className="mb-8 flex flex-wrap gap-3">
+        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+          <Link to="/admin/archive" className="gap-2">
+            <Archive className="h-4 w-4" />
+            Manage Research Archive
+          </Link>
+        </Button>
+        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+          <Link to="/admin/schedules" className="gap-2">
+            <CalendarDays className="h-4 w-4" />
+            Manage Schedules
+          </Link>
+        </Button>
+        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+          <Link to="/admin/templates" className="gap-2">
+            <FileDown className="h-4 w-4" />
+            Manage Templates
+          </Link>
+        </Button>
+      </div>
+
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5 mb-8">
         {stats.map((s, i) => (
           <motion.div key={s.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
-            <Card>
+            <Card className="border-border">
               <CardContent className="flex items-center gap-4 p-5">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
                   <s.icon className="h-5 w-5" />
@@ -202,7 +224,7 @@ const Admin = () => {
                 <div className="space-y-3">
                   {inquiries.slice(0, 20).map((inq) => (
                     <div key={inq.id} className="flex items-start gap-3 rounded-lg border border-border p-4">
-                      {!inq.is_read && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-accent" />}
+                      {!inq.is_read && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-secondary" />}
                       <div className="min-w-0 flex-1">
                         <div className="flex items-baseline gap-2">
                           <p className="font-medium text-foreground text-sm">{inq.name}</p>

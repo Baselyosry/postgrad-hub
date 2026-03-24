@@ -8,28 +8,36 @@ export default {
     container: {
       center: true,
       padding: "2rem",
+      width: "85%",
       screens: {
         "2xl": "1400px",
       },
     },
     extend: {
+      fontFamily: {
+        heading: ["Poppins", "sans-serif"],
+        body: ["Open Sans", "sans-serif"],
+      },
       colors: {
-        "must-navy": "#003366",
+        primary: {
+          DEFAULT: "#0c2d6b",
+          foreground: "#ffffff",
+        },
+        secondary: {
+          DEFAULT: "#d4af37",
+          foreground: "#222222",
+        },
+        "bg-light": "#f5f5f5",
+        "text-dark": "#222222",
+        "text-light": "#666666",
+        "must-navy": "#0c2d6b",
         "must-green": "#2E8B57",
-        "must-gray": "#F9FAFB",
+        "must-gray": "#f5f5f5",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",

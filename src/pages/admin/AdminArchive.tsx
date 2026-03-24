@@ -175,7 +175,7 @@ const AdminArchive = () => {
       />
 
       <div className="mb-4">
-        <Button onClick={openCreate} className="gap-2">
+        <Button onClick={openCreate} className="gap-2 bg-primary text-white hover:bg-primary/90">
           <Plus className="h-4 w-4" />
           Add New Record
         </Button>

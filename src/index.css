@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,49 +6,50 @@
 
 @layer base {
   :root {
-    /* MUST University Alumni - Pure white main, light gray sections */
+    /* MUST Institutional Style - Dark Blue & Gold */
     --background: 0 0% 100%;
-    --foreground: 217 28% 17%;
+    --foreground: 0 0% 13%;
 
     --card: 0 0% 100%;
-    --card-foreground: 217 28% 17%;
+    --card-foreground: 0 0% 13%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 217 28% 17%;
+    --popover-foreground: 0 0% 13%;
 
-    /* Deep Navy Blue #003366 - navbar, headings, primary buttons */
-    --primary: 210 100% 20%;
+    /* Primary: #0c2d6b Dark Blue */
+    --primary: 217 72% 23%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 210 100% 20%;
+    /* Secondary: #d4af37 Gold - accents */
+    --secondary: 43 74% 52%;
+    --secondary-foreground: 0 0% 13%;
 
-    /* Muted gray for dates/notes */
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
+    /* Muted */
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 40%;
 
-    /* Professional Green #2E8B57 - hover states, accents, badges */
-    --accent: 152 39% 34%;
+    /* Accent - Gold for hover states */
+    --accent: 43 74% 52%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 210 100% 20%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 217 72% 23%;
 
-    --radius: 0.625rem;
+    --radius: 0.375rem;
 
-    /* Sidebar - Deep Navy */
-    --sidebar-background: 210 100% 20%;
+    /* Sidebar - Dark Blue */
+    --sidebar-background: 217 72% 23%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 152 39% 34%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 100% 25%;
+    --sidebar-primary: 43 74% 52%;
+    --sidebar-primary-foreground: 0 0% 13%;
+    --sidebar-accent: 217 72% 28%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 210 50% 30%;
-    --sidebar-ring: 152 39% 34%;
+    --sidebar-border: 217 50% 35%;
+    --sidebar-ring: 43 74% 52%;
 
     --success: 152 39% 34%;
     --success-foreground: 0 0% 100%;
@@ -56,8 +57,8 @@
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 100%;
 
-    --font-heading: 'Playfair Display', serif;
-    --font-body: 'Inter', sans-serif;
+    --font-heading: 'Poppins', sans-serif;
+    --font-body: 'Open Sans', sans-serif;
   }
 
   .dark {
@@ -70,16 +71,16 @@
     --popover: 220 25% 13%;
     --popover-foreground: 210 30% 92%;
 
-    --primary: 200 75% 55%;
+    --primary: 217 72% 45%;
     --primary-foreground: 220 25% 10%;
 
-    --secondary: 220 20% 20%;
-    --secondary-foreground: 210 30% 88%;
+    --secondary: 43 74% 45%;
+    --secondary-foreground: 0 0% 13%;
 
     --muted: 220 20% 18%;
     --muted-foreground: 215 15% 55%;
 
-    --accent: 200 75% 45%;
+    --accent: 43 74% 45%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62% 40%;
@@ -87,16 +88,16 @@
 
     --border: 220 20% 22%;
     --input: 220 20% 22%;
-    --ring: 200 75% 55%;
+    --ring: 217 72% 45%;
 
     --sidebar-background: 220 30% 8%;
     --sidebar-foreground: 210 30% 88%;
-    --sidebar-primary: 200 75% 55%;
-    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-primary: 43 74% 52%;
+    --sidebar-primary-foreground: 0 0% 13%;
     --sidebar-accent: 220 25% 16%;
     --sidebar-accent-foreground: 210 30% 88%;
     --sidebar-border: 220 20% 18%;
-    --sidebar-ring: 200 75% 55%;
+    --sidebar-ring: 43 74% 52%;
 
     --success: 152 55% 45%;
     --success-foreground: 0 0% 100%;
@@ -112,37 +113,33 @@
   }
 
   body {
-    @apply bg-background text-foreground;
-    font-family: var(--font-body);
+    @apply bg-background text-foreground font-body;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
+    @apply font-bold tracking-[0.5px] text-primary;
+  }
+
+  h1 { @apply text-3xl md:text-4xl; }
+  h2 { @apply text-2xl md:text-3xl; }
+  h3 { @apply text-xl md:text-2xl; }
+
+  p {
+    @apply text-[14px] leading-[1.6] text-text-light;
   }
 }
 
 @layer utilities {
-  .heading-gradient {
-    @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, #003366, #004080);
-  }
-
   .section-alt {
-    @apply bg-[#F9FAFB];
+    @apply bg-bg-light;
   }
 
-  .dark .heading-gradient {
-    background-image: linear-gradient(135deg, #003366, #2E8B57);
+  .card-institutional {
+    @apply rounded-md shadow-sm transition-transform duration-200 hover:-translate-y-[5px];
   }
 
-  .card-hover {
-    @apply transition-all duration-300;
-  }
-  .card-hover:hover {
-    @apply shadow-lg -translate-y-1;
-  }
-
-  .btn-must:hover {
-    @apply bg-[#2E8B57];
+  .btn-primary-institutional {
+    @apply bg-primary text-white hover:bg-primary/90;
   }
 }

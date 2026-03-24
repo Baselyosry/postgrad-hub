@@ -16,7 +16,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <header className="sticky top-0 z-50 grid h-16 grid-cols-[1fr_auto_1fr] items-center border-b border-primary/20 bg-must-navy px-4 shadow-md md:px-8">
+      <header className="sticky top-0 z-50 grid h-16 grid-cols-[1fr_auto_1fr] items-center border-b border-primary/20 bg-primary px-4 shadow-md md:px-8">
         <Link to="/" className="flex w-fit items-center gap-3 text-white hover:text-white/90 transition-colors">
           <img src="/logo.png" alt="MUST" className="h-10 w-auto shrink-0" />
           <span className="hidden font-heading text-lg font-bold sm:inline">MUST · Postgraduate Portal</span>

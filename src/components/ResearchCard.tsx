@@ -25,23 +25,23 @@ export function ResearchCard({ title, author, year, type, department, abstract, 
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.05 }}
     >
-      <Card className="card-hover h-full">
+      <Card className="card-institutional h-full rounded-md border-0 bg-white shadow-sm">
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between gap-2">
-            <CardTitle className="font-heading text-base leading-snug">{title}</CardTitle>
-            <Badge variant={typeVariants[type] as any} className="shrink-0 text-xs">
+            <CardTitle className="font-heading text-base font-bold leading-snug tracking-[0.5px] text-primary">{title}</CardTitle>
+            <Badge variant={typeVariants[type] as 'secondary' | 'default' | 'outline'} className="shrink-0 border-secondary/30 bg-secondary/10 text-xs text-primary">
               {typeLabels[type]}
             </Badge>
           </div>
         </CardHeader>
         <CardContent className="space-y-2">
-          <p className="text-sm font-medium text-foreground">{author} · {year}</p>
-          {department && <p className="text-xs text-muted-foreground">{department}</p>}
+          <p className="text-sm font-medium text-text-dark">{author} · {year}</p>
+          {department && <p className="text-xs text-text-light">{department}</p>}
           {abstract && (
-            <p className="line-clamp-3 text-sm text-muted-foreground">{abstract}</p>
+            <p className="line-clamp-3 text-sm text-text-light">{abstract}</p>
           )}
           {fileUrl && (
-            <Button variant="outline" size="sm" className="mt-2 gap-2" asChild>
+            <Button variant="outline" size="sm" className="mt-2 gap-2 border-primary/30 text-primary hover:bg-primary/5 hover:text-primary" asChild>
               <a href={fileUrl} target="_blank" rel="noopener noreferrer">
                 <FileText className="h-3.5 w-3.5" /> View Paper <ExternalLink className="h-3 w-3" />
               </a>
