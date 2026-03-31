@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase, isSupabaseConfigured } from '@/integrations/supabase/client';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -74,6 +74,7 @@ const Index = () => {
       if (error) throw error;
       return data;
     },
+    enabled: isSupabaseConfigured,
   });
 
   const { data: archive, isLoading: loadingArchive, isError: archiveError, error: archiveErr, refetch: refetchArchive } = useQuery({
@@ -87,6 +88,7 @@ const Index = () => {
       if (error) throw error;
       return data;
     },
+    enabled: isSupabaseConfigured,
   });
 
   const { data: researchPapers, isError: researchError, error: researchErr } = useQuery({
@@ -101,6 +103,7 @@ const Index = () => {
       if (error) throw error;
       return data;
     },
+    enabled: isSupabaseConfigured,
   });
 
   const { data: templates, isLoading: loadingTemplates, isError: templatesError, error: templatesErr, refetch: refetchTemplates } = useQuery({
@@ -113,6 +116,7 @@ const Index = () => {
       if (error) throw error;
       return data;
     },
+    enabled: isSupabaseConfigured,
   });
 
   const contactMutation = useMutation({
@@ -191,14 +195,29 @@ const Index = () => {
         </Carousel>
       </section>
 
-      {dataError && (
+      {!isSupabaseConfigured && (
+        <div className="container mx-auto px-4 py-4">
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Supabase is not configured</AlertTitle>
+            <AlertDescription>
+              Add <code className="rounded bg-background px-1 py-0.5 text-xs">VITE_SUPABASE_URL</code> and{' '}
+              <code className="rounded bg-background px-1 py-0.5 text-xs">VITE_SUPABASE_PUBLISHABLE_KEY</code> to a{' '}
+              <code className="rounded bg-background px-1 py-0.5 text-xs">.env</code> file in the project root, then restart{' '}
+              <code className="rounded bg-background px-1 py-0.5 text-xs">npm run dev</code>.
+            </AlertDescription>
+          </Alert>
+        </div>
+      )}
+
+      {dataError && isSupabaseConfigured && (
         <div className="container mx-auto px-4 py-4">
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Unable to load content</AlertTitle>
-            <AlertDescription>
-              {dataErrorMessage}
-              <Button variant="outline" size="sm" className="mt-2 ml-2" onClick={refetchData}>
+            <AlertDescription className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <span>{dataErrorMessage}</span>
+              <Button variant="outline" size="sm" className="shrink-0 self-start" onClick={() => refetchData()}>
                 Retry
               </Button>
             </AlertDescription>

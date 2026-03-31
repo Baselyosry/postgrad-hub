@@ -7,7 +7,7 @@ This document describes the **Postgraduate Hub** (postgrad-hub) project so that 
 ## 1. Project Overview
 
 ### Project name
-**Postgraduate Studies Management Portal** (internally: `vite_react_shadcn_ts` in `package.json`)
+**Postgraduate Studies Management Portal** (package name: `postgrad-hub` in `package.json`)
 
 ### Purpose
 A single web application that acts as the main hub for a postgraduate studies department. It centralizes academic resources, schedules, research archives, and contact with the administration.

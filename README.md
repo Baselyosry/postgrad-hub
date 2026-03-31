@@ -4,59 +4,27 @@ A postgraduate studies management portal for the MUST department. Students and v
 
 For full technical documentation, see [PROJECT_DOCUMENTATION.md](./PROJECT_DOCUMENTATION.md).
 
-## Project info
+## Local development
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
-
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+Prerequisites: **Node.js** (LTS, e.g. 18 or 20) and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
 git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+cd postgrad-hub
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The dev server defaults to **http://localhost:8080** (see `vite.config.ts`).
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Configure a **`.env`** in the project root with your Supabase credentials (see [PROJECT_DOCUMENTATION.md](./PROJECT_DOCUMENTATION.md) § Environment Setup).
 
-**Use GitHub Codespaces**
+## Other ways to edit
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- **GitHub**: Edit files in the web UI and commit.
+- **GitHub Codespaces**: Open the repository → **Code** → **Codespaces** → create a new codespace.
 
-## What technologies are used for this project?
-
-This project is built with:
+## Stack
 
 - Vite
 - TypeScript
@@ -65,14 +33,11 @@ This project is built with:
 - Tailwind CSS
 - Supabase (Auth, PostgreSQL, Storage)
 
-## How can I deploy this project?
+## Build and preview
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+```sh
+npm run build    # output in dist/
+npm run preview  # serve production build locally
+```
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Deploy `dist/` to any static host (Netlify, Vercel, Cloudflare Pages, S3 + CDN, etc.). Set the same `VITE_*` environment variables your host supports for the build step.
