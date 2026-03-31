@@ -13,39 +13,44 @@ This document describes the **Postgraduate Hub** (postgrad-hub) project so that 
 A single web application that acts as the main hub for a postgraduate studies department. It centralizes academic resources, schedules, research archives, and contact with the administration.
 
 ### Core idea
-- **Public users** (students, researchers, visitors) can browse admissions info, schedules, templates, research archive, and submit contact inquiries—no login required.
-- **Admins** sign in and use an Admin Panel to view inquiries and see counts for archive, schedules, and templates. Content (archive, schedules, templates, etc.) is managed via the **Supabase backend** (database and storage); the app mainly reads and displays that data.
+- **Public users** (visitors, prospective students) can browse admissions info, schedules, templates, research archive, and submit contact inquiries without logging in. The **home page** loads live previews from Supabase and includes an inline contact form.
+- **Registered students** use **Sign up** / **Login**. New Auth users automatically receive the **`student`** role (database trigger). They open the **Student Dashboard** and **Submit Application** to file proposals; admins approve or reject submissions from the Admin Dashboard.
+- **Admins** use the **Admin Panel**: dashboard stats, submission review, and **in-app CRUD** for archive, schedules, templates, admissions, and inquiries—all backed by Supabase.
 
 ### Target users
-- **Visitors / students**: Anyone who needs admissions info, schedules, templates, or the research archive.
-- **Department staff / admins**: People who need to view inquiries and manage portal content (via Supabase or future admin UI).
+- **Visitors**: Anyone browsing resources without an account.
+- **Students**: Registered users who submit applications or proposals.
+- **Admins**: Users with the **`admin`** role in `user_roles` who manage content and submissions.
 
 ### Main features (simple explanation)
 | Feature | What it does |
 |--------|----------------|
-| **Home** | Landing page with links to Admissions, Schedules, Templates, Research Archive, Contact. |
-| **Admissions** | Shows Masters and PhD requirements and document checklists (currently **static** content in the code; database table exists for future use). |
-| **Schedules** | Lists study plans, exam schedules, and research plans from the database, with optional file links. |
-| **Templates** | Lists downloadable document templates (PDFs, etc.) from the database. |
-| **Research Archive** | Searchable and filterable list of theses and research papers (title, author, year, type, department, abstract, file link). |
-| **Contact** | Form to submit an inquiry (name, email, message); stored in the database; admins see them in the Admin Panel. |
-| **Admin Panel** | Login-only dashboard: stats (inquiries, archive/schedules/templates counts) and recent inquiries list. |
-| **Login** | Email/password sign-in for admins; redirects to Admin Panel. |
-| **SignUp** | Student registration flow. |
-| **Student Dashboard** | Post-login dashboard for students. |
-| **Submit Application** | Application submission flow. |
+| **Home** | Hero **carousel** (images under `public/hero/`), schedule/archive/template previews from DB, document checklist cards, inline **contact** form; warns if env is missing or data fails (with **retry**). |
+| **Admissions** | Masters/PhD copy and checklists (**mostly static** on the page; **`admissions`** rows are editable under `/admin/admissions`). |
+| **Schedules** | Lists **`schedules`** (study / exams / research plan) with optional file links. |
+| **Templates** | Lists **`templates`** with download links. |
+| **Research Archive** | Public search/filter over **`research_archive`**. |
+| **Contact** | Standalone page → **`inquiries`**. |
+| **Login** | Supabase email/password; **redirect by role**: admin → `/admin`, student → `/dashboard`. |
+| **Sign up** | **`/signup`** → **`signUp`** in AuthContext; **`student`** role auto-assigned. |
+| **Student Dashboard** | **`/dashboard`** → user’s **`student_submissions`**; requires student or admin role; uses **public** header/footer. |
+| **Submit Application** | **`/submit`** → insert **`student_submissions`**; requires signed-in user. |
+| **Admin Dashboard** | **`/admin`** → stats, submissions tab (approve/reject pending), inquiries tab. |
+| **Admin sub-pages** | **`/admin/archive`**, **`schedules`**, **`templates`**, **`admissions`**, **`inquiries`** — admin CRUD / management UIs (sidebar layout). |
+| **NotFound** | Unknown routes. |
 
 ---
 
 ## 2. High-Level Architecture
 
 ### In simple terms
-- **Frontend**: A single-page app built with **React**, **TypeScript**, and **Vite**. The UI uses **shadcn/ui** (Radix-based components) and **Tailwind CSS**. There is **no separate backend server** in this repo; the backend is **Supabase** (hosted).
-- **Backend**: **Supabase** provides authentication, PostgreSQL database, and file storage. The app talks to Supabase from the browser via the Supabase JavaScript client.
-- **Database**: **PostgreSQL** (Supabase). Tables: `user_roles`, `research_archive`, `inquiries`, `schedules`, `templates`, `admissions`.
-- **Communication**: Browser → Supabase client (`@/integrations/supabase/client`) → Supabase API (HTTPS) → Database/Storage/Auth. No custom REST API in the repo.
-- **Authentication**: Supabase Auth (email/password). Session is stored in **localStorage** and refreshed automatically. Admin role is determined by a `user_roles` table and a `has_role` RPC.
-- **Data storage**: Structured data in Supabase **PostgreSQL**; files (e.g. PDFs) in Supabase **Storage** bucket `documents`. File URLs in tables point to those stored files.
+- **Frontend**: **React 18**, **TypeScript**, **Vite 7** (React plugin **SWC**). UI: **shadcn/ui** (Radix) + **Tailwind**. Motion: **framer-motion** on some pages. Toasts: **Radix toast** plus **Sonner** (`App.tsx` mounts both). No custom API server in this repo; **Supabase** is the backend.
+- **Backend**: **Supabase** (Auth, PostgreSQL, Storage). All data access from the browser via **`@supabase/supabase-js`** typed with **`src/integrations/supabase/types.ts`**.
+- **Database**: **PostgreSQL** (Supabase). Core tables: `user_roles`, `research_archive`, `inquiries`, `schedules`, `templates`, `admissions`, **`student_submissions`**.
+- **Communication**: Browser → `createClient` in `client.ts` → Supabase REST/Realtime APIs. **`isSupabaseConfigured`** (exported from `client.ts`) gates queries when URL/key are missing so the UI can show setup hints instead of opaque failures.
+- **Authentication**: Email/password. Session in **localStorage**, auto-refresh on. **`has_role`** RPC checks **`admin`** first, then **`student`**. Auth uses a **no-op `lock`** in client options to avoid multi-tab **Navigator Lock API** conflicts.
+- **Data storage**: Rows in PostgreSQL; files in Storage (e.g. bucket **`documents`**). `file_url` fields reference stored assets.
+- **Branding / HTML**: **`index.html`** sets title “MUST Post Graduate”, description, and OG/Twitter meta. **`index.css`** loads **Poppins** + **Open Sans** (Google Fonts) and **MUST** navy/gold CSS variables; **`tailwind.config.ts`** extends **`navy-dark`**, **`must-gold`**, etc., used by the **Footer**.
 
 ### Architecture diagram (simplified)
 
@@ -57,10 +62,11 @@ A single web application that acts as the main hub for a postgraduate studies de
                              ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │  FRONTEND (Vite + React + TypeScript)                            │
-│  • Pages: Index, Admissions, Schedules, Templates, Archive,     │
-│    Contact, Login, SignUp, Admin, StudentDashboard, Submit,     │
-│    NotFound                                                       │
-│  • AuthContext (session, user, isAdmin, signIn, signOut)         │
+│  • Pages: Index, Admissions, Schedules, Templates, Archive,   │
+│    Contact, Login, SignUp, Admin + admin/* CRUD,               │
+│    StudentDashboard, SubmitApplication, NotFound                │
+│  • AuthContext: session, user, role, isAdmin, isStudent,        │
+│    signIn, signUp, signOut                                      │
 │  • React Query for data fetching                                 │
 └────────────────────────────┬────────────────────────────────────┘
                              │
@@ -84,19 +90,19 @@ Based on the actual repository layout:
 | Path | Purpose | Contents |
 |------|--------|----------|
 | **`/src`** | All application source code | React components, pages, hooks, contexts, styles. |
-| **`/src/pages`** | One component per main screen | `Index.tsx`, `Admissions.tsx`, `Schedules.tsx`, `Templates.tsx`, `ArchivePage.tsx`, `Contact.tsx`, `Login.tsx`, `SignUp.tsx`, `Admin.tsx`, `StudentDashboard.tsx`, `SubmitApplication.tsx`, `NotFound.tsx`. |
-| **`/src/components`** | Reusable UI and layout | `PageHeader.tsx`, `NavLink.tsx`, `EmptyState.tsx`, `ResearchCard.tsx`, `SkeletonCard.tsx`, `ErrorBoundary.tsx`, plus `layout/` (`AppLayout.tsx`, `PublicLayout.tsx`, `AdminLayout.tsx`, `AppSidebar.tsx`) and `ui/` (shadcn components: button, card, input, etc.). |
+| **`/src/pages`** | Route-level screens | Root: `Index`, `Admissions`, `Schedules`, `Templates`, `ArchivePage`, `Contact`, `Login`, `SignUp`, `Admin`, `StudentDashboard`, `SubmitApplication`, `NotFound`. Subfolder **`admin/`**: `AdminArchive`, `AdminSchedules`, `AdminTemplates`, `AdminInquiries`, `AdminAdmissions`. |
+| **`/src/components`** | Reusable UI and layout | `PageHeader.tsx`, `NavLink.tsx`, `EmptyState.tsx`, `ResearchCard.tsx`, **`PostgraduateCard.tsx`**, `SkeletonCard.tsx`, `ErrorBoundary.tsx`, and `layout/` (`AppLayout.tsx`, `PublicLayout.tsx`, **`Footer.tsx`**, `AdminLayout.tsx`, `AppSidebar.tsx`) and `ui/`. |
 | **`/src/components/ui`** | shadcn/ui primitives | Many small components (button, card, input, dialog, tabs, etc.). **Prefer not modifying** unless you need a local override; use composition in your own components instead. |
-| **`/src/contexts`** | React context providers | `AuthContext.tsx` — provides `session`, `user`, `isAdmin`, `loading`, `signIn`, `signOut`. |
+| **`/src/contexts`** | React context providers | `AuthContext.tsx` — `session`, `user`, `role`, `isAdmin`, `isStudent`, `loading`, `signIn`, **`signUp`**, `signOut`. |
 | **`/src/hooks`** | Custom React hooks | `useArchiveData.ts` (archive list with search/type filter), `useDebounce.ts`, `use-mobile.tsx`, `use-toast.ts` (and `use-toast.ts` in components/ui). |
-| **`/src/integrations/supabase`** | Supabase connection and types | `client.ts` (single Supabase client instance), `types.ts` (generated DB types). **Do not edit** `client.ts` logic carelessly; `types.ts` is often auto-generated. |
-| **`/src/lib`** | Shared utilities | `utils.ts` (e.g. `cn()` for class names). |
+| **`/src/integrations/supabase`** | Supabase connection and types | `client.ts` instantiates the client (`isSupabaseConfigured`, auth options). `types.ts` mirrors the DB — regenerate when the schema changes. Treat both as shared infrastructure (review before changing). |
+| **`/src/lib`** | Shared utilities | `utils.ts`: **`cn()`** (Tailwind class merge) and **`getErrorMessage()`** (user-facing Supabase/network errors). |
 | **`/supabase`** | Supabase config and schema | `config.toml` (project id), `migrations/` (SQL that creates tables, RLS, storage). **Critical**: avoid changing migrations that are already applied; add new migrations for schema changes. |
 | **`/public`** | Static assets | e.g. `robots.txt`. |
 | **Root** | Config and entry | `package.json`, `vite.config.ts`, `tsconfig.json`, `tailwind.config.ts`, `index.html`, `components.json` (shadcn). |
 
 ### What teammates should avoid changing (without review)
-- **`src/integrations/supabase/client.ts`** — Central Supabase setup; env vars must stay correct.
+- **`src/integrations/supabase/client.ts`** — Generated-style entry point: URL/key, **`isSupabaseConfigured`**, **`noOpLock`** auth option; keep env names aligned with Vite.
 - **`src/integrations/supabase/types.ts`** — Mirrors the database; regenerate from Supabase if schema changes.
 - **`supabase/migrations/*.sql`** — Applied schema; add new migrations instead of editing old ones.
 - **`src/contexts/AuthContext.tsx`** — Auth and admin-check logic; changes can affect security.
@@ -112,9 +118,10 @@ Based on the actual repository layout:
 - **New components** under `src/components/` (not under `ui/` if you want to keep shadcn intact).
 
 ### Layout components (public vs admin)
-- **`AppLayout`**: Route switcher—uses `PublicLayout` for all routes except `/admin/*`; uses `AdminLayout` for admin routes.
-- **`PublicLayout`**: Public header with logo, nav (Home, Admissions, Schedules, Archive, Templates, Contact). Header uses a centered three-column grid: logo left, nav center, spacer right. Logo text "MUST · Postgraduate Portal" is hidden on small screens (`sm:inline`).
-- **`AdminLayout`**: Admin-specific layout with sidebar (if applicable).
+- **`AppLayout`**: Chooses layout by path: **`AdminLayout`** only when `pathname.startsWith('/admin')`; everything else (including **`/dashboard`**, **`/submit`**, **`/login`**, **`/signup`**) uses **`PublicLayout`**.
+- **`PublicLayout`**: Sticky navy header (logo + **Home, Admissions, Schedules, Archive, Templates, Contact**), main content, then **`Footer`** (quick links, services blurb, contact email placeholder, copyright).
+- **`AdminLayout`**: **`SidebarProvider`**, **`AppSidebar`**, top bar with **`SidebarTrigger`**, main area for admin routes.
+- **`AppSidebar`**: If **`isAdmin`**, shows links to `/admin` and each **`/admin/...`** tool; if **`isStudent`**, shows **Dashboard** and **Submit Application**. Footer has **Sign out** and email when `user` is set.
 
 ---
 
@@ -124,22 +131,26 @@ Based on the actual repository layout:
 1. **Browser** loads the app (Vite dev server or built static files).
 2. **React** mounts; **AuthProvider** runs, calls `supabase.auth.getSession()` and subscribes to `onAuthStateChange`.
 3. **Session** (if any) is stored in state; **admin** flag is set by calling `has_role(userId, 'admin')` (RPC on `user_roles`).
-4. **AppLayout** chooses layout by route: `PublicLayout` for public pages (header with logo + nav), `AdminLayout` for `/admin/*`. For admin routes, sidebar shows "Admin Login" or "Sign Out" and optional "Admin Panel" based on `user` and `isAdmin`.
-5. **Router** shows the page for the current URL (e.g. `/` → Index, `/archive` → ArchivePage).
+4. **AppLayout** uses `PublicLayout` or `AdminLayout` as above (student tools stay on the public shell).
+5. **Router** lazy-loads the page matching the URL (`Suspense` fallback uses **`SkeletonCard`** placeholders).
 
-### When a user logs in (admin)
-1. User goes to **Login** page, enters email and password, submits.
-2. **Login** calls `signIn(email, password)` from **AuthContext**.
-3. **AuthContext** calls `supabase.auth.signInWithPassword({ email, password })`.
-4. Supabase validates credentials and returns a **session** (stored in localStorage by the client).
-5. **onAuthStateChange** fires; context updates `session`, `user`, and calls `has_role(userId, 'admin')` to set `isAdmin`.
-6. **Login** page shows success toast and **navigates to `/admin`**.
-7. **Admin** page only renders if `isAdmin` is true; otherwise it redirects to **`/login`**.
+### When a user logs in
+1. User submits **Login** → **`signIn`** → `signInWithPassword`.
+2. Session is stored; **`checkRole`** runs: RPC **`has_role(..., 'admin')`** first, then **`has_role(..., 'student')`**, setting **`role`**, **`isAdmin`**, **`isStudent`**.
+3. **`Login`** `useEffect`: if `user` and `role` exist, **navigate** — **`admin`** → `/admin`, **`student`** → `/dashboard`.
+4. **Admin** routes: each page checks **`isAdmin`** and **`Navigate`s to `/login`** if false. **Student dashboard** allows **`isStudent || isAdmin`** (admins can open `/dashboard`).
+
+### When a student signs up
+1. **Sign up** form calls **`signUp(email, password)`** → `supabase.auth.signUp`.
+2. Supabase creates **`auth.users`** row; trigger **`on_auth_user_created_assign_student`** inserts **`user_roles(user_id, 'student')`** (see migrations).
+3. After success, app navigates to **`/dashboard`** (role resolves on next auth event).
 
 ### When a main feature is used (examples)
-- **Contact form**: User fills name, email, message → form validated with **Zod** → **React Query mutation** calls `supabase.from('inquiries').insert([...])` → success toast and form reset. Data is in `inquiries`; admins see it in Admin.
-- **Research Archive**: User types in search or changes type filter → **useArchiveData** (with debounced search) runs a **Supabase** query on `research_archive` (optional filters) → results shown as **ResearchCard** list.
-- **Schedules / Templates**: Page loads → **useQuery** fetches from `schedules` or `templates` → table or cards rendered; file links point to Supabase Storage or `file_url`.
+- **Home / Contact**: Inline or standalone contact → **`inquiries`** insert; Index queries use **`enabled: isSupabaseConfigured`**.
+- **Submit application**: Authenticated **student** fills form → **`student_submissions`** insert with `user_id`; RLS ensures row ownership. Admin dashboard **updates `status`** (`pending` → `approved` / `rejected`).
+- **Research Archive (public)**: **useArchiveData** + debounced search on **`research_archive`**.
+- **Admin CRUD** (e.g. **AdminArchive**): **useQuery** lists rows; **useMutation** **insert/update/delete**; invalidate React Query keys on success.
+- **Schedules / Templates** (public): **useQuery** on `schedules` / `templates`; links use **`file_url`**.
 
 ### Data flow (generic)
 ```
@@ -159,48 +170,51 @@ All tables live in the **`public`** schema in Supabase (PostgreSQL).
 
 | Table | What it stores | Important fields |
 |-------|----------------|------------------|
-| **user_roles** | Links a user (Supabase Auth) to an app role | `user_id` (→ `auth.users.id`), `role` (`admin` or `user`). One row per user-role pair. |
+| **user_roles** | App roles per Auth user | `user_id` → `auth.users.id`, **`app_role`**: **`admin` \| `user` \| `student`**. **Sign up** flow assigns **`student`** automatically (trigger). **`admin`** (and optional **`user`**) rows are added in Supabase for staff. |
+| **student_submissions** | Student applications / proposals | `user_id`, `title`, `description`, `degree_type`, `department`, `abstract`, optional `file_url`, **`status`** (`pending` / `approved` / `rejected`), timestamps. RLS: users see/insert own rows; admins see/update all. |
 | **research_archive** | Theses and research papers | `title`, `author`, `year`, `type` (master/phd/research), `department`, `abstract`, `file_url`, `created_at`, `updated_at`. |
 | **inquiries** | Contact form submissions | `name`, `email`, `message`, `is_read`, `created_at`. |
 | **schedules** | Academic schedules and plans | `title`, `category` (study / exams / research_plan), `file_url`, `description`, `date_info`, `created_at`. |
 | **templates** | Downloadable documents | `title`, `description`, `file_url`, `file_size`, `category`, `created_at`. |
-| **admissions** | Admissions content (for future use) | `degree_type` (master/phd), `title`, `requirements` (JSONB), `documents` (JSONB), `created_at`, `updated_at`. |
+| **admissions** | Structured admissions content | `degree_type` (master/phd), `title`, `requirements` (JSONB), `documents` (JSONB), timestamps — editable from **`/admin/admissions`**. |
 
 **Relationships (simple)**:
-- **user_roles** references **auth.users** (Supabase built-in). No other tables reference each other in the schema; they are independent content tables.
+- **user_roles** and **student_submissions** reference **`auth.users`**. Content tables (`research_archive`, `inquiries`, …) are independent of each other aside from Auth.
 - **Storage**: The `documents` bucket holds files; `file_url` in tables typically point to Supabase Storage URLs.
 
-**Security**: Row Level Security (RLS) is enabled on all these tables. For example: everyone can **read** archive, schedules, templates, admissions; only **authenticated users with admin role** can insert/update/delete. Inquiries: anyone can insert; only admins can read/update/delete. The `has_role(_user_id, _role)` function (security definer) is used in RLS policies.
+**Security**: RLS is enabled on these tables. **Public content** (archive, schedules, templates, admissions): typical pattern is world **read**, **admin** writes (see migrations for exact policies). **Inquiries**: public **insert**; **admin** read/update/delete. **`student_submissions`**: owner (or **admin**) access as described above. The **`has_role`** security-definer function backs admin checks in policies.
 
 ---
 
 ## 6. Authentication and Authorization
 
-### How login works
-- **Login** is email + password via Supabase Auth (`signInWithPassword`).
-- There is **no registration flow in the app**. Admin users are created in Supabase (Dashboard or API); then an admin must insert a row into **user_roles** with `role = 'admin'` for that user to see the Admin Panel.
+### Registration and login
+- **Sign up** (`/signup`) calls **`signUp`** → **`auth.signUp`**. Email confirmation behavior depends on your **Supabase project settings** (confirm email on/off).
+- **Login** uses **`signInWithPassword`**.
+- **New users**: database trigger **`handle_new_user_student_role`** inserts **`user_roles (user_id, 'student')`** so **`has_role`** succeeds for students without manual seeding.
+- **Admins**: create the Auth user in the Dashboard (or invite), then add **`user_roles`** with **`role = 'admin'`** (and remove or avoid conflicting expectations if you also rely on `student`).
 
 ### Sessions / tokens
-- Supabase stores the **session** (including JWT) in **localStorage** (see `client.ts`: `storage: localStorage`, `persistSession: true`, `autoRefreshToken: true`).
-- The client automatically sends the JWT with requests to Supabase; Supabase validates it and RLS uses `auth.uid()` to restrict rows.
+- **localStorage** persistence, **`autoRefreshToken: true`**, custom **`lock: noOpLock`** to reduce multi-tab lock errors.
+- JWT is sent on Supabase requests; RLS uses **`auth.uid()`** and **`has_role`**.
 
 ### Roles and permissions
-- **Roles** are in **user_roles** (`admin`, `user`).
-- **Admin check** in the app: `AuthContext` calls `supabase.rpc('has_role', { _user_id: userId, _role: 'admin' })` and sets `isAdmin`.
-- **Admin-only UI**: Admin page and Admin Panel link in sidebar are shown only when `isAdmin` is true; Admin page redirects to `/login` if not admin.
-- **Backend enforcement**: All write operations and sensitive reads are enforced by **RLS** in the database using `has_role(auth.uid(), 'admin')`. So even if someone tampers with the frontend, the database still restricts access.
+- **`AuthContext`** resolves **`role`** with **`has_role`** for **`admin`** first, then **`student`**.
+- **`isAdmin` / `isStudent`** drive **AppSidebar** sections and route guards.
+- **Student dashboard** intentionally allows **`isAdmin`** so staff can verify the student UX.
+- **RLS** on **`student_submissions`**: students **insert/select** own rows; admins **select/update** all (e.g. status). Other tables follow existing policies (public read where applicable, admin writes).
 
 ### What not to break
-- Do not disable RLS or loosen policies without a security review.
-- Do not remove or bypass the `has_role` check in **AuthContext** or in RLS.
-- Keep **client.ts** auth options (storage, persistSession, autoRefreshToken) unless you have a good reason to change them.
+- Do not disable RLS or weaken **`has_role`** policies without review.
+- Keep **`checkRole`** order (**admin** before **student**) if users can hold multiple role rows.
+- Changing **`client.ts`** env handling (**`isSupabaseConfigured`**, missing-var console error) affects onboarding UX for new devs.
 
 ---
 
 ## 7. Environment Setup Guide
 
 ### Prerequisites
-- **Node.js** (LTS, e.g. 18 or 20) and **npm**.
+- **Node.js** (LTS, e.g. 18 or 20) and **npm** (the repo also has **`bun.lock`** if you use Bun, but docs assume **npm**).
 
 ### Step 1: Clone and install
 ```bash
@@ -210,26 +224,28 @@ npm install
 ```
 
 ### Step 2: Environment variables
-The app expects these **Vite** env vars (used in `src/integrations/supabase/client.ts`):
+**`src/integrations/supabase/client.ts`** reads:
 
-- **`VITE_SUPABASE_URL`** — Supabase project URL (e.g. `https://xxxx.supabase.co`).
-- **`VITE_SUPABASE_PUBLISHABLE_KEY`** — Supabase anonymous/public key (starts with `eyJ...`).
+| Variable | Purpose |
+|----------|---------|
+| **`VITE_SUPABASE_URL`** | Project URL (`https://xxxx.supabase.co`). |
+| **`VITE_SUPABASE_PUBLISHABLE_KEY`** | Supabase **anon / publishable** key (JWT-shaped string). |
 
-Create a **`.env`** file in the project root (do not commit real keys to Git):
+If either is missing, the client logs a **console error** and exports **`isSupabaseConfigured === false`** so pages like **Index** can show a setup **Alert** instead of failing silently.
 
 ```env
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_PUBLISHABLE_KEY=your-anon-key
 ```
 
-Optional: **`VITE_SUPABASE_PROJECT_ID`** may appear in the repo for tooling; the running app only needs the two above.
+Create **`.env`** in the project root; keep it out of Git.
 
 ### Step 3: Run locally
 ```bash
 npm run dev
 ```
-- App runs at **http://localhost:8080** (see `vite.config.ts`).
-- Changing code triggers hot reload.
+- **Dev server**: **`host: "::"`** (IPv6 dual-stack), **port `8080`**, **HMR overlay disabled** (`vite.config.ts`).
+- Open **http://localhost:8080** (or your machine’s LAN IP on the same port when using `::`).
 
 ### Step 4: Database connection
 - The app does **not** connect to the database directly; it goes through **Supabase**.
@@ -253,7 +269,8 @@ npm run dev
 5. **Push** and open a **Pull Request** for review before merging.
 
 ### Adding a new feature
-- **New page**: Add a component in `src/pages/`, add a **Route** in `App.tsx`, and add a link in `AppSidebar.tsx` if it should appear in the nav.
+- **New page**: Add `src/pages/...`, **`lazy` import** + **`<Route>`** in **`App.tsx`**, and a link in **`PublicLayout`** (`publicNav`) and/or **`AppSidebar`** as needed.
+- **New admin tool**: Add under **`src/pages/admin/`**, register **`/admin/...`** in **`App.tsx`**, add to **`adminNav`** in **`AppSidebar.tsx`**, protect with **`isAdmin`** + RLS.
 - **New data from Supabase**: Add a **useQuery** or custom hook that uses `supabase.from('tableName')`; if the table or columns are new, update Supabase (migrations) and regenerate `src/integrations/supabase/types.ts` if you use type generation.
 - **New UI only**: Add or reuse components under `src/components/` and use existing design tokens (Tailwind, CSS variables in `index.css`).
 
@@ -283,14 +300,16 @@ npm run dev
 ## 9. Testing and Debugging
 
 ### Manual testing
-- **Critical paths**: Open home → Admissions, Schedules, Templates, Archive, Contact; submit contact form; log in as admin → open Admin Panel, see inquiries and counts.
-- **Auth**: Log in with an admin user; log out; open Admin while logged out (should redirect to Login).
-- **Archive**: Use search and type filter; check loading and empty states.
+- **Public**: Home carousel and sections; **Contact** (home + `/contact`); **Archive** search/filters; **`/admissions`**, **`/schedules`**, **`/templates`**.
+- **Student**: **Sign up** → **`/dashboard`**; **Submit Application** → pending row; RLS ensures students only receive their own rows from **`student_submissions`** even though the query is unfiltered in code.
+- **Admin**: **`/admin`** stats + submission actions; smoke-test CRUD on **`/admin/archive`**, **`schedules`**, **`templates`**, **`admissions`**, **`inquiries`**.
+- **Auth guards**: **`/admin`** as logged-out or student-only → redirect **Login**; **`/dashboard`** as logged-out → **Login**.
 
 ### Where to look when something breaks
 - **Blank or wrong data**: Check Supabase (Dashboard → Table Editor, Logs). Confirm RLS policies and that the correct project is used (env vars).
 - **Login fails**: Supabase Dashboard → Authentication; check user exists and password; check browser console for Supabase errors.
-- **Admin panel not visible or redirects**: Ensure the user has a row in **user_roles** with `role = 'admin'`.
+- **Admin panel not visible or redirects**: User needs **`user_roles.role = 'admin'`**. **Dashboard** requires **`student`** or **`admin`**.
+- **Sign up works but dashboard redirects to login**: Wait for session/role refresh; confirm trigger **`on_auth_user_created_assign_student`** ran and **`has_role(..., 'student')`** is true in SQL.
 - **Build errors**: Run `npm run build`; fix TypeScript or missing env vars (Vite inlines them at build time).
 
 ### Debugging tips
@@ -308,9 +327,9 @@ npm run dev
 ## 10. Future Improvements and Scalability
 
 ### Possible improvements
-- **Admissions page**: Currently uses hardcoded content; could be driven by the **admissions** table and an admin UI to edit requirements/documents.
-- **Admin content management**: Add admin UI to create/edit/delete archive entries, schedules, templates (and optionally admissions), instead of editing only in Supabase Dashboard.
-- **Registration**: If the department wants self-service accounts, add a registration flow and optionally tie it to **user_roles**.
+- **Admissions public page**: Surface **`admissions`** table content on **`/admissions`** (beyond static copy) for a single source of truth with **`/admin/admissions`**.
+- **File uploads**: **`student_submissions.file_url`** and admin forms could integrate **Supabase Storage** uploads instead of pasting URLs manually.
+- **Email confirmation / password reset** flows and clearer post-signup messaging if the project requires verified emails.
 - **Tests**: The repo has a minimal Vitest example; add unit tests for hooks and components and integration tests for critical flows.
 - **Error and loading states**: Standardize toasts and error messages; consider a global error handler or more granular ErrorBoundaries.
 
@@ -330,11 +349,11 @@ npm run dev
 
 | Aspect | Detail |
 |--------|--------|
-| **Stack** | Vite, React, TypeScript, shadcn/ui, Tailwind, Supabase (Auth + PostgreSQL + Storage) |
-| **Data** | PostgreSQL tables + Storage bucket; frontend reads/writes via Supabase client |
-| **Auth** | Supabase email/password; admin = row in `user_roles` with role `admin` |
-| **Safe to edit** | Pages, project-specific components, hooks, layout, styles |
-| **Edit with care** | Supabase client/types, AuthContext, migrations, App routing and config |
+| **Stack** | Vite 7, React 18, TypeScript, shadcn/ui, Tailwind, TanStack Query, framer-motion, Sonner + Radix toast, Supabase JS |
+| **Data** | PostgreSQL + Storage; **`student_submissions`** and admin CRUD pages |
+| **Auth** | Email/password; **`student`** auto on signup; **`admin`** via `user_roles`; **`has_role`** RPC |
+| **Safe to edit** | Pages (including **`admin/`**), layout, **Footer**, hooks, project components |
+| **Edit with care** | `client.ts` (env + auth lock), **AuthContext**, **types.ts**, migrations, **App.tsx** routes |
 
 This documentation reflects the **current state** of the repository. If something is missing or unclear in the codebase, assumptions are stated in the sections above. For anything not covered, check the code in the paths referenced in this document.
 
@@ -342,11 +361,34 @@ This documentation reflects the **current state** of the repository. If somethin
 
 ## 11. Recent Changes (Changelog)
 
-### Public layout header (PublicLayout.tsx)
-- **Header layout**: Switched from centered flex column/row to a three-column grid (`grid-cols-[1fr_auto_1fr]`)—logo left, nav centered, spacer right.
-- **Responsive logo text**: "MUST · Postgraduate Portal" is now hidden on small screens (`hidden sm:inline`) so only the logo image shows on mobile.
-- **Accessibility**: Added `aria-hidden` spacer div for symmetry on larger screens.
+Use this section as a high-level diary for teammates. Details live in Git history.
 
-### Pages and routes
-- **SignUp** (`/signup`), **StudentDashboard** (`/dashboard`), **SubmitApplication** (`/submit`) added to routing and documentation.
-- **Layout split**: `AppLayout` uses `PublicLayout` for public routes and `AdminLayout` for `/admin/*`.
+### 2026 — Student accounts and submissions
+- **`student_submissions`** table with RLS (own rows for students; full access for admins).
+- **`app_role`** extended with **`student`**; trigger on **`auth.users`** assigns **`user_roles.student`** on signup.
+- **`AuthContext`**: **`role`**, **`isStudent`**, **`signUp`**, sequential **`has_role`** checks (**admin** then **student**).
+- **`/signup`**, **`/dashboard`**, **`/submit`**; **`Login`** redirects by role (**`/admin`** vs **`/dashboard`**).
+- **Admin dashboard** (**`Admin.tsx`**): submission list with **approve/reject**, expanded stats (including admissions count).
+
+### 2026 — Admin content management UI
+- Routes: **`/admin/archive`**, **`/admin/schedules`**, **`/admin/templates`**, **`/admin/admissions`**, **`/admin/inquiries`** with list/table + dialog CRUD patterns (see **`AdminArchive.tsx`** as reference).
+- **`AppSidebar`**: **`adminNav`** + **`studentNav`** sections driven by **`isAdmin`** / **`isStudent`**.
+
+### 2026 — Home page and public UX
+- **`Index.tsx`**: hero **carousel** (`public/hero/slide-*.jpg`), live previews for schedules/archive/templates/research, checklist cards, **inline contact** form.
+- **`isSupabaseConfigured`** disables queries and shows setup **Alert** when env is incomplete; **retry** on load errors via **`getErrorMessage`**.
+- **`Footer.tsx`**: institutional footer on **`PublicLayout`**.
+
+### Tooling and Supabase client
+- **`VITE_SUPABASE_PUBLISHABLE_KEY`** naming in **`client.ts`**; startup log when vars missing.
+- **`isSupabaseConfigured`** export; auth **`lock`** no-op for multi-tab stability.
+- **`getErrorMessage`** in **`lib/utils.ts`** for consistent user-facing errors.
+- **Vite**: **`host: "::"`**, port **8080**, **HMR `overlay: false`**.
+
+### Branding
+- **`index.html`** title and meta (MUST Post Graduate / OG tags).
+- **Theme**: Poppins + Open Sans, navy/gold tokens in **`index.css`** and **`tailwind.config.ts`**.
+
+### Layout (recap)
+- **`PublicLayout`**: grid header (`grid-cols-[1fr_auto_1fr]`), nav items, **`hidden sm:inline`** portal title, **`Footer`**.
+- **`AppLayout`**: **`AdminLayout`** only for **`/admin/*`**; student routes use the **public** shell.
