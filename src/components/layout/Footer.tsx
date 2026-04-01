@@ -1,100 +1,151 @@
 import { Link } from 'react-router-dom';
+import { Linkedin, Facebook, Instagram, Twitter, Phone, Mail, MapPin } from 'lucide-react';
 
-const quickLinks = [
+const footerLinks = [
   { title: 'Home', url: '/' },
-  { title: 'Admissions', url: '/admissions' },
-  { title: 'Schedules', url: '/schedules' },
-  { title: 'Archive', url: '/archive' },
-  { title: 'Contact', url: '/contact' },
+  { title: 'The University', url: 'https://must.edu.eg/about/' },
+  { title: 'Academics', url: '/admissions' },
+  { title: 'Life At MUST', url: 'https://must.edu.eg/life/' },
+  { title: 'Research & Centres', url: '/archive' },
+  { title: 'Maps & Directions', url: 'https://maps.app.goo.gl/mustuniversity' },
+  { title: 'FAQs', url: 'https://must.edu.eg/faqs/' },
 ];
 
-const services = [
-  { title: 'Career Support' },
-  { title: 'Certificates' },
-  { title: 'Networking' },
+const aboutLinks = [
+  { title: 'About MUST', url: 'https://must.edu.eg/about/' },
+  { title: 'History', url: 'https://must.edu.eg/history/' },
+  { title: 'Accreditation And Partnership', url: 'https://must.edu.eg/accreditation/' },
+  { title: 'Why MUST', url: 'https://must.edu.eg/why-must/' },
+  { title: 'Values & Principles', url: 'https://must.edu.eg/values/' },
+  { title: 'Contact Us', url: '/contact' },
+  { title: 'Privacy Policy', url: 'https://must.edu.eg/privacy/' },
 ];
 
-const linkStyles =
-  'text-[#b8c5d6] transition-colors duration-200 hover:text-must-gold';
+const buzzLinks = [
+  { title: 'MUST Events', url: 'https://must.edu.eg/events/' },
+  { title: 'MUST News', url: 'https://must.edu.eg/news/' },
+  { title: 'Blog', url: 'https://must.edu.eg/blogs/' },
+  { title: 'Announcement', url: 'https://must.edu.eg/announcements/' },
+];
+
+const socialLinks = [
+  { icon: Linkedin, href: 'https://www.linkedin.com/school/misr-university-for-science-and-technology/', label: 'LinkedIn' },
+  { icon: Facebook, href: 'https://www.facebook.com/MUST.University.Egypt', label: 'Facebook' },
+  { icon: Instagram, href: 'https://www.instagram.com/must_university/', label: 'Instagram' },
+  { icon: Twitter, href: 'https://twitter.com/must_university', label: 'X (Twitter)' },
+];
+
+function FooterHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <h3 className="mb-5 text-xs font-bold uppercase tracking-wider text-[#00a651]">
+      {children}
+    </h3>
+  );
+}
+
+function FooterLink({ href, to, children }: { href?: string; to?: string; children: React.ReactNode }) {
+  const cls = 'block text-sm text-[#b8c5d6] transition-colors duration-150 hover:text-[#00a651] mb-2.5';
+  if (to) return <Link to={to} className={cls}>{children}</Link>;
+  return <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>{children}</a>;
+}
 
 export function Footer() {
   return (
-    <footer className="mt-auto">
-      {/* Layer 1: Main Footer Area */}
-      <div className="bg-navy-dark px-4 py-[60px] md:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-            {/* Column 1: About */}
-            <div className="flex flex-col">
-              <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-white">
-                About
-              </h3>
-              <p className="text-[14px] leading-[1.7] text-[#b8c5d6]">
-                The Postgraduate Management Portal provides a central hub for
-                Master's and PhD students at MUST University. Access academic
-                resources, schedules, research archives, and support services
-                in one place.
-              </p>
-            </div>
+    <footer className="mt-auto bg-[#1c355e]">
+      {/* ── Main footer grid ─────────────────────────────────── */}
+      <div className="mx-auto max-w-7xl px-6 py-14 md:px-10">
+        {/* Logo + tagline */}
+        <div className="mb-10 flex flex-col items-center gap-3 text-center md:flex-row md:items-start md:gap-5 md:text-left">
+          <img src="/logo.png" alt="MUST" className="h-28 w-auto" />
+          <div>
+            <p className="text-base font-bold text-white">Misr University for Science & Technology</p>
+            <p className="mt-1 text-sm text-[#b8c5d6]">Postgraduate Studies Management Portal</p>
+          </div>
+        </div>
 
-            {/* Column 2: Quick Links */}
-            <div className="flex flex-col">
-              <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-white">
-                Quick Links
-              </h3>
-              <ul className="flex flex-col gap-[15px]">
-                {quickLinks.map((item) => (
-                  <li key={item.url}>
-                    <Link to={item.url} className={linkStyles}>
-                      {item.title}
-                    </Link>
-                  </li>
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Column 1: Links */}
+          <div>
+            <FooterHeading>Links</FooterHeading>
+            {footerLinks.map((item) =>
+              item.url.startsWith('/') ? (
+                <FooterLink key={item.title} to={item.url}>{item.title}</FooterLink>
+              ) : (
+                <FooterLink key={item.title} href={item.url}>{item.title}</FooterLink>
+              )
+            )}
+          </div>
+
+          {/* Column 2: About University */}
+          <div>
+            <FooterHeading>About University</FooterHeading>
+            {aboutLinks.map((item) =>
+              item.url.startsWith('/') ? (
+                <FooterLink key={item.title} to={item.url}>{item.title}</FooterLink>
+              ) : (
+                <FooterLink key={item.title} href={item.url}>{item.title}</FooterLink>
+              )
+            )}
+          </div>
+
+          {/* Column 3: MUST BUZZ */}
+          <div>
+            <FooterHeading>MUST BUZZ</FooterHeading>
+            {buzzLinks.map((item) => (
+              <FooterLink key={item.title} href={item.url}>{item.title}</FooterLink>
+            ))}
+
+            {/* Social media */}
+            <div className="mt-6">
+              <FooterHeading>Follow Us</FooterHeading>
+              <div className="flex gap-3">
+                {socialLinks.map(({ icon: Icon, href, label }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white transition-all duration-200 hover:bg-[#00a651] hover:scale-110"
+                  >
+                    <Icon size={16} />
+                  </a>
                 ))}
-              </ul>
+              </div>
             </div>
+          </div>
 
-            {/* Column 3: Services */}
-            <div className="flex flex-col">
-              <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-white">
-                Services
-              </h3>
-              <ul className="flex flex-col gap-[15px]">
-                {services.map((item) => (
-                  <li key={item.title}>
-                    <span className="text-[#b8c5d6]">{item.title}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Column 4: Contact Info */}
-            <div className="flex flex-col">
-              <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-white">
-                Contact
-              </h3>
-              <div className="flex flex-col gap-[15px] text-[14px] text-[#b8c5d6]">
-                <a
-                  href="mailto:postgrad@must.edu.eg"
-                  className={linkStyles}
-                >
-                  postgrad@must.edu.eg
-                </a>
-                <span>+20 XXX XXX XXXX</span>
-                <span>
-                  MUST University
-                  <br />
-                  Cairo, Egypt
-                </span>
+          {/* Column 4: Contact Info */}
+          <div>
+            <FooterHeading>Contact Info</FooterHeading>
+            <div className="flex flex-col gap-4">
+              <a
+                href="tel:16878"
+                className="flex items-start gap-3 text-sm text-[#b8c5d6] transition-colors hover:text-[#00a651]"
+              >
+                <Phone size={15} className="mt-0.5 shrink-0 text-[#00a651]" />
+                <span>16878</span>
+              </a>
+              <a
+                href="mailto:Info@Must.Edu.Eg"
+                className="flex items-start gap-3 text-sm text-[#b8c5d6] transition-colors hover:text-[#00a651]"
+              >
+                <Mail size={15} className="mt-0.5 shrink-0 text-[#00a651]" />
+                <span>Info@Must.Edu.Eg</span>
+              </a>
+              <div className="flex items-start gap-3 text-sm text-[#b8c5d6]">
+                <MapPin size={15} className="mt-0.5 shrink-0 text-[#00a651]" />
+                <span>Al Motamayez District – 6th of October, Egypt</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Layer 2: Bottom Bar */}
-      <div className="bg-navy-darker py-4">
-        <p className="text-center text-xs text-[#8a9aad]">
-          © 2026 MUST University. All Rights Reserved.
+      {/* ── Bottom bar ───────────────────────────────────────── */}
+      <div className="bg-[#f8f9fa] py-4">
+        <p className="text-center text-sm font-medium text-[#6c757d]">
+          Copyright All Right Reserved @ MUST UNIVERSITY 2025
         </p>
       </div>
     </footer>
