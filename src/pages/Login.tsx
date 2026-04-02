@@ -39,7 +39,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-[60vh] items-center justify-center">
+    <div className="flex min-h-[50vh] w-full min-w-0 items-center justify-center py-6 sm:min-h-[60vh]">
       <Card className="w-full max-w-sm">
         <CardContent className="p-6">
           <PageHeader title="Sign In" description="Sign in to access the portal." />

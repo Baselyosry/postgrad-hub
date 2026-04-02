@@ -59,7 +59,7 @@ const Contact = () => {
         description="Have a question? Send us an inquiry and we'll respond promptly."
       />
 
-      <Card className="max-w-lg">
+      <Card className="w-full max-w-lg">
         <CardContent className="p-6">
           <form onSubmit={handleSubmit((d) => mutation.mutate(d))} className="space-y-5">
             <div className="space-y-2">

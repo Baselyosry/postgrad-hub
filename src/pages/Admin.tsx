@@ -163,7 +163,7 @@ const Admin = () => {
       </div>
 
       <Tabs defaultValue="submissions">
-        <TabsList>
+        <TabsList className="flex h-auto w-full flex-wrap gap-1 p-1 sm:inline-flex sm:h-10 sm:w-auto">
           <TabsTrigger value="submissions">Student Submissions</TabsTrigger>
           <TabsTrigger value="inquiries">Inquiries</TabsTrigger>
         </TabsList>

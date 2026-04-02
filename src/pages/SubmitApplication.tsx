@@ -73,7 +73,7 @@ const SubmitApplication = () => {
         description="Submit your postgraduate application or thesis proposal for review."
       />
 
-      <Card className="max-w-2xl">
+      <Card className="w-full max-w-2xl">
         <CardContent className="p-6">
           <form onSubmit={handleSubmit((d) => mutation.mutate(d))} className="space-y-5">
             <div className="space-y-2">

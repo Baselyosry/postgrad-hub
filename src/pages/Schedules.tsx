@@ -48,9 +48,9 @@ const Schedules = () => {
       )}
 
       <Tabs defaultValue="study" className="space-y-6">
-        <TabsList>
+        <TabsList className="flex h-auto w-full flex-wrap justify-start gap-1 p-1 sm:inline-flex sm:h-10 sm:w-auto sm:justify-center">
           {categories.map((c) => (
-            <TabsTrigger key={c.key} value={c.key} className="gap-2">
+            <TabsTrigger key={c.key} value={c.key} className="gap-1.5 sm:gap-2">
               <c.icon className="h-4 w-4" />
               {c.label}
             </TabsTrigger>

@@ -52,7 +52,7 @@ const StudentDashboard = () => {
         </Button>
       </div>
 
-      <Card>
+      <Card className="w-full min-w-0">
         <CardHeader>
           <CardTitle className="font-heading">My Submissions</CardTitle>
         </CardHeader>
