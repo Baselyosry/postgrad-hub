@@ -56,7 +56,7 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-6 py-14 md:px-10">
         {/* Logo + tagline */}
         <div className="mb-10 flex flex-col items-center gap-3 text-center md:flex-row md:items-start md:gap-5 md:text-left">
-          <img src="/logo.png" alt="MUST" className="h-28 w-auto" />
+          <img src="/logo2.png" alt="MUST" className="h-28 w-auto" />
           <div>
             <p className="text-base font-bold text-white">Misr University for Science & Technology</p>
             <p className="mt-1 text-sm text-[#b8c5d6]">Postgraduate Studies Management Portal</p>

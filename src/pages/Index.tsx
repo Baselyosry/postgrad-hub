@@ -11,7 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from '@/hooks/use-toast';
-import { BookOpen, CalendarDays, FileDown, Send, Mail, AlertCircle } from 'lucide-react';
+import { BookOpen, CalendarDays, FileDown, Send, Mail, AlertCircle, ArrowRight } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { getErrorMessage } from '@/lib/utils';
 import { SkeletonCard } from '@/components/SkeletonCard';
@@ -23,12 +23,48 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
+import Autoplay from 'embla-carousel-autoplay';
+import { useRef } from 'react';
 
-// Hero slides: add images to public/hero/ (e.g. slide-1.jpg, slide-2.jpg) or use external URLs
+// Hero slides: using the provided ceremony/defense photos
 const heroSlides = [
-  { image: '/hero/slide-1.jpg', title: 'Postgraduate Studies', caption: 'MUST University · Graduate Programs' },
-  { image: '/hero/slide-2.jpg', title: 'Research Excellence', caption: 'Explore our archives and academic resources' },
-  { image: '/hero/slide-3.jpg', title: 'Your Future Starts Here', caption: 'Master\'s and PhD programmes' },
+  { image: '/hero/slide-1.jpg', title: '', caption: '' },
+  { image: '/hero/slide-2.jpg', title: '', caption: '' },
+  { image: '/hero/slide-3.jpg', title: '', caption: '' },
+  { image: '/hero/slide-4.jpg', title: '', caption: '' },
+  { image: '/hero/slide-5.jpg', title: '', caption: '' },
+];
+
+const heroNavItems = [
+  { title: 'Home', href: '/' },
+  {
+    title: 'Academics',
+    dropdown: [
+      { title: 'Staff CV', href: '#' },
+      { title: 'Study Plan', href: '#' },
+      { title: 'Schedules', href: '/schedules' },
+      { title: 'Research Plan', href: '#' },
+      { title: 'Research Database', href: '/archive' },
+      { title: 'Templates', href: '#' },
+    ],
+  },
+  {
+    title: 'Admission',
+    dropdown: [
+      { title: 'How to Apply', href: '#' },
+      { title: 'Required Documents', href: '#' },
+    ],
+  },
+  { title: 'News', href: '#' },
+  { title: 'Events', href: '#' },
+  {
+    title: 'Services',
+    dropdown: [
+      { title: 'Ithenticate', href: '#' },
+      { title: 'EKB (Egyptian Knowledge Bank)', href: '#' },
+    ],
+  },
+  { title: 'Contact Us', href: '#contact' },
 ];
 
 const admissionsData = [
@@ -64,6 +100,8 @@ const contactSchema = z.object({
 type ContactFormData = z.infer<typeof contactSchema>;
 
 const Index = () => {
+  const plugin = useRef(Autoplay({ delay: 4000, stopOnInteraction: true }));
+
   const { data: schedules, isLoading: loadingSchedules, isError: schedulesError, error: schedulesErr, refetch: refetchSchedules } = useQuery({
     queryKey: ['schedules'],
     queryFn: async () => {
@@ -160,39 +198,71 @@ const Index = () => {
   return (
     <div className="-mx-4 flex flex-col sm:-mx-5 md:-mx-8">
       {/* Hero / Intro - Image Carousel */}
-      <section className="relative overflow-hidden">
-        <Carousel opts={{ loop: true, align: 'start' }} className="w-full">
+      <section className="relative overflow-hidden bg-[#1c355e] w-full min-h-[450px] md:min-h-[500px]">
+        <Carousel 
+          opts={{ loop: true, align: 'start' }} 
+          plugins={[plugin.current]}
+          onMouseEnter={() => plugin.current.stop()}
+          onMouseLeave={() => plugin.current.reset()}
+          className="absolute inset-0 w-full h-full"
+        >
           <CarouselContent className="-ml-0">
             {heroSlides.map((slide, i) => (
               <CarouselItem key={i} className="pl-0">
-                <div
-                  className="relative flex min-h-[260px] h-[min(52vh,380px)] w-full items-center justify-center bg-primary sm:h-[340px] md:h-[450px]"
-                  role="img"
-                  aria-label={slide.title}
-                >
+                <div className="relative w-full min-h-[450px] md:min-h-[500px] flex items-center justify-center bg-primary" role="img" aria-label={slide.title}>
                   <img
                     src={slide.image}
                     alt=""
-                    className="absolute inset-0 h-full w-full object-cover"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = 'none';
-                    }}
+                    className="absolute inset-0 h-full w-full object-cover object-center"
                   />
-                  <div className="absolute inset-0 bg-primary/80" aria-hidden />
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-primary/60" aria-hidden />
-                  <div className="relative z-10 mx-auto max-w-4xl px-6 text-center text-white">
-                    <h1 className="font-heading text-3xl font-bold drop-shadow-sm md:text-4xl lg:text-5xl">
-                      {slide.title}
-                    </h1>
-                    <p className="mt-3 text-base text-white/95 md:text-lg">{slide.caption}</p>
-                  </div>
                 </div>
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="left-4 border-white/40 bg-white/20 text-white hover:bg-white/30 hover:text-white md:left-6" />
-          <CarouselNext className="right-4 border-white/40 bg-white/20 text-white hover:bg-white/30 hover:text-white md:right-6" />
+          <CarouselPrevious className="left-4 md:left-8 border-white/40 bg-white/20 text-white hover:bg-[#00a651] hover:text-white hover:border-[#00a651] transition-all z-20 h-10 w-10 md:h-12 md:w-12 pointer-events-auto" />
+          <CarouselNext className="right-4 md:right-8 border-white/40 bg-white/20 text-white hover:bg-[#00a651] hover:text-white hover:border-[#00a651] transition-all z-20 h-10 w-10 md:h-12 md:w-12 pointer-events-auto" />
         </Carousel>
+
+        {/* Global Blue Overlay */}
+        <div className="absolute inset-0 bg-[#1c355e]/60 pointer-events-none" aria-hidden />
+
+        {/* Static Content Overlay */}
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pt-8 px-4 sm:px-6 pointer-events-none">
+          <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold drop-shadow-md text-white tracking-widest text-center mt-[-30px] uppercase">
+            POST GRADUATE STUDIES
+          </h1>
+          
+          {/* Internal Hero Breadcrumb Navigation */}
+          <nav className="pointer-events-auto mt-6 flex flex-row flex-wrap items-center justify-center gap-x-2 gap-y-2 md:gap-x-3 max-w-6xl">
+            {heroNavItems.map((item, i) => (
+              <div key={item.title} className="flex flex-row items-center gap-2 md:gap-3 group relative">
+                {item.dropdown ? (
+                  <div className="relative">
+                    <button className="flex items-center text-xs md:text-sm font-semibold text-white/90 hover:text-[#00a651] transition-colors drop-shadow-lg uppercase py-1.5">
+                      {item.title}
+                    </button>
+                    {/* Dropdown Menu */}
+                    <div className="absolute left-1/2 -translate-x-1/2 top-full mt-1 hidden group-hover:flex flex-col bg-white text-[#1c355e] py-1.5 rounded shadow-xl min-w-[180px] z-50 border-t-2 border-[#00a651] animate-in fade-in zoom-in-95 duration-200">
+                      {item.dropdown.map((drop) => (
+                        <Link key={drop.title} to={drop.href} className="px-4 py-2 hover:bg-[#f0f7f4] hover:text-[#00a651] transition-colors whitespace-nowrap text-xs text-left border-b border-gray-100 last:border-0 font-medium">
+                          {drop.title}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <Link to={item.href} className="text-xs md:text-sm font-semibold text-white/90 hover:text-[#00a651] transition-colors drop-shadow-lg uppercase py-1.5">
+                    {item.title}
+                  </Link>
+                )}
+
+                {i < heroNavItems.length - 1 && (
+                  <ArrowRight className="text-[#00a651] shrink-0 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]" size={14} strokeWidth={2.5} />
+                )}
+              </div>
+            ))}
+          </nav>
+        </div>
       </section>
 
       {!isSupabaseConfigured && (

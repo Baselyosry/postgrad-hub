@@ -11,7 +11,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
           <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-border bg-background/80 px-4 backdrop-blur-sm">
             <SidebarTrigger />
             <div className="flex items-center gap-2 md:hidden">
-              <img src="/logo.png" alt="MUST" className="h-8 w-auto" />
+              <img src="/logo2.png" alt="MUST" className="h-8 w-auto" />
               <span className="font-heading text-sm font-semibold text-foreground">Admin Panel</span>
             </div>
           </header>
