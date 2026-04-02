@@ -40,18 +40,18 @@ const NAV: NavItem[] = [
       {
         title: 'About MUST',
         sub: [
-          { title: 'Board of Trustees',       href: 'https://must.edu.eg/board-of-trustees/' },
-          { title: 'President',               href: 'https://must.edu.eg/president/' },
-          { title: 'Vision & Mission',        href: 'https://must.edu.eg/vision-mission/' },
-          { title: 'MUST Values & Principles',href: 'https://must.edu.eg/values/' },
-          { title: 'History',                 href: 'https://must.edu.eg/history/' },
+          { title: 'Board of Trustees', href: 'https://must.edu.eg/board-of-trustees/' },
+          { title: 'President', href: 'https://must.edu.eg/president/' },
+          { title: 'Vision & Mission', href: 'https://must.edu.eg/vision-mission/' },
+          { title: 'MUST Values & Principles', href: 'https://must.edu.eg/values/' },
+          { title: 'History', href: 'https://must.edu.eg/history/' },
         ],
       },
       {
         title: 'Sectors',
         sub: [
-          { title: 'President Sector',         href: 'https://must.edu.eg/president-sector/' },
-          { title: 'Vice President Sector',    href: 'https://must.edu.eg/vp-sector/' },
+          { title: 'President Sector', href: 'https://must.edu.eg/president-sector/' },
+          { title: 'Vice President Sector', href: 'https://must.edu.eg/vp-sector/' },
           { title: 'Secretary General Sector', href: 'https://must.edu.eg/secretary-general/' },
         ],
       },
@@ -61,18 +61,18 @@ const NAV: NavItem[] = [
           { title: 'Sustainability Reports', href: 'https://must.edu.eg/sustainability-reports/' },
         ],
       },
-      { title: 'Policies',                          href: 'https://must.edu.eg/policies/' },
-      { title: 'University Council Minutes',        href: 'https://must.edu.eg/council-minutes/' },
+      { title: 'Policies', href: 'https://must.edu.eg/policies/' },
+      { title: 'University Council Minutes', href: 'https://must.edu.eg/council-minutes/' },
       { title: 'Quality Assurance & Accreditation Sector', href: 'https://must.edu.eg/quality/' },
-      { title: 'Accreditation & Partnerships',      href: 'https://must.edu.eg/accreditation/' },
-      { title: 'Contact Us',                        href: '/contact' },
+      { title: 'Accreditation & Partnerships', href: 'https://must.edu.eg/accreditation/' },
+      { title: 'Contact Us', href: '/contact' },
       {
         title: 'Resources',
         sub: [
-          { title: 'Knowledge Base',  href: 'https://must.edu.eg/knowledge-base/' },
-          { title: 'E-Learning',      href: 'https://elearning.must.edu.eg/' },
-          { title: 'Student Portal',  href: 'https://portal.must.edu.eg/' },
-          { title: 'Staff Portal',    href: 'https://staff.must.edu.eg/' },
+          { title: 'Knowledge Base', href: 'https://must.edu.eg/knowledge-base/' },
+          { title: 'E-Learning', href: 'https://elearning.must.edu.eg/' },
+          { title: 'Student Portal', href: 'https://portal.must.edu.eg/' },
+          { title: 'Staff Portal', href: 'https://staff.must.edu.eg/' },
         ],
       },
     ],
@@ -80,9 +80,9 @@ const NAV: NavItem[] = [
   {
     title: 'Academics',
     drop: [
-      { title: 'Undergraduate Studies',             href: 'https://must.edu.eg/undergraduate/' },
-      { title: 'Post-Graduate Program',             href: '/' },
-      { title: 'Academic Calendar',                 href: '/schedules' },
+      { title: 'Undergraduate Studies', href: 'https://must.edu.eg/undergraduate/' },
+      { title: 'Post-Graduate Program', href: '/' },
+      { title: 'Academic Calendar', href: '/schedules' },
       { title: 'International Students Affairs Sector', href: 'https://must.edu.eg/international-students/' },
     ],
   },
@@ -93,27 +93,27 @@ const NAV: NavItem[] = [
   {
     title: 'MUST BUZZ',
     drop: [
-      { title: 'MUST Events',    href: 'https://must.edu.eg/events/' },
-      { title: 'MUST News',      href: 'https://must.edu.eg/news/' },
-      { title: 'MUST Blogs',     href: 'https://must.edu.eg/blogs/' },
-      { title: 'Announcements',  href: 'https://must.edu.eg/announcements/' },
+      { title: 'MUST Events', href: 'https://must.edu.eg/events/' },
+      { title: 'MUST News', href: 'https://must.edu.eg/news/' },
+      { title: 'MUST Blogs', href: 'https://must.edu.eg/blogs/' },
+      { title: 'Announcements', href: 'https://must.edu.eg/announcements/' },
     ],
   },
   {
     title: 'Centers',
     drop: [
       { title: 'Centers', href: 'https://must.edu.eg/centers/' },
-      { title: 'Units',   href: 'https://must.edu.eg/units/' },
+      { title: 'Units', href: 'https://must.edu.eg/units/' },
       { title: 'Research Center for Public Opinion and Societal Issues Monitoring', href: 'https://must.edu.eg/research-center/' },
     ],
   },
   {
     title: 'Life At MUST',
     drop: [
-      { title: 'MUST Life',   href: 'https://must.edu.eg/must-life/' },
-      { title: 'MUST Stars',  href: 'https://must.edu.eg/must-stars/' },
-      { title: 'MUST Clubs',  href: 'https://must.edu.eg/clubs/' },
-      { title: 'Facilities',  href: 'https://must.edu.eg/facilities/' },
+      { title: 'MUST Life', href: 'https://must.edu.eg/must-life/' },
+      { title: 'MUST Stars', href: 'https://must.edu.eg/must-stars/' },
+      { title: 'MUST Clubs', href: 'https://must.edu.eg/clubs/' },
+      { title: 'Facilities', href: 'https://must.edu.eg/facilities/' },
     ],
   },
   {
@@ -126,7 +126,7 @@ const SOCIALS = [
   { icon: Linkedin, href: 'https://www.linkedin.com/school/misr-university-for-science-and-technology/', label: 'LinkedIn' },
   { icon: Facebook, href: 'https://www.facebook.com/MUST.University.Egypt', label: 'Facebook' },
   { icon: Instagram, href: 'https://www.instagram.com/must_university/', label: 'Instagram' },
-  { icon: Twitter,  href: 'https://twitter.com/must_university', label: 'X (Twitter)' },
+  { icon: Twitter, href: 'https://twitter.com/must_university', label: 'X (Twitter)' },
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -331,7 +331,7 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
       <div className="fixed inset-0 z-[90] bg-black/50" onClick={onClose} />
       <div className="fixed right-0 top-0 z-[100] flex h-full w-[85vw] max-w-[320px] flex-col overflow-y-auto overscroll-contain bg-[#1c355e] shadow-2xl sm:w-[300px] sm:max-w-none">
         <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
-          <img src="/logo.png" alt="MUST" className="h-9 w-auto" />
+          <img src="/logo2.png" alt="MUST" className="h-9 w-auto" />
           <button onClick={onClose} className="text-white/70 hover:text-white">
             <X size={22} />
           </button>
@@ -460,7 +460,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
         <div className="mx-auto flex min-h-[72px] w-full max-w-[1920px] items-center gap-2 px-3 py-2 sm:min-h-[88px] sm:gap-3 sm:px-4 md:min-h-[100px] md:py-3 md:px-6 lg:px-8">
           {/* Logo */}
           <Link to="/" className="shrink-0">
-            <img src="/logo.png" alt="MUST" className="h-12 w-auto sm:h-14 md:h-16 lg:h-[72px]" />
+            <img src="/logo2.png" alt="MUST" className="h-12 w-auto sm:h-14 md:h-16 lg:h-[110px]" />
           </Link>
 
           {/* Desktop nav — lg+; flex-wrap avoids horizontal overflow on mid-size screens */}
@@ -495,11 +495,11 @@ export function PublicLayout({ children }: { children: ReactNode }) {
               ع
             </a>
 
-            {/* Hamburger: show below lg only; lg+ shows inline nav */}
+            {/* Hamburger: show on all breakpoint sizes */}
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
-              className="flex h-11 w-11 items-center justify-center rounded text-white/80 transition-colors hover:text-white lg:hidden"
+              className="flex h-11 w-11 items-center justify-center rounded text-white/80 transition-colors hover:text-white"
               aria-label="Open menu"
               aria-expanded={mobileOpen}
             >
