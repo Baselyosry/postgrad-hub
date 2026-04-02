@@ -158,7 +158,7 @@ const Index = () => {
   const allSchedules = schedules ?? [];
 
   return (
-    <div className="flex flex-col -m-4 md:-m-8">
+    <div className="-mx-4 flex flex-col sm:-mx-5 md:-mx-8">
       {/* Hero / Intro - Image Carousel */}
       <section className="relative overflow-hidden">
         <Carousel opts={{ loop: true, align: 'start' }} className="w-full">
@@ -166,7 +166,7 @@ const Index = () => {
             {heroSlides.map((slide, i) => (
               <CarouselItem key={i} className="pl-0">
                 <div
-                  className="relative flex h-[380px] w-full items-center justify-center bg-primary md:h-[450px]"
+                  className="relative flex min-h-[260px] h-[min(52vh,380px)] w-full items-center justify-center bg-primary sm:h-[340px] md:h-[450px]"
                   role="img"
                   aria-label={slide.title}
                 >
@@ -500,15 +500,6 @@ const Index = () => {
               {contactMutation.isPending ? 'Sending...' : 'Send message'}
             </Button>
           </form>
-          <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-8">
-            <div className="flex items-center gap-2 text-text-light">
-              <img src="/logo.png" alt="MUST" className="h-5 w-auto" />
-              <span className="text-sm">MUST University · Postgraduate Portal</span>
-            </div>
-            <Link to="/login" className="text-sm text-text-light hover:text-primary hover:underline">
-              Staff Login
-            </Link>
-          </div>
         </div>
       </section>
     </div>

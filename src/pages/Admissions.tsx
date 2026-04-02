@@ -75,13 +75,13 @@ const Admissions = () => {
             transition={{ delay: pi * 0.1 }}
           >
             <AccordionItem value={program.type} className="rounded-lg border border-border bg-card">
-              <AccordionTrigger className="px-6 py-4 hover:no-underline">
+              <AccordionTrigger className="px-4 py-4 hover:no-underline sm:px-6">
                 <div className="flex items-center gap-3">
                   <span className="font-heading text-lg font-semibold">{program.type}</span>
                   <Badge variant="secondary">{program.badge}</Badge>
                 </div>
               </AccordionTrigger>
-              <AccordionContent className="px-6 pb-6">
+              <AccordionContent className="px-4 pb-6 sm:px-6">
                 <div className="grid gap-6 md:grid-cols-2">
                   <Card>
                     <CardHeader><CardTitle className="text-base">Eligibility Requirements</CardTitle></CardHeader>

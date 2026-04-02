@@ -108,12 +108,16 @@
 }
 
 @layer base {
+  html {
+    overflow-x: hidden;
+  }
+
   * {
     @apply border-border;
   }
 
   body {
-    @apply bg-background text-foreground font-body;
+    @apply min-h-screen bg-background text-foreground font-body;
   }
 
   h1, h2, h3, h4, h5, h6 {

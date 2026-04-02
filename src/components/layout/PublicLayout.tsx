@@ -8,6 +8,7 @@ import {
   Menu,
   ChevronDown,
   ChevronRight,
+  CircleUser,
   Linkedin,
   Facebook,
   Instagram,
@@ -236,7 +237,7 @@ function DesktopNavItem({ item }: { item: NavItem }) {
     return (
       <AnyLink
         href={item.href}
-        className="flex items-center gap-1 whitespace-nowrap px-3 py-2 text-sm font-semibold text-white transition-colors hover:text-[#00a651]"
+        className="flex items-center gap-1 whitespace-nowrap px-2 py-1.5 text-xs font-semibold text-white transition-colors hover:text-[#00a651] xl:px-2.5 xl:py-2 xl:text-sm 2xl:px-3"
       >
         {item.title}
       </AnyLink>
@@ -252,7 +253,7 @@ function DesktopNavItem({ item }: { item: NavItem }) {
     >
       <button
         className={cn(
-          'flex items-center gap-1 whitespace-nowrap px-3 py-2 text-sm font-semibold text-white transition-colors hover:text-[#00a651]',
+          'flex items-center gap-1 whitespace-nowrap px-2 py-1.5 text-xs font-semibold text-white transition-colors hover:text-[#00a651] xl:px-2.5 xl:py-2 xl:text-sm 2xl:px-3',
           open && 'text-[#00a651]'
         )}
         onClick={() => setOpen((v) => !v)}
@@ -297,22 +298,22 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
       >
         <X size={32} />
       </button>
-      <form onSubmit={handleSearch} className="w-full max-w-2xl px-6">
+      <form onSubmit={handleSearch} className="w-full max-w-2xl px-4 sm:px-6">
         <p className="mb-6 text-center text-xs font-bold uppercase tracking-widest text-white/50">
           Search the portal
         </p>
-        <div className="flex overflow-hidden rounded-md shadow-2xl">
+        <div className="flex flex-col overflow-hidden rounded-md shadow-2xl sm:flex-row">
           <input
             ref={inputRef}
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search research, schedules, templates…"
-            className="flex-1 bg-white px-6 py-4 text-lg text-[#1c355e] placeholder:text-gray-400 focus:outline-none"
+            className="min-w-0 flex-1 bg-white px-4 py-3 text-base text-[#1c355e] placeholder:text-gray-400 focus:outline-none sm:px-6 sm:py-4 sm:text-lg"
           />
           <button
             type="submit"
-            className="bg-[#00a651] px-8 py-4 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-[#00923f]"
+            className="bg-[#00a651] px-6 py-3 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-[#00923f] sm:px-8 sm:py-4"
           >
             Search Now
           </button>
@@ -328,7 +329,7 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
   return (
     <>
       <div className="fixed inset-0 z-[90] bg-black/50" onClick={onClose} />
-      <div className="fixed right-0 top-0 z-[100] h-full w-[300px] overflow-y-auto bg-[#1c355e] shadow-2xl">
+      <div className="fixed right-0 top-0 z-[100] flex h-full w-[85vw] max-w-[320px] flex-col overflow-y-auto overscroll-contain bg-[#1c355e] shadow-2xl sm:w-[300px] sm:max-w-none">
         <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
           <img src="/logo.png" alt="MUST" className="h-9 w-auto" />
           <button onClick={onClose} className="text-white/70 hover:text-white">
@@ -340,6 +341,16 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
             <MobileNavItem key={item.title} item={item} onClose={onClose} />
           ))}
         </nav>
+        <div className="border-t border-white/10 px-5 py-3">
+          <Link
+            to="/login"
+            onClick={onClose}
+            className="flex items-center gap-2 text-sm font-semibold text-white transition-colors hover:text-[#00a651]"
+          >
+            <CircleUser size={18} className="shrink-0" aria-hidden />
+            Staff login
+          </Link>
+        </div>
         <div className="border-t border-white/10 px-5 py-5">
           <p className="mb-3 text-xs font-bold uppercase tracking-wider text-white/40">Follow Us</p>
           <div className="flex gap-3">
@@ -443,40 +454,54 @@ export function PublicLayout({ children }: { children: ReactNode }) {
   }, [searchOpen, mobileOpen]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="flex min-h-screen flex-col overflow-x-hidden bg-background">
       {/* ── Navbar ───────────────────────────────────────────── */}
-      <header className="sticky top-0 z-50 bg-[#1c355e] shadow-lg">
-        <div className="flex h-[110px] items-center px-4 md:px-8">
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#1c355e] shadow-lg">
+        <div className="mx-auto flex min-h-[72px] w-full max-w-[1920px] items-center gap-2 px-3 py-2 sm:min-h-[88px] sm:gap-3 sm:px-4 md:min-h-[100px] md:py-3 md:px-6 lg:px-8">
           {/* Logo */}
-          <Link to="/" className="mr-6 shrink-0">
-            <img src="/logo.png" alt="MUST" className="h-20 w-auto" />
+          <Link to="/" className="shrink-0">
+            <img src="/logo.png" alt="MUST" className="h-12 w-auto sm:h-14 md:h-16 lg:h-[72px]" />
           </Link>
 
-          {/* Desktop nav */}
-          <nav className="hidden flex-1 items-center lg:flex">
+          {/* Desktop nav — lg+; flex-wrap avoids horizontal overflow on mid-size screens */}
+          <nav
+            className="hidden min-h-[44px] min-w-0 flex-1 flex-wrap items-center justify-center gap-x-0.5 gap-y-1 px-1 sm:gap-x-1 lg:flex"
+            aria-label="Main navigation"
+          >
             {NAV.map((item) => (
               <DesktopNavItem key={item.title} item={item} />
             ))}
           </nav>
 
-          {/* Right controls */}
-          <div className="ml-auto flex items-center gap-2">
+          {/* Right controls — ml-auto until lg so bar aligns when drawer-only */}
+          <div className="ml-auto flex shrink-0 items-center gap-0.5 sm:gap-2 lg:ml-0">
+            <Link
+              to="/login"
+              className="flex items-center gap-1 rounded px-1 py-1 text-[11px] font-semibold text-white/90 transition-colors hover:text-[#00a651] sm:gap-1.5 sm:px-2 sm:text-xs md:text-sm"
+              aria-label="Staff login"
+            >
+              <CircleUser size={18} className="shrink-0 sm:h-5 sm:w-5" aria-hidden />
+              <span className="hidden min-[360px]:inline">Staff login</span>
+            </Link>
+
             {/* Arabic toggle */}
             <a
               href="https://must.edu.eg/ar/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center px-2 py-1 text-lg font-bold text-white/80 transition-colors hover:text-white"
+              className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded px-1 text-lg font-bold text-white/80 transition-colors hover:text-white sm:px-2"
               aria-label="Switch to Arabic"
             >
               ع
             </a>
 
-            {/* Hamburger — always visible (matches MUST site) */}
+            {/* Hamburger: show below lg only; lg+ shows inline nav */}
             <button
+              type="button"
               onClick={() => setMobileOpen(true)}
-              className="flex h-9 w-9 items-center justify-center rounded text-white/80 transition-colors hover:text-white"
+              className="flex h-11 w-11 items-center justify-center rounded text-white/80 transition-colors hover:text-white lg:hidden"
               aria-label="Open menu"
+              aria-expanded={mobileOpen}
             >
               <Menu size={22} />
             </button>
@@ -516,7 +541,9 @@ export function PublicLayout({ children }: { children: ReactNode }) {
       {mobileOpen && <MobileDrawer onClose={() => setMobileOpen(false)} />}
 
       {/* ── Page content ──────────────────────────────────────── */}
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 w-full min-w-0 px-4 pb-24 pr-14 pt-0 sm:px-5 md:px-8 md:pb-10 md:pr-10">
+        {children}
+      </main>
       <Footer />
     </div>
   );

@@ -194,7 +194,7 @@ const AdminArchive = () => {
         </Alert>
       )}
 
-      <div className="rounded-md border">
+      <div className="overflow-x-auto rounded-md border">
         {isLoading ? (
           <div className="p-8"><SkeletonCard /></div>
         ) : !records?.length ? (
