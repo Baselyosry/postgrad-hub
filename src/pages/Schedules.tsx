@@ -12,12 +12,12 @@ import { CalendarDays, BookOpen, FlaskConical, AlertCircle } from 'lucide-react'
 import { motion } from 'framer-motion';
 
 const categories = [
-  { key: 'study', label: 'Study Plans', icon: BookOpen },
-  { key: 'exams', label: 'Exam Schedules', icon: CalendarDays },
-  { key: 'research_plan', label: 'Research Plan', icon: FlaskConical },
+  { key: 'study', label: 'Lectures', icon: BookOpen },
+  { key: 'exams', label: 'Exams', icon: CalendarDays },
+  { key: 'research_plan', label: 'Research plan', icon: FlaskConical },
 ] as const;
 
-const Schedules = () => {
+const Schedules = ({ embedded = false }: { embedded?: boolean }) => {
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['schedules'],
     queryFn: async () => {
@@ -29,10 +29,12 @@ const Schedules = () => {
 
   return (
     <div>
-      <PageHeader
-        title="Academic Schedules & Plans"
-        description="View study dates, exam timetables, and the faculty's strategic research plan."
-      />
+      {!embedded && (
+        <PageHeader
+          title="Academic Schedules & Plans"
+          description="Lecture schedules, exam timetables, and the faculty research plan — with PDF downloads when available."
+        />
+      )}
 
       {isError && (
         <Alert variant="destructive" className="mb-4">
@@ -91,7 +93,7 @@ const Schedules = () => {
                             <TableCell>
                               {item.file_url ? (
                                 <a href={item.file_url} target="_blank" rel="noopener noreferrer" className="text-sm text-accent hover:underline">
-                                  Download
+                                  Download PDF
                                 </a>
                               ) : '—'}
                             </TableCell>

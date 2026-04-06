@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { PageHeader } from '@/components/PageHeader';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -12,18 +13,26 @@ import { useArchiveData } from '@/hooks/useArchiveData';
 import { Search, AlertCircle } from 'lucide-react';
 import { useDebounce } from '@/hooks/useDebounce';
 
-const ArchivePage = () => {
+const ArchivePage = ({ embedded = false }: { embedded?: boolean }) => {
+  const [params] = useSearchParams();
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
   const debouncedSearch = useDebounce(search, 300);
   const { data, isLoading, isError, error, refetch } = useArchiveData(debouncedSearch, typeFilter);
 
+  useEffect(() => {
+    const q = params.get('q');
+    if (q) setSearch(q);
+  }, [params]);
+
   return (
     <div>
-      <PageHeader
-        title="Digital Research Archive"
-        description="Browse published faculty research and successfully defended theses."
-      />
+      {!embedded && (
+        <PageHeader
+          title="Digital Research Archive"
+          description="Browse published faculty research and successfully defended theses."
+        />
+      )}
 
       <div className="mb-6 flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">

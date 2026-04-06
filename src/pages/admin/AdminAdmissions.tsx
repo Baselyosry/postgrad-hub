@@ -34,6 +34,7 @@ import { getErrorMessage } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { Plus, Pencil, Trash2, AlertCircle } from "lucide-react";
 import { useState } from "react";
+import { PdfUploadField } from "@/components/admin/PdfUploadField";
 
 type ReqItem = { item: string };
 type DocItem = { name: string; required: boolean };
@@ -42,6 +43,7 @@ type AdmissionRecord = {
   id: string;
   degree_type: string;
   title: string;
+  brochure_pdf_url: string | null;
   requirements: ReqItem[];
   documents: DocItem[];
   created_at: string;
@@ -60,6 +62,7 @@ const AdminAdmissions = () => {
   const [form, setForm] = useState({
     title: "",
     degree_type: "master" as "master" | "phd",
+    brochure_pdf_url: "",
     requirements: [] as ReqItem[],
     documents: [] as DocItem[],
   });
@@ -86,6 +89,7 @@ const AdminAdmissions = () => {
     setForm({
       title: "",
       degree_type: "master",
+      brochure_pdf_url: "",
       requirements: [],
       documents: [],
     });
@@ -101,6 +105,7 @@ const AdminAdmissions = () => {
     setForm({
       title: row.title,
       degree_type: row.degree_type as "master" | "phd",
+      brochure_pdf_url: row.brochure_pdf_url ?? "",
       requirements: row.requirements?.length
         ? row.requirements.map((r) => ({ item: typeof r === "object" && "item" in r ? r.item : String(r) }))
         : [],
@@ -163,6 +168,7 @@ const AdminAdmissions = () => {
       const payload = {
         title: form.title.trim(),
         degree_type: form.degree_type,
+        brochure_pdf_url: form.brochure_pdf_url.trim() || null,
         requirements: requirements as unknown as Record<string, unknown>[],
         documents: documents as unknown as Record<string, unknown>[],
       };
@@ -180,6 +186,7 @@ const AdminAdmissions = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-admissions"] });
       queryClient.invalidateQueries({ queryKey: ["admin-admissions-count"] });
+      queryClient.invalidateQueries({ queryKey: ["public-admissions"] });
       toast({
         title: editingId ? "Admission updated successfully" : "Admission added successfully",
       });
@@ -199,6 +206,7 @@ const AdminAdmissions = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-admissions"] });
       queryClient.invalidateQueries({ queryKey: ["admin-admissions-count"] });
+      queryClient.invalidateQueries({ queryKey: ["public-admissions"] });
       toast({ title: "Admission deleted successfully" });
     },
     onError: (err: Error) => {
@@ -253,6 +261,7 @@ const AdminAdmissions = () => {
                 <TableHead>Degree</TableHead>
                 <TableHead>Requirements</TableHead>
                 <TableHead>Documents</TableHead>
+                <TableHead>Brochure PDF</TableHead>
                 <TableHead className="w-[100px]">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -270,6 +279,20 @@ const AdminAdmissions = () => {
                   </TableCell>
                   <TableCell className="text-muted-foreground">
                     {(row.documents ?? []).length} items
+                  </TableCell>
+                  <TableCell>
+                    {row.brochure_pdf_url ? (
+                      <a
+                        href={row.brochure_pdf_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-primary hover:underline"
+                      >
+                        Open
+                      </a>
+                    ) : (
+                      <span className="text-muted-foreground">—</span>
+                    )}
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
@@ -347,6 +370,14 @@ const AdminAdmissions = () => {
                 </SelectContent>
               </Select>
             </div>
+
+            <PdfUploadField
+              id="admission_brochure"
+              label="Programme brochure (PDF, optional)"
+              value={form.brochure_pdf_url}
+              onChange={(url) => setForm((f) => ({ ...f, brochure_pdf_url: url }))}
+              storageFolder="admissions"
+            />
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">

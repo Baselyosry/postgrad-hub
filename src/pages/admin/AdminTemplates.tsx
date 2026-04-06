@@ -34,6 +34,7 @@ import { getErrorMessage } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { Plus, Pencil, Trash2, AlertCircle } from "lucide-react";
 import { useState } from "react";
+import { PdfUploadField } from "@/components/admin/PdfUploadField";
 
 type TemplateRecord = {
   id: string;
@@ -110,6 +111,7 @@ const AdminTemplates = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-templates"] });
       queryClient.invalidateQueries({ queryKey: ["admin-templates-count"] });
+      queryClient.invalidateQueries({ queryKey: ["templates"] });
       toast({ title: editingId ? "Template updated successfully" : "Template added successfully" });
       setDialogOpen(false);
       resetForm();
@@ -127,6 +129,7 @@ const AdminTemplates = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-templates"] });
       queryClient.invalidateQueries({ queryKey: ["admin-templates-count"] });
+      queryClient.invalidateQueries({ queryKey: ["templates"] });
       toast({ title: "Template deleted successfully" });
     },
     onError: (err: Error) => {
@@ -175,7 +178,7 @@ const AdminTemplates = () => {
               <TableRow>
                 <TableHead>Title</TableHead>
                 <TableHead>Category</TableHead>
-                <TableHead>File URL</TableHead>
+                <TableHead>PDF</TableHead>
                 <TableHead className="w-[100px]">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -225,7 +228,7 @@ const AdminTemplates = () => {
                 return;
               }
               if (!form.file_url.trim()) {
-                toast({ title: "File URL is required", variant: "destructive" });
+                toast({ title: "A PDF URL or upload is required", variant: "destructive" });
                 return;
               }
               saveMutation.mutate();
@@ -256,15 +259,13 @@ const AdminTemplates = () => {
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="file_url">File URL</Label>
-              <Input
-                id="file_url"
-                value={form.file_url}
-                onChange={(e) => setForm((f) => ({ ...f, file_url: e.target.value }))}
-                placeholder="https://..."
-              />
-            </div>
+            <PdfUploadField
+              id="template_pdf"
+              label="Template (PDF)"
+              value={form.file_url}
+              onChange={(url) => setForm((f) => ({ ...f, file_url: url }))}
+              storageFolder="templates"
+            />
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
                 Cancel

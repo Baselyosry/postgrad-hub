@@ -20,7 +20,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-const Contact = () => {
+const Contact = ({ embedded = false }: { embedded?: boolean }) => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
@@ -54,12 +54,14 @@ const Contact = () => {
 
   return (
     <div>
-      <PageHeader
-        title="Contact Us"
-        description="Have a question? Send us an inquiry and we'll respond promptly."
-      />
+      {!embedded && (
+        <PageHeader
+          title="Contact Us"
+          description="Have a question? Send us an inquiry and we'll respond promptly."
+        />
+      )}
 
-      <Card className="w-full max-w-lg">
+      <Card className={embedded ? 'w-full max-w-none' : 'w-full max-w-lg'}>
         <CardContent className="p-6">
           <form onSubmit={handleSubmit((d) => mutation.mutate(d))} className="space-y-5">
             <div className="space-y-2">

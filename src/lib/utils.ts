@@ -21,3 +21,13 @@ export function getErrorMessage(err: unknown): string {
   console.error("[Supabase] Unhandled error shape:", err);
   return "Unable to connect to the database. Check VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY in .env and restart the dev server.";
 }
+
+/** Resolve app-relative paths (e.g. /staff/photo.png) for Vite `public/` and optional `base` URL. */
+export function resolvePublicMediaUrl(href: string | null | undefined): string | undefined {
+  if (href == null || href === "") return undefined;
+  if (/^https?:\/\//i.test(href) || href.startsWith("data:") || href.startsWith("blob:")) return href;
+  const base = import.meta.env.BASE_URL;
+  const normalizedBase = base.endsWith("/") ? base : `${base}/`;
+  const path = href.startsWith("/") ? href.slice(1) : href;
+  return `${normalizedBase}${path}`;
+}

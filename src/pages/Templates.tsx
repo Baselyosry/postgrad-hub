@@ -10,7 +10,7 @@ import { getErrorMessage } from '@/lib/utils';
 import { FileText, Download, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const Templates = () => {
+const Templates = ({ embedded = false }: { embedded?: boolean }) => {
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['templates'],
     queryFn: async () => {
@@ -22,10 +22,12 @@ const Templates = () => {
 
   return (
     <div>
-      <PageHeader
-        title="Document Download Center"
-        description="Download standardized academic forms, proposal templates, and thesis formatting guides."
-      />
+      {!embedded && (
+        <PageHeader
+          title="Document Download Center"
+          description="Download standardized academic forms, proposal templates, and thesis formatting guides."
+        />
+      )}
 
       {isError && (
         <Alert variant="destructive" className="mb-6">
@@ -78,7 +80,7 @@ const Templates = () => {
                     )}
                     <Button variant="outline" size="sm" className="ml-auto gap-2" asChild>
                       <a href={t.file_url} target="_blank" rel="noopener noreferrer">
-                        <Download className="h-3.5 w-3.5" /> Download
+                        <Download className="h-3.5 w-3.5" /> Download PDF
                       </a>
                     </Button>
                   </div>

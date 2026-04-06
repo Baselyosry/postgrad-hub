@@ -8,7 +8,23 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { SkeletonCard } from '@/components/SkeletonCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Mail, Archive, CalendarDays, FileDown, FileText, CheckCircle, XCircle, BookOpen } from 'lucide-react';
+import {
+  Mail,
+  Archive,
+  CalendarDays,
+  FileDown,
+  FileText,
+  CheckCircle,
+  XCircle,
+  BookOpen,
+  Users,
+  Newspaper,
+  PartyPopper,
+  Database,
+  FlaskConical,
+  ScrollText,
+  Wrench,
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { toast } from '@/hooks/use-toast';
@@ -83,6 +99,76 @@ const Admin = () => {
     enabled: isAdmin,
   });
 
+  const { data: staffCvCount } = useQuery({
+    queryKey: ['admin-staff-cv-count'],
+    queryFn: async () => {
+      const { count, error } = await supabase.from('staff_cv').select('*', { count: 'exact', head: true });
+      if (error) throw error;
+      return count ?? 0;
+    },
+    enabled: isAdmin,
+  });
+
+  const { data: studyPlansCount } = useQuery({
+    queryKey: ['admin-study-plans-count'],
+    queryFn: async () => {
+      const { count, error } = await supabase.from('study_plans').select('*', { count: 'exact', head: true });
+      if (error) throw error;
+      return count ?? 0;
+    },
+    enabled: isAdmin,
+  });
+
+  const { data: researchPlansCount } = useQuery({
+    queryKey: ['admin-research-plans-count'],
+    queryFn: async () => {
+      const { count, error } = await supabase.from('research_plans').select('*', { count: 'exact', head: true });
+      if (error) throw error;
+      return count ?? 0;
+    },
+    enabled: isAdmin,
+  });
+
+  const { data: researchDbCount } = useQuery({
+    queryKey: ['admin-research-database-count'],
+    queryFn: async () => {
+      const { count, error } = await supabase.from('research_database').select('*', { count: 'exact', head: true });
+      if (error) throw error;
+      return count ?? 0;
+    },
+    enabled: isAdmin,
+  });
+
+  const { data: admissionDocsCount } = useQuery({
+    queryKey: ['admin-admission-docs-count'],
+    queryFn: async () => {
+      const { count, error } = await supabase.from('admission_docs').select('*', { count: 'exact', head: true });
+      if (error) throw error;
+      return count ?? 0;
+    },
+    enabled: isAdmin,
+  });
+
+  const { data: newsCount } = useQuery({
+    queryKey: ['admin-news-count'],
+    queryFn: async () => {
+      const { count, error } = await supabase.from('news_posts').select('*', { count: 'exact', head: true });
+      if (error) throw error;
+      return count ?? 0;
+    },
+    enabled: isAdmin,
+  });
+
+  const { data: eventsCount } = useQuery({
+    queryKey: ['admin-events-count'],
+    queryFn: async () => {
+      const { count, error } = await supabase.from('events').select('*', { count: 'exact', head: true });
+      if (error) throw error;
+      return count ?? 0;
+    },
+    enabled: isAdmin,
+  });
+
   const updateStatus = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
       const { error } = await supabase.from('student_submissions').update({ status }).eq('id', id);
@@ -106,10 +192,17 @@ const Admin = () => {
   const stats = [
     { label: 'Submissions', value: submissions?.length ?? 0, icon: FileText, extra: pendingCount > 0 ? `${pendingCount} pending` : undefined },
     { label: 'Inquiries', value: inquiries?.length ?? 0, icon: Mail, extra: unreadCount > 0 ? `${unreadCount} unread` : undefined },
+    { label: 'Staff CV', value: staffCvCount ?? 0, icon: Users },
+    { label: 'Study plans', value: studyPlansCount ?? 0, icon: ScrollText },
     { label: 'Archive Entries', value: archiveCount ?? 0, icon: Archive },
     { label: 'Schedules', value: schedulesCount ?? 0, icon: CalendarDays },
     { label: 'Templates', value: templatesCount ?? 0, icon: FileDown },
+    { label: 'Research plans', value: researchPlansCount ?? 0, icon: FlaskConical },
+    { label: 'Research DB', value: researchDbCount ?? 0, icon: Database },
     { label: 'Admissions', value: admissionsCount ?? 0, icon: BookOpen },
+    { label: 'Admission pages', value: admissionDocsCount ?? 0, icon: FileText },
+    { label: 'News', value: newsCount ?? 0, icon: Newspaper },
+    { label: 'Events', value: eventsCount ?? 0, icon: PartyPopper },
   ];
 
   return (
@@ -118,32 +211,86 @@ const Admin = () => {
 
       <div className="mb-8 flex flex-wrap gap-3">
         <Button asChild className="bg-primary text-white hover:bg-primary/90">
-          <Link to="/admin/archive" className="gap-2">
-            <Archive className="h-4 w-4" />
-            Manage Research Archive
+          <Link to="/admin/staff-cv" className="gap-2">
+            <Users className="h-4 w-4" />
+            Staff CV
+          </Link>
+        </Button>
+        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+          <Link to="/admin/study-plans" className="gap-2">
+            <ScrollText className="h-4 w-4" />
+            Study plans
           </Link>
         </Button>
         <Button asChild className="bg-primary text-white hover:bg-primary/90">
           <Link to="/admin/schedules" className="gap-2">
             <CalendarDays className="h-4 w-4" />
-            Manage Schedules
+            Schedules
+          </Link>
+        </Button>
+        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+          <Link to="/admin/research-plans" className="gap-2">
+            <FlaskConical className="h-4 w-4" />
+            Research plans
+          </Link>
+        </Button>
+        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+          <Link to="/admin/research-database" className="gap-2">
+            <Database className="h-4 w-4" />
+            Research database
           </Link>
         </Button>
         <Button asChild className="bg-primary text-white hover:bg-primary/90">
           <Link to="/admin/templates" className="gap-2">
             <FileDown className="h-4 w-4" />
-            Manage Templates
+            Templates
+          </Link>
+        </Button>
+        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+          <Link to="/admin/archive" className="gap-2">
+            <Archive className="h-4 w-4" />
+            Thesis archive
           </Link>
         </Button>
         <Button asChild className="bg-primary text-white hover:bg-primary/90">
           <Link to="/admin/admissions" className="gap-2">
             <BookOpen className="h-4 w-4" />
-            Manage Admissions
+            Degree requirements
+          </Link>
+        </Button>
+        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+          <Link to="/admin/admission-docs" className="gap-2">
+            <FileText className="h-4 w-4" />
+            Admission pages
+          </Link>
+        </Button>
+        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+          <Link to="/admin/news" className="gap-2">
+            <Newspaper className="h-4 w-4" />
+            News
+          </Link>
+        </Button>
+        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+          <Link to="/admin/events" className="gap-2">
+            <PartyPopper className="h-4 w-4" />
+            Events
+          </Link>
+        </Button>
+        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+          <Link to="/admin/services" className="gap-2">
+            <Wrench className="h-4 w-4" />
+            Services
+          </Link>
+        </Button>
+        <Button asChild variant="outline" className="gap-2">
+          <Link to="/admin/inquiries" className="gap-2">
+            <Mail className="h-4 w-4" />
+            Inquiries
           </Link>
         </Button>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5 mb-8">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 mb-8">
         {stats.map((s, i) => (
           <motion.div key={s.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
             <Card className="border-border">

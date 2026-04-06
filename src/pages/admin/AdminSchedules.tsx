@@ -34,6 +34,7 @@ import { getErrorMessage } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { Plus, Pencil, Trash2, AlertCircle } from "lucide-react";
 import { useState } from "react";
+import { PdfUploadField } from "@/components/admin/PdfUploadField";
 
 type ScheduleRecord = {
   id: string;
@@ -46,9 +47,9 @@ type ScheduleRecord = {
 };
 
 const categoryLabels: Record<string, string> = {
-  study: "Study",
-  exams: "Exam",
-  research_plan: "Research Plan",
+  study: "Lectures",
+  exams: "Exams",
+  research_plan: "Research plan",
 };
 
 const AdminSchedules = () => {
@@ -116,6 +117,7 @@ const AdminSchedules = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-schedules"] });
       queryClient.invalidateQueries({ queryKey: ["admin-schedules-count"] });
+      queryClient.invalidateQueries({ queryKey: ["schedules"] });
       toast({ title: editingId ? "Schedule updated successfully" : "Schedule added successfully" });
       setDialogOpen(false);
       resetForm();
@@ -133,6 +135,7 @@ const AdminSchedules = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-schedules"] });
       queryClient.invalidateQueries({ queryKey: ["admin-schedules-count"] });
+      queryClient.invalidateQueries({ queryKey: ["schedules"] });
       toast({ title: "Schedule deleted successfully" });
     },
     onError: (err: Error) => {
@@ -181,7 +184,7 @@ const AdminSchedules = () => {
               <TableRow>
                 <TableHead>Title</TableHead>
                 <TableHead>Category</TableHead>
-                <TableHead>File URL</TableHead>
+                <TableHead>PDF</TableHead>
                 <TableHead className="w-[100px]">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -254,21 +257,19 @@ const AdminSchedules = () => {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="study">Study</SelectItem>
-                  <SelectItem value="exams">Exam</SelectItem>
-                  <SelectItem value="research_plan">Research Plan</SelectItem>
+                  <SelectItem value="study">Lectures</SelectItem>
+                  <SelectItem value="exams">Exams</SelectItem>
+                  <SelectItem value="research_plan">Research plan</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="file_url">File URL</Label>
-              <Input
-                id="file_url"
-                value={form.file_url}
-                onChange={(e) => setForm((f) => ({ ...f, file_url: e.target.value }))}
-                placeholder="https://..."
-              />
-            </div>
+            <PdfUploadField
+              id="schedule_pdf"
+              label="Schedule (PDF)"
+              value={form.file_url}
+              onChange={(url) => setForm((f) => ({ ...f, file_url: url }))}
+              storageFolder="schedules"
+            />
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
                 Cancel
