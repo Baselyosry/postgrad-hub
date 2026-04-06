@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       admissions: {
         Row: {
+          brochure_pdf_url: string | null
           created_at: string
           degree_type: string
           documents: Json
@@ -25,6 +26,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          brochure_pdf_url?: string | null
           created_at?: string
           degree_type: string
           documents?: Json
@@ -34,6 +36,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          brochure_pdf_url?: string | null
           created_at?: string
           degree_type?: string
           documents?: Json
@@ -209,6 +212,282 @@ export type Database = {
           file_url?: string
           id?: string
           title?: string
+        }
+        Relationships: []
+      }
+      admission_docs: {
+        Row: {
+          id: string
+          section: string
+          title: string
+          body: string | null
+          sort_order: number
+          file_url: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          section: string
+          title: string
+          body?: string | null
+          sort_order?: number
+          file_url?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          section?: string
+          title?: string
+          body?: string | null
+          sort_order?: number
+          file_url?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      events: {
+        Row: {
+          id: string
+          title: string
+          event_type: string
+          description: string | null
+          starts_at: string | null
+          location: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          event_type?: string
+          description?: string | null
+          starts_at?: string | null
+          location?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          event_type?: string
+          description?: string | null
+          starts_at?: string | null
+          location?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      news_posts: {
+        Row: {
+          id: string
+          title: string
+          slug: string | null
+          excerpt: string | null
+          body: string
+          image_url: string | null
+          published_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          slug?: string | null
+          excerpt?: string | null
+          body?: string
+          image_url?: string | null
+          published_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          slug?: string | null
+          excerpt?: string | null
+          body?: string
+          image_url?: string | null
+          published_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      research_database: {
+        Row: {
+          id: string
+          title: string
+          authors: string | null
+          year: number | null
+          keywords: string | null
+          abstract: string | null
+          url: string | null
+          pdf_url: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          authors?: string | null
+          year?: number | null
+          keywords?: string | null
+          abstract?: string | null
+          url?: string | null
+          pdf_url?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          authors?: string | null
+          year?: number | null
+          keywords?: string | null
+          abstract?: string | null
+          url?: string | null
+          pdf_url?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      research_plans: {
+        Row: {
+          id: string
+          title: string
+          summary: string | null
+          milestones: string | null
+          file_url: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          summary?: string | null
+          milestones?: string | null
+          file_url?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          summary?: string | null
+          milestones?: string | null
+          file_url?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      service_offerings: {
+        Row: {
+          id: string
+          slug: string
+          title: string
+          description: string | null
+          primary_url: string | null
+          info_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          slug: string
+          title: string
+          description?: string | null
+          primary_url?: string | null
+          info_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          slug?: string
+          title?: string
+          description?: string | null
+          primary_url?: string | null
+          info_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      staff_cv: {
+        Row: {
+          id: string
+          display_name: string
+          department: string | null
+          photo_url: string | null
+          cv_pdf_url: string | null
+          personal_data: Json
+          qualifications: Json
+          experience: Json
+          skills: Json
+          sort_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          display_name: string
+          department?: string | null
+          photo_url?: string | null
+          cv_pdf_url?: string | null
+          personal_data?: Json
+          qualifications?: Json
+          experience?: Json
+          skills?: Json
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          display_name?: string
+          department?: string | null
+          photo_url?: string | null
+          cv_pdf_url?: string | null
+          personal_data?: Json
+          qualifications?: Json
+          experience?: Json
+          skills?: Json
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      study_plans: {
+        Row: {
+          id: string
+          title: string
+          program: string | null
+          description: string | null
+          file_url: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          program?: string | null
+          description?: string | null
+          file_url?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          program?: string | null
+          description?: string | null
+          file_url?: string | null
+          created_at?: string
+          updated_at?: string
         }
         Relationships: []
       }
