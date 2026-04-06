@@ -1,105 +1,122 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    /* MUST Institutional Style - Dark Blue & Gold */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 13%;
+    /* Modern Tech — Navy / green institutional */
+    --header-navy: 226 57% 24%;
+    --accent-green: 149 78% 29%;
+    --highlight-green: 134 62% 41%;
+    --notice-bg: 149 47% 94%;
+    --bg-off-white: 210 17% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 13%;
+    --background: var(--bg-off-white);
+    --foreground: 0 0% 20%;
+
+    --card: var(--bg-off-white);
+    --card-foreground: 0 0% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 13%;
+    --popover-foreground: 0 0% 20%;
 
-    /* Primary: #0c2d6b Dark Blue */
-    --primary: 217 72% 23%;
+    /* Shadcn primary = header navy (default actions, focus rings) */
+    --primary: var(--header-navy);
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary: #d4af37 Gold - accents */
-    --secondary: 43 74% 52%;
-    --secondary-foreground: 0 0% 13%;
+    /* Secondary = accent green (highlights, secondary actions) */
+    --secondary: var(--accent-green);
+    --secondary-foreground: 0 0% 100%;
 
-    /* Muted */
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 40%;
+    --muted: 210 17% 96%;
+    --muted-foreground: 0 0% 45%;
 
-    /* Accent - Gold for hover states */
-    --accent: 43 74% 52%;
+    --accent: var(--highlight-green);
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 217 72% 23%;
+    --border: 210 14% 89%;
+    --input: 210 14% 89%;
+    --ring: var(--header-navy);
 
-    --radius: 0.375rem;
+    /* 8px card / control radius */
+    --radius: 0.5rem;
 
-    /* Sidebar - Dark Blue */
-    --sidebar-background: 217 72% 23%;
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 43 74% 52%;
-    --sidebar-primary-foreground: 0 0% 13%;
-    --sidebar-accent: 217 72% 28%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 217 50% 35%;
-    --sidebar-ring: 43 74% 52%;
+    --heading-accent: var(--accent-green);
+    --subheading-navy: var(--header-navy);
+    --body-text: 0 0% 20%;
 
-    --success: 152 39% 34%;
+    --sidebar-background: var(--header-navy);
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: var(--accent-green);
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 226 45% 30%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 226 40% 28%;
+    --sidebar-ring: var(--accent-green);
+
+    --success: 149 78% 29%;
     --success-foreground: 0 0% 100%;
 
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 100%;
 
-    --font-heading: 'Poppins', sans-serif;
-    --font-body: 'Open Sans', sans-serif;
+    --font-heading: "Inter", ui-sans-serif, system-ui, sans-serif;
+    --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
   }
 
   .dark {
-    --background: 220 25% 10%;
-    --foreground: 210 30% 92%;
+    /* Readable on dark surfaces (HSL components for hsl(var(--*))) */
+    --header-navy: 215 28% 72%;
+    --accent-green: 149 55% 48%;
+    --highlight-green: 134 55% 52%;
+    --notice-bg: 149 22% 16%;
+    --bg-off-white: 226 28% 11%;
 
-    --card: 220 25% 13%;
-    --card-foreground: 210 30% 92%;
+    --heading-accent: 149 55% 52%;
+    --subheading-navy: 210 40% 88%;
+    --background: 226 35% 12%;
+    --foreground: 210 25% 92%;
 
-    --popover: 220 25% 13%;
-    --popover-foreground: 210 30% 92%;
+    --card: 226 32% 14%;
+    --card-foreground: 210 25% 92%;
 
-    --primary: 217 72% 45%;
-    --primary-foreground: 220 25% 10%;
+    --popover: 226 32% 14%;
+    --popover-foreground: 210 25% 92%;
 
-    --secondary: 43 74% 45%;
-    --secondary-foreground: 0 0% 13%;
+    --primary: 226 45% 55%;
+    --primary-foreground: 226 40% 10%;
 
-    --muted: 220 20% 18%;
-    --muted-foreground: 215 15% 55%;
+    --secondary: 149 55% 40%;
+    --secondary-foreground: 0 0% 100%;
 
-    --accent: 43 74% 45%;
+    --muted: 226 25% 18%;
+    --muted-foreground: 210 15% 65%;
+
+    --accent: 134 50% 45%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62% 40%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 20% 22%;
-    --input: 220 20% 22%;
-    --ring: 217 72% 45%;
+    --border: 226 25% 22%;
+    --input: 226 25% 22%;
+    --ring: 149 55% 45%;
 
-    --sidebar-background: 220 30% 8%;
-    --sidebar-foreground: 210 30% 88%;
-    --sidebar-primary: 43 74% 52%;
-    --sidebar-primary-foreground: 0 0% 13%;
-    --sidebar-accent: 220 25% 16%;
-    --sidebar-accent-foreground: 210 30% 88%;
-    --sidebar-border: 220 20% 18%;
-    --sidebar-ring: 43 74% 52%;
+    --body-text: 210 20% 88%;
 
-    --success: 152 55% 45%;
+    --sidebar-background: 226 40% 10%;
+    --sidebar-foreground: 210 25% 90%;
+    --sidebar-primary: 149 55% 42%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 226 30% 18%;
+    --sidebar-accent-foreground: 210 25% 90%;
+    --sidebar-border: 226 25% 20%;
+    --sidebar-ring: 149 55% 42%;
+
+    --success: 149 50% 45%;
     --success-foreground: 0 0% 100%;
 
     --warning: 38 85% 55%;
@@ -117,33 +134,128 @@
   }
 
   body {
-    @apply min-h-screen bg-background text-foreground font-body;
+    @apply min-h-screen bg-background font-sans antialiased;
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    font-weight: 400;
+    letter-spacing: -0.011em;
+    color: hsl(var(--body-text));
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading);
-    @apply font-bold tracking-[0.5px] text-primary;
+  h1,
+  h2,
+  h3 {
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: hsl(var(--heading-accent));
   }
 
-  h1 { @apply text-3xl md:text-4xl; }
-  h2 { @apply text-2xl md:text-3xl; }
-  h3 { @apply text-xl md:text-2xl; }
+  h4,
+  h5,
+  h6 {
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    color: hsl(var(--subheading-navy));
+  }
+
+  h1 {
+    @apply text-3xl md:text-4xl;
+  }
+  h2 {
+    @apply text-2xl md:text-3xl;
+  }
+  h3 {
+    @apply text-xl md:text-2xl;
+  }
+
+  /* Section titles keep accent green even with text-primary (token = navy) */
+  h1.font-heading.text-primary,
+  h2.font-heading.text-primary,
+  h3.font-heading.text-primary {
+    color: hsl(var(--heading-accent));
+  }
+
+  /* Smaller section titles: navy */
+  h4.font-heading.text-primary,
+  h5.font-heading.text-primary,
+  h6.font-heading.text-primary {
+    color: hsl(var(--subheading-navy));
+  }
 
   p {
-    @apply text-[14px] leading-[1.6] text-text-light;
+    @apply text-[15px] leading-relaxed;
+    font-weight: 400;
+    letter-spacing: -0.011em;
+    color: hsl(var(--body-text));
+  }
+
+  nav a,
+  [role="navigation"] a {
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    transition: color 0.2s ease, text-decoration-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  nav a:hover,
+  [role="navigation"] a:hover {
+    color: hsl(var(--accent-green));
+  }
+
+  main :is(p, li) a[href] {
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: hsl(var(--header-navy));
+    text-underline-offset: 2px;
+    transition: color 0.2s ease;
+  }
+
+  main :is(p, li) a[href]:hover {
+    color: hsl(var(--accent-green));
+  }
+
+  /* Lucide icons: slate-navy when no explicit text/stroke utility */
+  svg.lucide:not([class*="text-"]):not([class*="stroke-"]) {
+    color: hsl(var(--header-navy));
+  }
+
+  .dark svg.lucide:not([class*="text-"]):not([class*="stroke-"]) {
+    color: hsl(var(--subheading-navy));
   }
 }
 
 @layer utilities {
+  /* Softer band for non-landing pages */
   .section-alt {
-    @apply bg-bg-light;
+    @apply bg-bg-off-white dark:bg-muted/30;
+  }
+
+  /* Landing page — strong separation between full-width sections */
+  .landing-section {
+    @apply scroll-mt-24 border-b-2 border-header-navy/15 bg-white py-12 md:py-16 lg:py-20 dark:border-border dark:bg-card;
+  }
+
+  .landing-section-alt {
+    @apply scroll-mt-24 border-b-2 border-header-navy/15 bg-notice-bg py-12 md:py-16 lg:py-20 dark:border-border dark:bg-muted/40;
+  }
+
+  .landing-section-anchor {
+    @apply border-t-4 border-accent-green dark:border-accent-green/70;
+  }
+
+  .notice-banner {
+    @apply bg-notice-bg text-header-navy dark:bg-emerald-950/40 dark:text-emerald-50;
   }
 
   .card-institutional {
-    @apply rounded-md shadow-sm transition-transform duration-200 hover:-translate-y-[5px];
+    @apply rounded-lg border border-border bg-bg-off-white shadow-sm transition-transform duration-200 hover:-translate-y-[5px] dark:bg-card;
   }
 
   .btn-primary-institutional {
-    @apply bg-primary text-white hover:bg-primary/90;
+    @apply bg-header-navy text-white transition-colors duration-200 hover:bg-header-navy/90;
+  }
+
+  .text-highlight {
+    @apply text-highlight-green;
   }
 }

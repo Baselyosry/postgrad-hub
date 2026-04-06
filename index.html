@@ -1,8 +1,14 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" suppressHydrationWarning>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="icon" href="/logo2.png" type="image/png" />
     <title>MUST Post Graduate</title>
     <meta name="description" content="Postgraduate Management Portal for Master's and PhD students at MUST University" />
@@ -18,6 +24,18 @@
   </head>
 
   <body>
+    <script>
+      (function () {
+        try {
+          var k = "postgrad-hub-ui-theme";
+          var t = localStorage.getItem(k);
+          var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          if (t === "dark" || (t !== "light" && prefersDark)) {
+            document.documentElement.classList.add("dark");
+          }
+        } catch (e) {}
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
