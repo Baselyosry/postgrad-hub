@@ -547,11 +547,11 @@ export function PublicLayout({ children }: { children: ReactNode }) {
               ع
             </a>
 
-            {/* Hamburger: same breakpoint as drawer-only nav (< lg) */}
+            {/* Hamburger: always available (mobile drawer + quick access on desktop) */}
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded text-white/80 transition-colors hover:text-white lg:hidden"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded text-white/80 transition-colors hover:text-white"
               aria-label="Open menu"
               aria-expanded={mobileOpen}
             >
