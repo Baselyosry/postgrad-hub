@@ -20,6 +20,46 @@ const lead = 'mt-2 text-sm leading-relaxed text-muted-foreground md:text-base';
 
 const inner = 'container mx-auto max-w-6xl px-4 md:px-6 lg:px-8';
 
+function LandingGroupHeader({
+  id,
+  title,
+  variant,
+}: {
+  id: string;
+  title: string;
+  variant: 'plain' | 'tinted';
+}) {
+  return (
+    <section
+      id={id}
+      className={cn(
+        'landing-section-anchor scroll-mt-24 border-b-2 border-header-navy/15 bg-white py-10 md:py-12 dark:border-border dark:bg-card'
+      )}
+    >
+      <div className={inner}>
+        <header className="mx-auto max-w-4xl text-center">
+          <div
+            className={cn(
+              'relative overflow-hidden rounded-[28px] border px-6 py-8 shadow-[0_18px_45px_-28px_rgba(28,53,94,0.45)] md:px-10 md:py-10',
+              variant === 'tinted'
+                ? 'border-header-navy/10 bg-[linear-gradient(135deg,rgba(28,53,94,0.08),rgba(0,166,81,0.14))] dark:border-border dark:bg-[linear-gradient(135deg,rgba(22,52,92,0.7),rgba(0,166,81,0.18))]'
+                : 'border-header-navy/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(230,247,238,0.92))] dark:border-border dark:bg-[linear-gradient(135deg,rgba(24,32,48,0.98),rgba(19,78,58,0.28))]'
+            )}
+          >
+            <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-accent-green/70 to-transparent" />
+            <div className="absolute -left-10 top-1/2 h-24 w-24 -translate-y-1/2 rounded-full bg-accent-green/10 blur-2xl" aria-hidden />
+            <div className="absolute -right-8 top-5 h-20 w-20 rounded-full bg-header-navy/10 blur-2xl dark:bg-accent-green/10" aria-hidden />
+            <div className="absolute inset-[1px] rounded-[26px] border border-white/40 dark:border-white/5" aria-hidden />
+            <h2 className="relative font-heading text-3xl font-bold tracking-[0.04em] text-primary md:text-4xl lg:text-[2.6rem]">
+              {title}
+            </h2>
+          </div>
+        </header>
+      </div>
+    </section>
+  );
+}
+
 function LandingSection({
   id,
   variant,
@@ -27,13 +67,15 @@ function LandingSection({
   description,
   children,
   className,
+  showHeader = true,
 }: {
-  id: string;
+  id?: string;
   variant: 'plain' | 'tinted';
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   children: ReactNode;
   className?: string;
+  showHeader?: boolean;
 }) {
   return (
     <section
@@ -41,12 +83,14 @@ function LandingSection({
       className={cn(variant === 'tinted' ? 'landing-section-alt' : 'landing-section', className)}
     >
       <div className={inner}>
-        <header className="mb-8 md:mb-12">
-          <div className="max-w-3xl rounded-r-lg border-l-4 border-accent-green bg-header-navy/[0.03] py-4 pl-4 pr-3 dark:border-accent-green/80 dark:bg-muted/50 md:py-5 md:pl-6 md:pr-5">
-            <h2 className={h2}>{title}</h2>
-            <p className={lead}>{description}</p>
-          </div>
-        </header>
+        {showHeader && title && description ? (
+          <header className="mb-8 md:mb-12">
+            <div className="max-w-3xl rounded-r-lg border-l-4 border-accent-green bg-header-navy/[0.03] py-4 pl-4 pr-3 dark:border-accent-green/80 dark:bg-muted/50 md:py-5 md:pl-6 md:pr-5">
+              <h2 className={h2}>{title}</h2>
+              <p className={lead}>{description}</p>
+            </div>
+          </header>
+        ) : null}
         {children}
       </div>
     </section>
@@ -56,7 +100,13 @@ function LandingSection({
 export function LandingEmbeds() {
   return (
     <>
-      <div id="academics" className="landing-section-anchor scroll-mt-24">
+      <LandingGroupHeader
+        id="academics"
+        title="Academics"
+        variant="tinted"
+      />
+
+      <div>
         <LandingSection
           id="staff-cv"
           variant="tinted"
@@ -112,7 +162,13 @@ export function LandingEmbeds() {
         </LandingSection>
       </div>
 
-      <div id="admission" className="scroll-mt-24 border-t-2 border-header-navy/10 dark:border-border">
+      <LandingGroupHeader
+        id="admission"
+        title="Admission"
+        variant="plain"
+      />
+
+      <div className="border-t-2 border-header-navy/10 dark:border-border">
         <LandingSection
           id="degree-admissions"
           variant="tinted"
@@ -141,48 +197,59 @@ export function LandingEmbeds() {
         </LandingSection>
       </div>
 
-      <LandingSection
-        id="archive"
-        variant="plain"
-        title="Thesis & research archive"
-        description="Search theses and research publications."
-      >
+      <LandingSection id="archive" variant="plain" title="Thesis & research archive" description="Search theses and research publications.">
         <ArchivePage embedded />
       </LandingSection>
 
-      <LandingSection
+      <LandingGroupHeader
         id="events"
-        variant="tinted"
         title="Events"
-        description="Defences, seminars, and deadlines."
+        variant="tinted"
+      />
+
+      <LandingSection
+        variant="tinted"
+        showHeader={false}
       >
         <Events embedded />
       </LandingSection>
 
-      <LandingSection
+      <LandingGroupHeader
         id="news"
-        variant="plain"
         title="News"
-        description="Announcements from the postgraduate office."
+        variant="plain"
+      />
+
+      <LandingSection
+        variant="plain"
+        showHeader={false}
       >
         <News embedded />
       </LandingSection>
 
-      <LandingSection
+      <LandingGroupHeader
         id="services"
-        variant="tinted"
         title="Services"
-        description="iThenticate, Egyptian Knowledge Bank, and other tools."
+        variant="tinted"
+      />
+
+      <LandingSection
+        variant="tinted"
+        showHeader={false}
       >
         <LandingServicesSection embedded />
       </LandingSection>
 
-      <LandingSection
+      <LandingGroupHeader
         id="contact"
+        title="Contact Us"
         variant="plain"
-        title="Contact us"
-        description="Send a message to the postgraduate office."
+      />
+
+      <LandingSection
+        variant="plain"
         className="pb-20"
+        showHeader={false}
       >
         <Contact embedded />
       </LandingSection>

@@ -129,8 +129,8 @@ const barBorder = 'border-white/10 dark:border-zinc-700/50';
 
 const SOCIALS = [
   { icon: Linkedin, href: 'https://www.linkedin.com/school/misr-university-for-science-and-technology/', label: 'LinkedIn' },
-  { icon: Facebook, href: 'https://www.facebook.com/MUST.University.Egypt', label: 'Facebook' },
-  { icon: Instagram, href: 'https://www.instagram.com/must_university/', label: 'Instagram' },
+  { icon: Facebook, href: 'https://www.facebook.com/mustuni', label: 'Facebook' },
+  { icon: Instagram, href: 'https://www.instagram.com/mustuni/', label: 'Instagram' },
   { icon: Twitter, href: 'https://twitter.com/must_university', label: 'X (Twitter)' },
 ];
 

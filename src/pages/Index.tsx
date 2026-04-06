@@ -97,7 +97,7 @@ function HeroNavDropdown({
       </a>
       <div
         className={cn(
-          'absolute left-1/2 top-full z-50 mt-1 min-w-[min(100vw-2rem,280px)] max-w-[min(100vw-2rem,320px)] -translate-x-1/2 flex-col rounded border-t-2 border-[#00a651] bg-white py-1.5 text-[#1c355e] shadow-xl',
+          'absolute left-1/2 top-full z-[60] min-w-[min(100vw-2rem,280px)] max-w-[min(100vw-2rem,320px)] -translate-x-1/2 flex-col rounded border-t-2 border-[#00a651] bg-white py-1.5 text-[#1c355e] shadow-xl',
           'animate-in fade-in zoom-in-95 duration-200',
           // Touch / narrow: toggle; md+: hover only
           isMobile ? (open ? 'flex' : 'hidden') : 'hidden md:group-hover:flex'
@@ -158,8 +158,8 @@ const Index = () => {
   );
 
   return (
-    <div id="top" className="-mx-4 flex flex-col sm:-mx-5 md:-mx-8">
-      <section className="relative overflow-hidden bg-[#1c355e] w-full min-h-[450px] md:min-h-[500px]">
+    <div id="top" className="-mx-4 flex flex-col sm:-mx-5 md:-mx-8 lg:-mr-12 xl:-mr-14">
+      <section className="relative overflow-visible bg-[#1c355e] w-full min-h-[450px] md:min-h-[500px]">
         <Carousel
           opts={{ loop: true, align: 'start' }}
           plugins={[plugin.current]}
@@ -190,7 +190,7 @@ const Index = () => {
 
         <div className="absolute inset-0 bg-[#1c355e]/60 pointer-events-none" aria-hidden />
 
-        <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center px-3 pt-10 sm:px-6 sm:pt-8">
+        <div className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center px-3 pt-10 sm:px-6 sm:pt-8">
           <h1 className="mt-[-20px] text-center font-heading text-2xl font-bold uppercase tracking-widest text-white drop-shadow-md sm:mt-[-30px] sm:text-4xl md:text-5xl lg:text-6xl">
             POST GRADUATE STUDIES
           </h1>
