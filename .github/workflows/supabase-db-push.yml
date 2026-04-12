@@ -1,0 +1,44 @@
+# Applies pending SQL migrations to the linked Supabase project (`supabase db push`).
+#
+# Required repository secrets:
+#   SUPABASE_ACCESS_TOKEN   — Personal access token from https://supabase.com/dashboard/account/tokens
+#   SUPABASE_PROJECT_REF    — Project ref (Settings → General → Reference ID), same value as supabase/config.toml project_id
+#   SUPABASE_DB_PASSWORD    — Database password (Settings → Database)
+
+name: Supabase database push
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "supabase/migrations/**"
+      - "supabase/config.toml"
+  workflow_dispatch:
+
+concurrency:
+  group: supabase-db-push-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Link project
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          supabase link --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}" --password "${{ secrets.SUPABASE_DB_PASSWORD }}"
+
+      - name: Push migrations
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: supabase db push
