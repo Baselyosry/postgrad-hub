@@ -36,6 +36,7 @@ import { toast } from "@/hooks/use-toast";
 import { Plus, Pencil, Trash2, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { PdfUploadField } from "@/components/admin/PdfUploadField";
+import { ConfirmDeleteDialog } from "@/components/admin/ConfirmDeleteDialog";
 
 type Section = "how_to_apply" | "required_documents";
 
@@ -58,6 +59,7 @@ const AdminAdmissionDocs = () => {
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<Row | null>(null);
   const [form, setForm] = useState({
     section: "how_to_apply" as Section,
     title: "",
@@ -124,6 +126,7 @@ const AdminAdmissionDocs = () => {
       queryClient.invalidateQueries({ queryKey: ["admin-admission-docs-count"] });
       queryClient.invalidateQueries({ queryKey: ["public-admission-how"] });
       queryClient.invalidateQueries({ queryKey: ["public-admission-docs"] });
+      setPendingDelete(null);
       toast({ title: "Deleted" });
     },
     onError: (err: Error) => toast({ title: "Delete failed", description: err.message, variant: "destructive" }),
@@ -134,6 +137,26 @@ const AdminAdmissionDocs = () => {
 
   return (
     <div>
+      <ConfirmDeleteDialog
+        open={pendingDelete !== null}
+        onOpenChange={(o) => {
+          if (!o) setPendingDelete(null);
+        }}
+        title="Delete admission page block?"
+        description="This removes the block from the public admission sections. This cannot be undone."
+        isDeleting={deleteMutation.isPending}
+        onConfirm={() => {
+          if (pendingDelete) deleteMutation.mutate(pendingDelete.id);
+        }}
+        preview={
+          pendingDelete ? (
+            <div className="rounded-md border border-border bg-muted/40 p-3 text-sm">
+              <p className="font-medium text-foreground">{pendingDelete.title}</p>
+              <p className="text-muted-foreground">{sectionLabels[pendingDelete.section] ?? pendingDelete.section}</p>
+            </div>
+          ) : null
+        }
+      />
       <PageHeader
         title="Admission pages"
         description="Content blocks for “How to apply” and “Required documents” public pages."
@@ -207,7 +230,7 @@ const AdminAdmissionDocs = () => {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 text-destructive"
-                        onClick={() => deleteMutation.mutate(row.id)}
+                        onClick={() => setPendingDelete(row)}
                         disabled={deleteMutation.isPending}
                       >
                         <Trash2 className="h-3.5 w-3.5" />

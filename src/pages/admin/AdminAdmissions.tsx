@@ -35,6 +35,7 @@ import { toast } from "@/hooks/use-toast";
 import { Plus, Pencil, Trash2, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { PdfUploadField } from "@/components/admin/PdfUploadField";
+import { ConfirmDeleteDialog } from "@/components/admin/ConfirmDeleteDialog";
 
 type ReqItem = { item: string };
 type DocItem = { name: string; required: boolean };
@@ -59,6 +60,7 @@ const AdminAdmissions = () => {
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<AdmissionRecord | null>(null);
   const [form, setForm] = useState({
     title: "",
     degree_type: "master" as "master" | "phd",
@@ -186,7 +188,6 @@ const AdminAdmissions = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-admissions"] });
       queryClient.invalidateQueries({ queryKey: ["admin-admissions-count"] });
-      queryClient.invalidateQueries({ queryKey: ["public-admissions"] });
       toast({
         title: editingId ? "Admission updated successfully" : "Admission added successfully",
       });
@@ -206,7 +207,7 @@ const AdminAdmissions = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-admissions"] });
       queryClient.invalidateQueries({ queryKey: ["admin-admissions-count"] });
-      queryClient.invalidateQueries({ queryKey: ["public-admissions"] });
+      setPendingDelete(null);
       toast({ title: "Admission deleted successfully" });
     },
     onError: (err: Error) => {
@@ -223,6 +224,26 @@ const AdminAdmissions = () => {
 
   return (
     <div>
+      <ConfirmDeleteDialog
+        open={pendingDelete !== null}
+        onOpenChange={(o) => {
+          if (!o) setPendingDelete(null);
+        }}
+        title="Delete degree requirements?"
+        description="This removes this admission profile from the admin catalogue. This cannot be undone."
+        isDeleting={deleteMutation.isPending}
+        onConfirm={() => {
+          if (pendingDelete) deleteMutation.mutate(pendingDelete.id);
+        }}
+        preview={
+          pendingDelete ? (
+            <div className="rounded-md border border-border bg-muted/40 p-3 text-sm">
+              <p className="font-medium text-foreground">{pendingDelete.title}</p>
+              <p className="text-muted-foreground">{degreeLabels[pendingDelete.degree_type] ?? pendingDelete.degree_type}</p>
+            </div>
+          ) : null
+        }
+      />
       <PageHeader
         title="Admissions"
         description="Manage admission requirements and document checklists for Masters and PhD programs."
@@ -308,7 +329,7 @@ const AdminAdmissions = () => {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 text-destructive hover:text-destructive"
-                        onClick={() => deleteMutation.mutate(row.id)}
+                        onClick={() => setPendingDelete(row)}
                         disabled={deleteMutation.isPending}
                       >
                         <Trash2 className="h-3.5 w-3.5" />
