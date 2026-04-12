@@ -40,14 +40,19 @@ const AdmissionHowToApply = ({ embedded = false }: { embedded?: boolean }) => {
           description="Follow these steps to prepare and submit your application."
         />
       )}
-      <p className="text-sm text-muted-foreground mb-6">
+      <p className="mb-6 text-sm text-muted-foreground">
         See also{" "}
-        <a href="#required-documents" className="text-primary font-medium hover:underline">
+        <a href="#required-documents" className="font-medium text-primary hover:underline">
           required documents
         </a>{" "}
         and the{" "}
-        <a href="#degree-admissions" className="text-primary font-medium hover:underline">
-          admissions hub
+        <a
+          href="https://admission.must.edu.eg/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-medium text-primary hover:underline"
+        >
+          university admission portal
         </a>
         .
       </p>
@@ -61,11 +66,17 @@ const AdmissionHowToApply = ({ embedded = false }: { embedded?: boolean }) => {
         <SkeletonCard />
       ) : !data?.length ? (
         <p className="text-sm text-muted-foreground">
-          Content will appear here once administrators add “How to apply” blocks. You can still use the{" "}
-          <a href="#degree-admissions" className="text-primary hover:underline">
-            admissions hub
-          </a>{" "}
-          for programme requirements.
+          Content will appear here once administrators add “How to apply” blocks. For official intake and programme
+          requirements, visit the{" "}
+          <a
+            href="https://admission.must.edu.eg/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:underline"
+          >
+            university admission portal
+          </a>
+          .
         </p>
       ) : (
         <div className="space-y-4">

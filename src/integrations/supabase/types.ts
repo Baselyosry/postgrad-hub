@@ -55,6 +55,8 @@ export type Database = {
           is_read: boolean | null
           message: string
           name: string
+          phone_number: string | null
+          subject: string | null
         }
         Insert: {
           created_at?: string
@@ -63,6 +65,8 @@ export type Database = {
           is_read?: boolean | null
           message: string
           name: string
+          phone_number?: string | null
+          subject?: string | null
         }
         Update: {
           created_at?: string
@@ -71,6 +75,8 @@ export type Database = {
           is_read?: boolean | null
           message?: string
           name?: string
+          phone_number?: string | null
+          subject?: string | null
         }
         Relationships: []
       }
@@ -256,6 +262,8 @@ export type Database = {
           description: string | null
           starts_at: string | null
           location: string | null
+          image_url: string | null
+          time: string | null
           created_at: string
           updated_at: string
         }
@@ -266,6 +274,8 @@ export type Database = {
           description?: string | null
           starts_at?: string | null
           location?: string | null
+          image_url?: string | null
+          time?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -276,6 +286,8 @@ export type Database = {
           description?: string | null
           starts_at?: string | null
           location?: string | null
+          image_url?: string | null
+          time?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -289,6 +301,8 @@ export type Database = {
           excerpt: string | null
           body: string
           image_url: string | null
+          author: string | null
+          is_featured: boolean
           published_at: string | null
           created_at: string
           updated_at: string
@@ -300,6 +314,8 @@ export type Database = {
           excerpt?: string | null
           body?: string
           image_url?: string | null
+          author?: string | null
+          is_featured?: boolean
           published_at?: string | null
           created_at?: string
           updated_at?: string
@@ -311,6 +327,8 @@ export type Database = {
           excerpt?: string | null
           body?: string
           image_url?: string | null
+          author?: string | null
+          is_featured?: boolean
           published_at?: string | null
           created_at?: string
           updated_at?: string

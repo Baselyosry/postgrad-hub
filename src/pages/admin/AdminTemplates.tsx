@@ -35,6 +35,7 @@ import { toast } from "@/hooks/use-toast";
 import { Plus, Pencil, Trash2, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { PdfUploadField } from "@/components/admin/PdfUploadField";
+import { ConfirmDeleteDialog } from "@/components/admin/ConfirmDeleteDialog";
 
 type TemplateRecord = {
   id: string;
@@ -51,6 +52,7 @@ const AdminTemplates = () => {
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<TemplateRecord | null>(null);
   const [form, setForm] = useState({
     title: "",
     category: "general",
@@ -130,6 +132,7 @@ const AdminTemplates = () => {
       queryClient.invalidateQueries({ queryKey: ["admin-templates"] });
       queryClient.invalidateQueries({ queryKey: ["admin-templates-count"] });
       queryClient.invalidateQueries({ queryKey: ["templates"] });
+      setPendingDelete(null);
       toast({ title: "Template deleted successfully" });
     },
     onError: (err: Error) => {
@@ -142,6 +145,26 @@ const AdminTemplates = () => {
 
   return (
     <div>
+      <ConfirmDeleteDialog
+        open={pendingDelete !== null}
+        onOpenChange={(o) => {
+          if (!o) setPendingDelete(null);
+        }}
+        title="Delete template?"
+        description="This removes the template from the public templates section. This cannot be undone."
+        isDeleting={deleteMutation.isPending}
+        onConfirm={() => {
+          if (pendingDelete) deleteMutation.mutate(pendingDelete.id);
+        }}
+        preview={
+          pendingDelete ? (
+            <div className="rounded-md border border-border bg-muted/40 p-3 text-sm">
+              <p className="font-medium text-foreground">{pendingDelete.title}</p>
+              <p className="text-muted-foreground">{pendingDelete.category}</p>
+            </div>
+          ) : null
+        }
+      />
       <PageHeader
         title="Templates"
         description="Manage document templates. Create, edit, and delete templates."
@@ -201,7 +224,7 @@ const AdminTemplates = () => {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 text-destructive hover:text-destructive"
-                        onClick={() => deleteMutation.mutate(row.id)}
+                        onClick={() => setPendingDelete(row)}
                         disabled={deleteMutation.isPending}
                       >
                         <Trash2 className="h-3.5 w-3.5" />

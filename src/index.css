@@ -48,13 +48,14 @@
     --subheading-navy: var(--header-navy);
     --body-text: 0 0% 20%;
 
-    --sidebar-background: var(--header-navy);
-    --sidebar-foreground: 0 0% 98%;
+    /* Admin sidebar: light gray surface, dark text (MUST / institutional clarity) */
+    --sidebar-background: 220 14% 96%;
+    --sidebar-foreground: 226 45% 14%;
     --sidebar-primary: var(--accent-green);
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 226 45% 30%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 226 40% 28%;
+    --sidebar-accent: 220 12% 90%;
+    --sidebar-accent-foreground: 226 50% 12%;
+    --sidebar-border: 220 13% 86%;
     --sidebar-ring: var(--accent-green);
 
     --success: 149 78% 29%;
@@ -107,13 +108,14 @@
 
     --body-text: 210 20% 88%;
 
-    --sidebar-background: 226 40% 10%;
-    --sidebar-foreground: 210 25% 90%;
+    /* Sidebar stays a light panel in dark mode for legibility */
+    --sidebar-background: 220 14% 94%;
+    --sidebar-foreground: 226 45% 12%;
     --sidebar-primary: 149 55% 42%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 226 30% 18%;
-    --sidebar-accent-foreground: 210 25% 90%;
-    --sidebar-border: 226 25% 20%;
+    --sidebar-accent: 220 12% 88%;
+    --sidebar-accent-foreground: 226 50% 10%;
+    --sidebar-border: 220 12% 82%;
     --sidebar-ring: 149 55% 42%;
 
     --success: 149 50% 45%;

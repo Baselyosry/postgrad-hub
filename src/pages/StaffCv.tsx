@@ -45,7 +45,7 @@ const StaffCv = ({ embedded = false }: { embedded?: boolean }) => {
   return (
     <div>
       {!embedded && (
-        <PageHeader title="Staff CV" description="Personal data, qualifications, experience, and skills." />
+        <PageHeader title="Staff CV" description="Bio, qualifications, experience, and research direction." />
       )}
       {isError && (
         <Alert variant="destructive" className="mb-6">
@@ -103,15 +103,19 @@ const StaffCv = ({ embedded = false }: { embedded?: boolean }) => {
                 </CardHeader>
                 <CardContent className="space-y-6">
                   {p.bio && (
-                    <section>
-                      <h3 className="text-sm font-semibold text-foreground mb-2">Personal</h3>
-                      <p className="text-sm text-muted-foreground whitespace-pre-wrap">{p.bio}</p>
+                    <section className="rounded-lg border border-border/70 bg-muted/20 p-4 dark:bg-muted/10">
+                      <h3 className="mb-3 border-b border-border/60 pb-2 font-heading text-sm font-bold uppercase tracking-wide text-primary">
+                        Bio
+                      </h3>
+                      <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-wrap">{p.bio}</p>
                     </section>
                   )}
                   {quals.length > 0 && (
-                    <section>
-                      <h3 className="text-sm font-semibold text-foreground mb-2">Qualifications</h3>
-                      <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
+                    <section className="rounded-lg border border-border/70 p-4">
+                      <h3 className="mb-3 border-b border-border/60 pb-2 font-heading text-sm font-bold uppercase tracking-wide text-primary">
+                        Qualifications
+                      </h3>
+                      <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
                         {quals.map((q, i) => (
                           <li key={i}>
                             {[q.degree, q.institution, q.year].filter(Boolean).join(" · ")}
@@ -121,8 +125,10 @@ const StaffCv = ({ embedded = false }: { embedded?: boolean }) => {
                     </section>
                   )}
                   {exps.length > 0 && (
-                    <section>
-                      <h3 className="text-sm font-semibold text-foreground mb-2">Experience</h3>
+                    <section className="rounded-lg border border-border/70 p-4">
+                      <h3 className="mb-3 border-b border-border/60 pb-2 font-heading text-sm font-bold uppercase tracking-wide text-primary">
+                        Experience
+                      </h3>
                       <ul className="space-y-3">
                         {exps.map((e, i) => (
                           <li key={i} className="text-sm text-muted-foreground border-l-2 border-primary/30 pl-3">
@@ -137,8 +143,10 @@ const StaffCv = ({ embedded = false }: { embedded?: boolean }) => {
                     </section>
                   )}
                   {skills.length > 0 && (
-                    <section>
-                      <h3 className="text-sm font-semibold text-foreground mb-2">Skills</h3>
+                    <section className="rounded-lg border border-border/70 bg-muted/15 p-4 dark:bg-muted/10">
+                      <h3 className="mb-3 border-b border-border/60 pb-2 font-heading text-sm font-bold uppercase tracking-wide text-primary">
+                        Research direction
+                      </h3>
                       <div className="flex flex-wrap gap-2">
                         {skills.map((s, i) => (
                           <Badge key={i} variant="outline">

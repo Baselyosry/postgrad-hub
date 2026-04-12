@@ -28,7 +28,7 @@ const heroSlides = [
 const heroNavItems = [
   { title: 'Home', href: '#top' },
   {
-    title: 'Academics',
+    title: 'Academic Stuff',
     href: '#academics',
     dropdown: [
       { title: 'Staff CV', href: '#staff-cv' },
@@ -43,7 +43,7 @@ const heroNavItems = [
     title: 'Admission',
     href: '#admission',
     dropdown: [
-      { title: 'Admissions hub', href: '#degree-admissions' },
+      { title: 'University admission portal', href: 'https://admission.must.edu.eg/', external: true },
       { title: 'How to Apply', href: '#how-to-apply' },
       { title: 'Required Documents', href: '#required-documents' },
     ],
@@ -60,6 +60,8 @@ const heroNavItems = [
   { title: 'Contact Us', href: '#contact' },
 ];
 
+type HeroDropItem = { title: string; href: string; external?: boolean };
+
 function HeroNavDropdown({
   parentTitle,
   parentHref,
@@ -68,8 +70,8 @@ function HeroNavDropdown({
 }: {
   parentTitle: string;
   parentHref: string;
-  items: { title: string; href: string }[];
-  renderNavLink: (title: string, href: string, className: string) => ReactNode;
+  items: HeroDropItem[];
+  renderNavLink: (title: string, href: string, className: string, external?: boolean) => ReactNode;
 }) {
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
@@ -88,7 +90,7 @@ function HeroNavDropdown({
           setOpen((v) => !v);
         }}
         className={cn(
-          'flex items-center text-xs md:text-sm font-semibold text-white/90 hover:text-[#00a651] transition-colors drop-shadow-lg uppercase py-1.5',
+          'flex items-center py-1.5 text-xs font-semibold text-white/90 drop-shadow-lg transition-colors hover:text-[#00a651] md:text-sm',
           isMobile && open && 'text-[#00a651]'
         )}
         aria-expanded={isMobile ? open : undefined}
@@ -108,7 +110,8 @@ function HeroNavDropdown({
             {renderNavLink(
               drop.title,
               drop.href,
-              'block border-b border-gray-100 px-4 py-2 text-left text-xs font-medium text-[#1c355e] transition-colors last:border-0 hover:bg-[#f0f7f4] hover:text-[#00a651]'
+              'block border-b border-gray-100 px-4 py-2 text-left text-xs font-medium text-[#1c355e] transition-colors last:border-0 hover:bg-[#f0f7f4] hover:text-[#00a651]',
+              drop.external
             )}
           </div>
         ))}
@@ -151,34 +154,43 @@ const Index = () => {
     window.history.replaceState(null, '', href);
   };
 
-  const renderNavLink = (title: string, href: string, className: string) => (
-    <a href={href} onClick={handleSectionNavigation(href)} className={className}>
-      {title}
-    </a>
-  );
+  const renderNavLink = (title: string, href: string, className: string, external?: boolean) => {
+    if (external || href.startsWith('http')) {
+      return (
+        <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+          {title}
+        </a>
+      );
+    }
+    return (
+      <a href={href} onClick={handleSectionNavigation(href)} className={className}>
+        {title}
+      </a>
+    );
+  };
 
   return (
     <div id="top" className="-mx-4 flex flex-col sm:-mx-5 md:-mx-8">
-      <section className="relative overflow-hidden bg-[#1c355e] w-full min-h-[450px] md:min-h-[500px]">
+      <section className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 overflow-hidden bg-[#1c355e] min-h-[min(62vh,480px)] sm:min-h-[540px] md:min-h-[600px] lg:min-h-[min(68vh,680px)] xl:min-h-[min(72vh,760px)]">
         <Carousel
           opts={{ loop: true, align: 'start' }}
           plugins={[plugin.current]}
           onMouseEnter={() => plugin.current.stop()}
           onMouseLeave={() => plugin.current.reset()}
-          className="absolute inset-0 w-full h-full"
+          className="absolute inset-0 h-full min-h-[inherit] w-full"
         >
-          <CarouselContent className="-ml-0">
+          <CarouselContent className="flex h-full min-h-[inherit]">
             {heroSlides.map((slide, i) => (
-              <CarouselItem key={i} className="pl-0">
+              <CarouselItem key={i} className="h-full min-h-[inherit] basis-full">
                 <div
-                  className="relative w-full min-h-[450px] md:min-h-[500px] flex items-center justify-center bg-primary"
+                  className="relative flex h-full w-full min-w-0 min-h-[min(62vh,480px)] items-center justify-center overflow-hidden bg-primary sm:min-h-[540px] md:min-h-[600px] lg:min-h-[min(68vh,680px)] xl:min-h-[min(72vh,760px)]"
                   role="img"
                   aria-label={slide.title}
                 >
                   <img
                     src={slide.image}
                     alt=""
-                    className="absolute inset-0 h-full w-full object-cover object-center"
+                    className="absolute inset-0 z-0 m-0 h-full w-full object-cover object-center"
                   />
                 </div>
               </CarouselItem>
@@ -190,12 +202,12 @@ const Index = () => {
 
         <div className="absolute inset-0 bg-[#1c355e]/60 pointer-events-none" aria-hidden />
 
-        <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center px-3 pt-10 sm:px-6 sm:pt-8">
-          <h1 className="mt-[-20px] text-center font-heading text-2xl font-bold uppercase tracking-widest text-white drop-shadow-md sm:mt-[-30px] sm:text-4xl md:text-5xl lg:text-6xl">
-            POST GRADUATE STUDIES
+        <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center px-3 pt-28 sm:px-6 sm:pt-32 md:pt-40">
+          <h1 className="mt-4 text-center font-heading text-2xl font-bold tracking-tight text-white drop-shadow-md sm:mt-6 sm:text-4xl md:text-5xl lg:text-6xl">
+            Post Graduate Studies
           </h1>
 
-          <nav className="pointer-events-auto mt-5 flex max-w-6xl flex-row flex-wrap items-center justify-center gap-x-1 gap-y-2 sm:mt-6 sm:gap-x-2 md:gap-x-3">
+          <nav className="pointer-events-auto mt-8 flex max-w-6xl flex-row flex-wrap items-center justify-center gap-x-1 gap-y-2 sm:mt-10 sm:gap-x-2 md:gap-x-3">
             {heroNavItems.map((item, i) => (
               <div key={item.title} className="group relative flex flex-row items-center gap-1 sm:gap-2 md:gap-3">
                 {item.dropdown ? (
@@ -209,7 +221,7 @@ const Index = () => {
                   renderNavLink(
                     item.title,
                     item.href,
-                    'text-xs font-semibold uppercase text-white/90 drop-shadow-lg transition-colors hover:text-[#00a651] py-1.5 md:text-sm'
+                    'py-1.5 text-xs font-semibold text-white/90 drop-shadow-lg transition-colors hover:text-[#00a651] md:text-sm'
                   )
                 )}
 

@@ -35,6 +35,7 @@ import { toast } from "@/hooks/use-toast";
 import { Plus, Pencil, Trash2, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { PdfUploadField } from "@/components/admin/PdfUploadField";
+import { ConfirmDeleteDialog } from "@/components/admin/ConfirmDeleteDialog";
 
 type ScheduleRecord = {
   id: string;
@@ -62,6 +63,7 @@ const AdminSchedules = () => {
     category: "study",
     file_url: "",
   });
+  const [pendingDelete, setPendingDelete] = useState<ScheduleRecord | null>(null);
 
   const { data: records, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["admin-schedules"],
@@ -136,6 +138,7 @@ const AdminSchedules = () => {
       queryClient.invalidateQueries({ queryKey: ["admin-schedules"] });
       queryClient.invalidateQueries({ queryKey: ["admin-schedules-count"] });
       queryClient.invalidateQueries({ queryKey: ["schedules"] });
+      setPendingDelete(null);
       toast({ title: "Schedule deleted successfully" });
     },
     onError: (err: Error) => {
@@ -148,6 +151,26 @@ const AdminSchedules = () => {
 
   return (
     <div>
+      <ConfirmDeleteDialog
+        open={pendingDelete !== null}
+        onOpenChange={(o) => {
+          if (!o) setPendingDelete(null);
+        }}
+        title="Delete schedule?"
+        description="This removes the schedule from the public academic calendar section. This cannot be undone."
+        isDeleting={deleteMutation.isPending}
+        onConfirm={() => {
+          if (pendingDelete) deleteMutation.mutate(pendingDelete.id);
+        }}
+        preview={
+          pendingDelete ? (
+            <div className="rounded-md border border-border bg-muted/40 p-3 text-sm">
+              <p className="font-medium text-foreground">{pendingDelete.title}</p>
+              <p className="text-muted-foreground">{categoryLabels[pendingDelete.category] ?? pendingDelete.category}</p>
+            </div>
+          ) : null
+        }
+      />
       <PageHeader
         title="Schedules"
         description="Manage schedules. Create, edit, and delete schedule entries."
@@ -211,7 +234,7 @@ const AdminSchedules = () => {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 text-destructive hover:text-destructive"
-                        onClick={() => deleteMutation.mutate(row.id)}
+                        onClick={() => setPendingDelete(row)}
                         disabled={deleteMutation.isPending}
                       >
                         <Trash2 className="h-3.5 w-3.5" />

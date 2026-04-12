@@ -6,7 +6,6 @@ import Schedules from '@/pages/Schedules';
 import ResearchPlan from '@/pages/ResearchPlan';
 import ResearchDatabase from '@/pages/ResearchDatabase';
 import Templates from '@/pages/Templates';
-import Admissions from '@/pages/Admissions';
 import AdmissionHowToApply from '@/pages/AdmissionHowToApply';
 import AdmissionRequiredDocuments from '@/pages/AdmissionRequiredDocuments';
 import ArchivePage from '@/pages/ArchivePage';
@@ -27,6 +26,9 @@ function LandingSection({
   description,
   children,
   className,
+  headingClassName,
+  descriptionClassName,
+  hideHeader,
 }: {
   id: string;
   variant: 'plain' | 'tinted';
@@ -34,6 +36,10 @@ function LandingSection({
   description: string;
   children: ReactNode;
   className?: string;
+  headingClassName?: string;
+  descriptionClassName?: string;
+  /** When true, only the section shell and inner container render (used for custom in-component titles). */
+  hideHeader?: boolean;
 }) {
   return (
     <section
@@ -41,12 +47,14 @@ function LandingSection({
       className={cn(variant === 'tinted' ? 'landing-section-alt' : 'landing-section', className)}
     >
       <div className={inner}>
-        <header className="mb-8 md:mb-12">
-          <div className="max-w-3xl rounded-r-lg border-l-4 border-accent-green bg-header-navy/[0.03] py-4 pl-4 pr-3 dark:border-accent-green/80 dark:bg-muted/50 md:py-5 md:pl-6 md:pr-5">
-            <h2 className={h2}>{title}</h2>
-            <p className={lead}>{description}</p>
-          </div>
-        </header>
+        {!hideHeader && (
+          <header className="mb-8 md:mb-12">
+            <div className="max-w-3xl rounded-r-lg border-l-4 border-accent-green bg-header-navy/[0.03] py-4 pl-4 pr-3 dark:border-accent-green/80 dark:bg-muted/50 md:py-5 md:pl-6 md:pr-5">
+              <h2 className={cn(h2, headingClassName)}>{title}</h2>
+              <p className={cn(lead, descriptionClassName)}>{description}</p>
+            </div>
+          </header>
+        )}
         {children}
       </div>
     </section>
@@ -114,15 +122,6 @@ export function LandingEmbeds() {
 
       <div id="admission" className="scroll-mt-24 border-t-2 border-header-navy/10 dark:border-border">
         <LandingSection
-          id="degree-admissions"
-          variant="tinted"
-          title="Admissions hub"
-          description="Degree requirements, checklists, and programme brochures."
-        >
-          <Admissions embedded />
-        </LandingSection>
-
-        <LandingSection
           id="how-to-apply"
           variant="plain"
           title="How to apply"
@@ -155,6 +154,7 @@ export function LandingEmbeds() {
         variant="tinted"
         title="Events"
         description="Defences, seminars, and deadlines."
+        hideHeader
       >
         <Events embedded />
       </LandingSection>
@@ -164,6 +164,7 @@ export function LandingEmbeds() {
         variant="plain"
         title="News"
         description="Announcements from the postgraduate office."
+        hideHeader
       >
         <News embedded />
       </LandingSection>
@@ -177,15 +178,9 @@ export function LandingEmbeds() {
         <LandingServicesSection embedded />
       </LandingSection>
 
-      <LandingSection
-        id="contact"
-        variant="plain"
-        title="Contact us"
-        description="Send a message to the postgraduate office."
-        className="pb-20"
-      >
+      <section id="contact" className={cn("landing-section !py-0 scroll-mt-24")}>
         <Contact embedded />
-      </LandingSection>
+      </section>
     </>
   );
 }

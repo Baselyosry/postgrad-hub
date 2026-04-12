@@ -29,6 +29,7 @@ import { toast } from "@/hooks/use-toast";
 import { Plus, Pencil, Trash2, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { PdfUploadField } from "@/components/admin/PdfUploadField";
+import { ConfirmDeleteDialog } from "@/components/admin/ConfirmDeleteDialog";
 
 type Row = {
   id: string;
@@ -44,6 +45,7 @@ const AdminStudyPlans = () => {
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<Row | null>(null);
   const [form, setForm] = useState({ title: "", program: "", description: "", file_url: "" });
 
   const { data: records, isLoading, isError, error, refetch } = useQuery({
@@ -100,6 +102,7 @@ const AdminStudyPlans = () => {
       queryClient.invalidateQueries({ queryKey: ["admin-study-plans"] });
       queryClient.invalidateQueries({ queryKey: ["admin-study-plans-count"] });
       queryClient.invalidateQueries({ queryKey: ["public-study-plans"] });
+      setPendingDelete(null);
       toast({ title: "Deleted" });
     },
     onError: (err: Error) => toast({ title: "Delete failed", description: err.message, variant: "destructive" }),
@@ -110,6 +113,26 @@ const AdminStudyPlans = () => {
 
   return (
     <div>
+      <ConfirmDeleteDialog
+        open={pendingDelete !== null}
+        onOpenChange={(o) => {
+          if (!o) setPendingDelete(null);
+        }}
+        title="Delete study plan?"
+        description="This removes the study plan from the public landing page. This cannot be undone."
+        isDeleting={deleteMutation.isPending}
+        onConfirm={() => {
+          if (pendingDelete) deleteMutation.mutate(pendingDelete.id);
+        }}
+        preview={
+          pendingDelete ? (
+            <div className="rounded-md border border-border bg-muted/40 p-3 text-sm">
+              <p className="font-medium text-foreground">{pendingDelete.title}</p>
+              <p className="text-muted-foreground">{pendingDelete.program ?? "—"}</p>
+            </div>
+          ) : null
+        }
+      />
       <PageHeader title="Study plans" description="Manage postgraduate study plan documents and summaries." />
       <div className="mb-4">
         <Button
@@ -177,7 +200,7 @@ const AdminStudyPlans = () => {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 text-destructive"
-                        onClick={() => deleteMutation.mutate(row.id)}
+                        onClick={() => setPendingDelete(row)}
                         disabled={deleteMutation.isPending}
                       >
                         <Trash2 className="h-3.5 w-3.5" />
