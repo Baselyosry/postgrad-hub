@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { RequireAdmin } from "@/components/layout/RequireAdmin";
 import { lazy, Suspense } from "react";
 import { SkeletonCard } from "@/components/SkeletonCard";
 
@@ -54,20 +55,22 @@ const App = () => (
                     <Route path="/" element={<Index />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<SignUp />} />
-                    <Route path="/admin" element={<Admin />} />
-                    <Route path="/admin/archive" element={<AdminArchive />} />
-                    <Route path="/admin/schedules" element={<AdminSchedules />} />
-                    <Route path="/admin/templates" element={<AdminTemplates />} />
-                    <Route path="/admin/inquiries" element={<AdminInquiries />} />
-                    <Route path="/admin/admissions" element={<AdminAdmissions />} />
-                    <Route path="/admin/staff-cv" element={<AdminStaffCv />} />
-                    <Route path="/admin/study-plans" element={<AdminStudyPlans />} />
-                    <Route path="/admin/research-plans" element={<AdminResearchPlans />} />
-                    <Route path="/admin/research-database" element={<AdminResearchDatabase />} />
-                    <Route path="/admin/admission-docs" element={<AdminAdmissionDocs />} />
-                    <Route path="/admin/news" element={<AdminNews />} />
-                    <Route path="/admin/events" element={<AdminEvents />} />
-                    <Route path="/admin/services" element={<AdminServices />} />
+                    <Route element={<RequireAdmin />}>
+                      <Route path="/admin" element={<Admin />} />
+                      <Route path="/admin/archive" element={<AdminArchive />} />
+                      <Route path="/admin/schedules" element={<AdminSchedules />} />
+                      <Route path="/admin/templates" element={<AdminTemplates />} />
+                      <Route path="/admin/inquiries" element={<AdminInquiries />} />
+                      <Route path="/admin/admissions" element={<AdminAdmissions />} />
+                      <Route path="/admin/staff-cv" element={<AdminStaffCv />} />
+                      <Route path="/admin/study-plans" element={<AdminStudyPlans />} />
+                      <Route path="/admin/research-plans" element={<AdminResearchPlans />} />
+                      <Route path="/admin/research-database" element={<AdminResearchDatabase />} />
+                      <Route path="/admin/admission-docs" element={<AdminAdmissionDocs />} />
+                      <Route path="/admin/news" element={<AdminNews />} />
+                      <Route path="/admin/events" element={<AdminEvents />} />
+                      <Route path="/admin/services" element={<AdminServices />} />
+                    </Route>
                     <Route path="/dashboard" element={<StudentDashboard />} />
                     <Route path="/submit" element={<SubmitApplication />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
