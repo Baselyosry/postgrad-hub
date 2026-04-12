@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion';
-import { FileText, ExternalLink } from 'lucide-react';
+import { FileText, ExternalLink, ChevronDown } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 interface ResearchCardProps {
   title: string;
@@ -38,7 +39,15 @@ export function ResearchCard({ title, author, year, type, department, abstract, 
           <p className="text-sm font-medium text-text-dark">{author} · {year}</p>
           {department && <p className="text-xs text-text-light">{department}</p>}
           {abstract && (
-            <p className="line-clamp-3 text-sm text-text-light">{abstract}</p>
+            <Collapsible className="rounded-md border border-border/50 bg-muted/15 px-2 py-1.5 dark:bg-muted/20">
+              <CollapsibleTrigger className="group flex w-full items-center justify-between gap-2 text-left text-sm font-medium text-primary">
+                <span>Abstract</span>
+                <ChevronDown className="h-4 w-4 shrink-0 transition-transform group-data-[state=open]:rotate-180" />
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-text-light">{abstract}</p>
+              </CollapsibleContent>
+            </Collapsible>
           )}
           {fileUrl && (
             <Button variant="outline" size="sm" className="mt-2 gap-2 border-primary/30 text-primary hover:bg-primary/5 hover:text-primary" asChild>

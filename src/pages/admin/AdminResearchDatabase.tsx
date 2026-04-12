@@ -22,13 +22,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SkeletonCard } from "@/components/SkeletonCard";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { getErrorMessage } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { Plus, Pencil, Trash2, AlertCircle } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { PdfUploadField } from "@/components/admin/PdfUploadField";
+import { ConfirmDeleteDialog } from "@/components/admin/ConfirmDeleteDialog";
+import { useDebounce } from "@/hooks/useDebounce";
 
 type Row = {
   id: string;
@@ -41,11 +44,22 @@ type Row = {
   pdf_url: string | null;
 };
 
+function rowMatchesSearch(row: Row, q: string) {
+  if (!q.trim()) return true;
+  const n = q.trim().toLowerCase();
+  const hay = [row.title, row.authors, row.keywords, row.abstract].filter(Boolean).join(" ").toLowerCase();
+  return hay.includes(n);
+}
+
 const AdminResearchDatabase = () => {
   const { isAdmin, loading } = useAuth();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<Row | null>(null);
+  const [search, setSearch] = useState("");
+  const [yearFilter, setYearFilter] = useState<string>("all");
+  const debouncedSearch = useDebounce(search, 300);
   const [form, setForm] = useState({
     title: "",
     authors: "",
@@ -69,6 +83,22 @@ const AdminResearchDatabase = () => {
     },
     enabled: isAdmin,
   });
+
+  const yearOptions = useMemo(() => {
+    const ys = new Set<number>();
+    for (const row of records ?? []) {
+      if (row.year != null) ys.add(row.year);
+    }
+    return [...ys].sort((a, b) => b - a);
+  }, [records]);
+
+  const filteredRows = useMemo(() => {
+    const rows = records ?? [];
+    return rows.filter((row) => {
+      if (yearFilter !== "all" && String(row.year ?? "") !== yearFilter) return false;
+      return rowMatchesSearch(row, debouncedSearch);
+    });
+  }, [records, debouncedSearch, yearFilter]);
 
   const reset = () => {
     setForm({ title: "", authors: "", year: "", keywords: "", abstract: "", url: "", pdf_url: "" });
@@ -115,6 +145,7 @@ const AdminResearchDatabase = () => {
       queryClient.invalidateQueries({ queryKey: ["admin-research-database"] });
       queryClient.invalidateQueries({ queryKey: ["admin-research-database-count"] });
       queryClient.invalidateQueries({ queryKey: ["public-research-database"] });
+      setPendingDelete(null);
       toast({ title: "Deleted" });
     },
     onError: (err: Error) => toast({ title: "Delete failed", description: err.message, variant: "destructive" }),
@@ -125,8 +156,30 @@ const AdminResearchDatabase = () => {
 
   return (
     <div>
-      <PageHeader title="Research database" description="Curated research entries for the public research database page." />
-      <div className="mb-4">
+      <ConfirmDeleteDialog
+        open={pendingDelete !== null}
+        onOpenChange={(o) => {
+          if (!o) setPendingDelete(null);
+        }}
+        title="Delete research database entry?"
+        description="This permanently removes the entry from the public research database. This cannot be undone."
+        isDeleting={deleteMutation.isPending}
+        onConfirm={() => {
+          if (pendingDelete) deleteMutation.mutate(pendingDelete.id);
+        }}
+        preview={
+          pendingDelete ? (
+            <div className="rounded-md border border-border bg-muted/40 p-3 text-sm">
+              <p className="font-medium text-foreground">{pendingDelete.title}</p>
+              {pendingDelete.year != null && (
+                <p className="text-muted-foreground tabular-nums">{pendingDelete.year}</p>
+              )}
+            </div>
+          ) : null
+        }
+      />
+      <PageHeader title="Research database" description="Curated research entries for the public research database section (same search and year filters as the landing page)." />
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
         <Button
           onClick={() => {
             reset();
@@ -137,6 +190,26 @@ const AdminResearchDatabase = () => {
           <Plus className="h-4 w-4" />
           Add entry
         </Button>
+        <Input
+          placeholder="Search title, authors, keywords…"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="max-w-md"
+          aria-label="Filter table by search"
+        />
+        <Select value={yearFilter} onValueChange={setYearFilter}>
+          <SelectTrigger className="w-full sm:w-[200px]" aria-label="Filter by year">
+            <SelectValue placeholder="Filter by year" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All years</SelectItem>
+            {yearOptions.map((y) => (
+              <SelectItem key={y} value={String(y)}>
+                {y}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
       {isError && (
         <Alert variant="destructive" className="mb-4">
@@ -155,6 +228,8 @@ const AdminResearchDatabase = () => {
           <div className="p-8"><SkeletonCard /></div>
         ) : !records?.length ? (
           <p className="p-8 text-sm text-muted-foreground">No entries yet.</p>
+        ) : !filteredRows.length ? (
+          <p className="p-8 text-sm text-muted-foreground">No entries match your search or filter.</p>
         ) : (
           <Table>
             <TableHeader>
@@ -166,7 +241,7 @@ const AdminResearchDatabase = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {records.map((row) => (
+              {filteredRows.map((row) => (
                 <TableRow key={row.id}>
                   <TableCell className="font-medium">{row.title}</TableCell>
                   <TableCell>{row.year ?? "—"}</TableCell>
@@ -197,7 +272,7 @@ const AdminResearchDatabase = () => {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 text-destructive"
-                        onClick={() => deleteMutation.mutate(row.id)}
+                        onClick={() => setPendingDelete(row)}
                         disabled={deleteMutation.isPending}
                       >
                         <Trash2 className="h-3.5 w-3.5" />
