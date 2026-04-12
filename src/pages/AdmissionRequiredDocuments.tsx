@@ -35,14 +35,19 @@ const AdmissionRequiredDocuments = ({ embedded = false }: { embedded?: boolean }
   return (
     <div>
       {!embedded && <PageHeader title="Required documents" description="Documents you need before applying." />}
-      <p className="text-sm text-muted-foreground mb-6">
+      <p className="mb-6 text-sm text-muted-foreground">
         Start with{" "}
-        <a href="#how-to-apply" className="text-primary font-medium hover:underline">
+        <a href="#how-to-apply" className="font-medium text-primary hover:underline">
           how to apply
         </a>{" "}
-        or browse the{" "}
-        <a href="#degree-admissions" className="text-primary font-medium hover:underline">
-          admissions hub
+        or the{" "}
+        <a
+          href="https://admission.must.edu.eg/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-medium text-primary hover:underline"
+        >
+          university admission portal
         </a>
         .
       </p>
@@ -57,10 +62,15 @@ const AdmissionRequiredDocuments = ({ embedded = false }: { embedded?: boolean }
       ) : !data?.length ? (
         <p className="text-sm text-muted-foreground">
           Content will appear here once administrators add document checklist blocks. The{" "}
-          <a href="#degree-admissions" className="text-primary hover:underline">
-            admissions hub
+          <a
+            href="https://admission.must.edu.eg/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:underline"
+          >
+            university admission portal
           </a>{" "}
-          includes example checklists per degree type.
+          includes official checklists per degree type.
         </p>
       ) : (
         <div className="space-y-4">
