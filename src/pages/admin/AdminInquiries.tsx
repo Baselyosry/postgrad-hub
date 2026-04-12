@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 import { PageHeader } from "@/components/PageHeader";
@@ -15,7 +16,9 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { SkeletonCard } from "@/components/SkeletonCard";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ConfirmDeleteDialog } from "@/components/admin/ConfirmDeleteDialog";
 import { getErrorMessage } from "@/lib/utils";
+import { secureDeleteInquiryRecord } from "@/lib/secureInquiryDeletion";
 import { toast } from "@/hooks/use-toast";
 import { Check, Trash2, AlertCircle } from "lucide-react";
 
@@ -23,14 +26,17 @@ type InquiryRecord = {
   id: string;
   name: string;
   email: string;
+  phone_number: string | null;
+  subject: string | null;
   message: string;
-  is_read: boolean;
+  is_read: boolean | null;
   created_at: string;
 };
 
 const AdminInquiries = () => {
   const { isAdmin, loading } = useAuth();
   const queryClient = useQueryClient();
+  const [pendingDelete, setPendingDelete] = useState<InquiryRecord | null>(null);
 
   const { data: records, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["admin-inquiries"],
@@ -64,11 +70,11 @@ const AdminInquiries = () => {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("inquiries").delete().eq("id", id);
-      if (error) throw error;
+      await secureDeleteInquiryRecord(supabase, id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-inquiries"] });
+      setPendingDelete(null);
       toast({ title: "Inquiry deleted successfully" });
     },
     onError: (err: Error) => {
@@ -84,6 +90,30 @@ const AdminInquiries = () => {
       <PageHeader
         title="Contact Inquiries"
         description="View and manage contact form submissions. Mark as read or delete."
+      />
+
+      <ConfirmDeleteDialog
+        open={pendingDelete !== null}
+        onOpenChange={(open) => {
+          if (!open) setPendingDelete(null);
+        }}
+        title="Delete inquiry record?"
+        description="This permanently removes the inquiry from the database, including the sender's email address and message. This action cannot be undone."
+        confirmLabel="Delete record"
+        isDeleting={deleteMutation.isPending}
+        onConfirm={() => {
+          if (pendingDelete) deleteMutation.mutate(pendingDelete.id);
+        }}
+        preview={
+          pendingDelete ? (
+            <div className="rounded-md border border-border bg-muted/40 p-3 text-sm text-foreground">
+              <p className="font-medium">{pendingDelete.name}</p>
+              <p className="text-muted-foreground">{pendingDelete.email}</p>
+              {pendingDelete.subject && <p className="mt-1 text-muted-foreground">Subject: {pendingDelete.subject}</p>}
+              {pendingDelete.phone_number && <p className="text-muted-foreground">Phone: {pendingDelete.phone_number}</p>}
+            </div>
+          ) : null
+        }
       />
 
       {isError && (
@@ -110,6 +140,8 @@ const AdminInquiries = () => {
               <TableRow>
                 <TableHead>Name</TableHead>
                 <TableHead>Email</TableHead>
+                <TableHead>Phone</TableHead>
+                <TableHead>Subject</TableHead>
                 <TableHead>Message</TableHead>
                 <TableHead>Date</TableHead>
                 <TableHead>Status</TableHead>
@@ -125,7 +157,13 @@ const AdminInquiries = () => {
                       {row.email}
                     </a>
                   </TableCell>
-                  <TableCell className="max-w-[280px] truncate" title={row.message}>
+                  <TableCell className="max-w-[120px] truncate text-sm text-muted-foreground" title={row.phone_number ?? ""}>
+                    {row.phone_number ?? "—"}
+                  </TableCell>
+                  <TableCell className="max-w-[140px] truncate text-sm" title={row.subject ?? ""}>
+                    {row.subject ?? "—"}
+                  </TableCell>
+                  <TableCell className="max-w-[220px] truncate" title={row.message}>
                     {row.message}
                   </TableCell>
                   <TableCell className="text-muted-foreground text-sm">
@@ -154,8 +192,9 @@ const AdminInquiries = () => {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 text-destructive hover:text-destructive"
-                        onClick={() => deleteMutation.mutate(row.id)}
+                        onClick={() => setPendingDelete(row)}
                         disabled={deleteMutation.isPending}
+                        aria-label="Delete inquiry"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </Button>
