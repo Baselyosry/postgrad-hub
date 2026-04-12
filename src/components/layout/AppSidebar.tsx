@@ -34,6 +34,7 @@ const adminOverview: NavEntry[] = [
   { title: 'Admin Dashboard', url: '/admin', icon: Shield },
 ];
 
+/** Matches landing “Academic Stuff” order: Staff CV → Study plan → Schedules → Research plan → Research database → Templates; thesis archive follows templates on the hub. */
 const adminAcademics: NavEntry[] = [
   { title: 'Staff CV', url: '/admin/staff-cv', icon: Users },
   { title: 'Study plans', url: '/admin/study-plans', icon: ScrollText },
@@ -44,16 +45,23 @@ const adminAcademics: NavEntry[] = [
   { title: 'Thesis archive', url: '/admin/archive', icon: Archive },
 ];
 
+/** Public hub order after Admission: News → Events → Services */
+const adminContent: NavEntry[] = [
+  { title: 'News', url: '/admin/news', icon: Newspaper },
+  { title: 'Events', url: '/admin/events', icon: PartyPopper },
+];
+
+const adminServicesNav: NavEntry[] = [
+  { title: 'Services (iThenticate / EKB)', url: '/admin/services', icon: Wrench },
+];
+
+const adminInbox: NavEntry[] = [
+  { title: 'Contact inquiries', url: '/admin/inquiries', icon: Mail },
+];
+
 const adminAdmission: NavEntry[] = [
   { title: 'Degree requirements', url: '/admin/admissions', icon: BookOpen },
   { title: 'Admission pages', url: '/admin/admission-docs', icon: FileText },
-];
-
-const adminEngagement: NavEntry[] = [
-  { title: 'News', url: '/admin/news', icon: Newspaper },
-  { title: 'Events', url: '/admin/events', icon: PartyPopper },
-  { title: 'Services (iThenticate / EKB)', url: '/admin/services', icon: Wrench },
-  { title: 'Contact inquiries', url: '/admin/inquiries', icon: Mail },
 ];
 
 const studentNav = [
@@ -96,7 +104,10 @@ export function AppSidebar() {
   );
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar
+      collapsible="icon"
+      className="border-r border-gray-200 bg-gray-50 text-sidebar-foreground dark:border-sidebar-border dark:bg-sidebar"
+    >
       <SidebarHeader className="border-b border-sidebar-border p-4">
         <div className="flex items-center gap-3">
           <img src="/logo2.png" alt="MUST" className="h-8 w-8 shrink-0 object-contain" />
@@ -117,7 +128,9 @@ export function AppSidebar() {
             {renderGroup('Overview', adminOverview)}
             {renderGroup('Academics', adminAcademics)}
             {renderGroup('Admission', adminAdmission)}
-            {renderGroup('Engagement', adminEngagement)}
+            {renderGroup('Content', adminContent)}
+            {renderGroup('Services', adminServicesNav)}
+            {renderGroup('Inbox', adminInbox)}
           </>
         )}
 
