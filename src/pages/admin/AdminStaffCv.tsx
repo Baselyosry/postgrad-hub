@@ -29,6 +29,7 @@ import { toast } from "@/hooks/use-toast";
 import { Plus, Pencil, Trash2, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { PdfUploadField } from "@/components/admin/PdfUploadField";
+import { ConfirmDeleteDialog } from "@/components/admin/ConfirmDeleteDialog";
 
 type Personal = { email?: string; phone?: string; academic_title?: string; bio?: string };
 type Qual = { degree: string; institution: string; year: string };
@@ -112,6 +113,7 @@ const AdminStaffCv = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<StaffCvFormState>(emptyForm);
+  const [pendingDelete, setPendingDelete] = useState<StaffRow | null>(null);
 
   const { data: records, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["admin-staff-cv"],
@@ -241,6 +243,7 @@ const AdminStaffCv = () => {
       queryClient.invalidateQueries({ queryKey: ["admin-staff-cv"] });
       queryClient.invalidateQueries({ queryKey: ["admin-staff-cv-count"] });
       queryClient.invalidateQueries({ queryKey: ["public-staff-cv"] });
+      setPendingDelete(null);
       toast({ title: "Deleted" });
     },
     onError: (err: unknown) => {
@@ -253,9 +256,29 @@ const AdminStaffCv = () => {
 
   return (
     <div>
+      <ConfirmDeleteDialog
+        open={pendingDelete !== null}
+        onOpenChange={(open) => {
+          if (!open) setPendingDelete(null);
+        }}
+        title="Delete staff CV?"
+        description="This removes the public profile, contact fields, qualifications, experience, and research direction for this staff member. This cannot be undone."
+        isDeleting={deleteMutation.isPending}
+        onConfirm={() => {
+          if (pendingDelete) deleteMutation.mutate(pendingDelete.id);
+        }}
+        preview={
+          pendingDelete ? (
+            <div className="rounded-md border border-border bg-muted/40 p-3 text-sm">
+              <p className="font-medium text-foreground">{pendingDelete.display_name}</p>
+              <p className="text-muted-foreground">{pendingDelete.department ?? "No department"}</p>
+            </div>
+          ) : null
+        }
+      />
       <PageHeader
         title="Staff CV"
-        description="Manage functional CVs: personal data, qualifications, experience, and skills."
+        description="Manage functional CVs: bio, qualifications, experience, and research direction (plus PDFs)."
       />
       <div className="mb-4">
         <Button onClick={openCreate} className="gap-2">
@@ -307,7 +330,7 @@ const AdminStaffCv = () => {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 text-destructive"
-                        onClick={() => deleteMutation.mutate(row.id)}
+                        onClick={() => setPendingDelete(row)}
                         disabled={deleteMutation.isPending}
                       >
                         <Trash2 className="h-3.5 w-3.5" />
@@ -399,7 +422,8 @@ const AdminStaffCv = () => {
             </div>
 
             <div className="rounded-lg border p-4 space-y-3">
-              <p className="text-sm font-semibold">Personal data</p>
+              <p className="font-heading text-sm font-bold uppercase tracking-wide text-primary">Bio & contact</p>
+              <p className="text-xs text-muted-foreground">Public profile: academic title, contact details, and biography.</p>
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label>Academic title</Label>
@@ -600,7 +624,7 @@ const AdminStaffCv = () => {
 
             <div className="rounded-lg border p-4 space-y-2">
               <div className="flex justify-between items-center">
-                <p className="text-sm font-semibold">Skills</p>
+                <p className="font-heading text-sm font-bold uppercase tracking-wide text-primary">Research direction</p>
                 <Button
                   type="button"
                   size="sm"
@@ -620,7 +644,7 @@ const AdminStaffCv = () => {
                         skills: f.skills.map((x, j) => (j === i ? e.target.value : x)),
                       }))
                     }
-                    placeholder="Skill"
+                    placeholder="Research topic or keyword"
                   />
                   <Button
                     type="button"
