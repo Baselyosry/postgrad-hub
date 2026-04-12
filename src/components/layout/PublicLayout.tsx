@@ -83,7 +83,9 @@ const NAV: NavItem[] = [
     drop: [
       { title: 'Undergraduate Studies', href: 'https://must.edu.eg/undergraduate/' },
       { title: 'Post-Graduate Program', href: '/' },
-      { title: 'Academic Calendar', href: '/#schedules' },
+      { title: 'Academic calendar (PG hub)', href: '/#schedules' },
+      { title: 'Research database (PG hub)', href: '/#research-database' },
+      { title: 'Thesis archive (PG hub)', href: '/#archive' },
       { title: 'International Students Affairs Sector', href: 'https://must.edu.eg/international-students/' },
     ],
   },
@@ -94,6 +96,8 @@ const NAV: NavItem[] = [
   {
     title: 'MUST BUZZ',
     drop: [
+      { title: 'Postgraduate news (this portal)', href: '/#news' },
+      { title: 'Postgraduate events (this portal)', href: '/#events' },
       { title: 'MUST Events', href: 'https://must.edu.eg/events/' },
       { title: 'MUST News', href: 'https://must.edu.eg/news/' },
       { title: 'MUST Blogs', href: 'https://must.edu.eg/blogs/' },
@@ -372,7 +376,9 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
         )}
       >
         <div className={cn('flex items-center justify-between border-b px-5 py-4', barBorder)}>
-          <img src="/logo2.png" alt="MUST" className="h-9 w-auto" />
+          <Link to="/" onClick={onClose} className="shrink-0">
+            <img src="/logo2.png" alt="MUST" className="h-9 w-auto" />
+          </Link>
           <button onClick={onClose} className="text-white/70 hover:text-white">
             <X size={22} />
           </button>
@@ -505,8 +511,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
       {/* ── Navbar ───────────────────────────────────────────── */}
       <header className={cn('sticky top-0 z-50 border-b shadow-lg dark:shadow-black/40', barBg, barBorder)}>
         <div className="mx-auto flex min-h-[64px] w-full max-w-[1920px] items-center gap-2 px-3 py-2 sm:min-h-[80px] sm:gap-3 sm:px-4 md:min-h-[88px] md:py-2.5 md:px-5 lg:min-h-[96px] lg:px-6 xl:min-h-[100px] xl:px-8">
-          {/* Logo — scales with viewport so the bar does not overflow on laptops */}
-          <Link to="/" className="shrink-0">
+          <Link to="/" className="shrink-0" aria-label="MUST home">
             <img
               src="/logo2.png"
               alt="MUST"
