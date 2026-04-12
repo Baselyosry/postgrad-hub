@@ -6,7 +6,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="icon" href="/logo2.png" type="image/png" />
@@ -26,6 +26,16 @@
   <body>
     <script>
       (function () {
+        try {
+          if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+          var nav = performance.getEntriesByType && performance.getEntriesByType("navigation")[0];
+          if (nav && nav.type === "reload") {
+            window.scrollTo(0, 0);
+            if (location.hash) {
+              history.replaceState(null, "", location.pathname + location.search);
+            }
+          }
+        } catch (e) {}
         try {
           var k = "postgrad-hub-ui-theme";
           var t = localStorage.getItem(k);
