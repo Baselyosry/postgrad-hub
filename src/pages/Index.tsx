@@ -1,10 +1,11 @@
-import { useRef, useEffect, useState, type MouseEvent, type ReactNode } from 'react';
+import { useEffect, useState, useMemo, type MouseEvent, type ReactNode } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { isSupabaseConfigured } from '@/integrations/supabase/client';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { AlertCircle, ArrowRight } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import {
   Carousel,
   CarouselContent,
@@ -60,6 +61,17 @@ const heroNavItems = [
   { title: 'Contact Us', href: '#contact' },
 ];
 
+/** Frosted pill controls over the hero carousel (matches glass nav reference). */
+const heroNavPill =
+  'inline-flex items-center justify-center whitespace-nowrap rounded-full bg-black/40 px-4 py-2 text-xs font-medium text-white shadow-sm backdrop-blur-md transition-[background-color,color] hover:bg-black/55 hover:text-[#00a651] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/35 md:px-5 md:text-sm';
+
+/** Hero dropdown: same glass language as pills; green accent + hovers for MUST identity. */
+const heroDropdownPanel =
+  'flex max-h-[min(70vh,420px)] flex-col gap-1 overflow-y-auto overscroll-contain rounded-2xl border border-white/15 bg-black/45 p-1.5 shadow-xl shadow-black/40 backdrop-blur-md border-t-[3px] border-t-[#00a651]';
+
+const heroDropdownLink =
+  'block rounded-full px-4 py-2 text-left text-xs font-medium text-white/95 shadow-sm transition-[background-color,color] hover:bg-[#00a651]/25 hover:text-[#00a651] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a651]/45';
+
 type HeroDropItem = { title: string; href: string; external?: boolean };
 
 function HeroNavDropdown({
@@ -81,7 +93,7 @@ function HeroNavDropdown({
   }, [isMobile]);
 
   return (
-    <div className="relative">
+    <div className="group relative">
       <a
         href={parentHref}
         onClick={(e) => {
@@ -89,40 +101,57 @@ function HeroNavDropdown({
           e.preventDefault();
           setOpen((v) => !v);
         }}
-        className={cn(
-          'flex items-center py-1.5 text-xs font-semibold text-white/90 drop-shadow-lg transition-colors hover:text-[#00a651] md:text-sm',
-          isMobile && open && 'text-[#00a651]'
-        )}
+        className={cn(heroNavPill, isMobile && open && 'bg-black/55 text-[#00a651]')}
         aria-expanded={isMobile ? open : undefined}
       >
         {parentTitle}
       </a>
       <div
         className={cn(
-          'absolute left-1/2 top-full z-50 mt-1 min-w-[min(100vw-2rem,280px)] max-w-[min(100vw-2rem,320px)] -translate-x-1/2 flex-col rounded border-t-2 border-[#00a651] bg-white py-1.5 text-[#1c355e] shadow-xl',
+          'absolute left-1/2 top-full z-[70] min-w-[min(100vw-2rem,280px)] max-w-[min(100vw-2rem,320px)] -translate-x-1/2',
+          // Invisible strip above the panel so pointer can move from pill → menu without closing (md+ hover)
+          'before:pointer-events-auto before:absolute before:bottom-full before:left-1/2 before:h-3 before:w-[min(100vw-2rem,320px)] before:-translate-x-1/2 before:content-[""]',
           'animate-in fade-in zoom-in-95 duration-200',
-          // Touch / narrow: toggle; md+: hover only
-          isMobile ? (open ? 'flex' : 'hidden') : 'hidden md:group-hover:flex'
+          isMobile ? (open ? 'block' : 'hidden') : 'hidden md:group-hover:block'
         )}
       >
-        {items.map((drop) => (
-          <div key={drop.title} onClick={() => isMobile && setOpen(false)}>
-            {renderNavLink(
-              drop.title,
-              drop.href,
-              'block border-b border-gray-100 px-4 py-2 text-left text-xs font-medium text-[#1c355e] transition-colors last:border-0 hover:bg-[#f0f7f4] hover:text-[#00a651]',
-              drop.external
-            )}
-          </div>
-        ))}
+        <div className={heroDropdownPanel}>
+          {items.map((drop) => (
+            <div key={drop.title} onClick={() => isMobile && setOpen(false)}>
+              {renderNavLink(drop.title, drop.href, heroDropdownLink, drop.external)}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
+const easeOut = [0.22, 1, 0.36, 1] as const;
+
 const Index = () => {
-  const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
   const location = useLocation();
+  const reduceMotion = useReducedMotion();
+
+  /** Autoplay uses animated slides (`jump: false`); delay leaves time for glide + viewing each image. */
+  const heroAutoplay = useMemo(
+    () =>
+      Autoplay({
+        delay: 5500,
+        stopOnInteraction: true,
+      }),
+    []
+  );
+
+  const carouselOpts = useMemo(
+    () => ({
+      loop: true,
+      align: 'start' as const,
+      /** Embla scroll damping — higher = slower/smoother glide between slides (not milliseconds). */
+      duration: reduceMotion === true ? 0 : 52,
+    }),
+    [reduceMotion]
+  );
 
   useEffect(() => {
     const raw = location.hash.replace(/^#/, '');
@@ -170,18 +199,18 @@ const Index = () => {
   };
 
   return (
-    <div id="top" className="-mx-4 flex flex-col sm:-mx-5 md:-mx-8">
-      <section className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 overflow-hidden bg-[#1c355e] min-h-[min(62vh,480px)] sm:min-h-[540px] md:min-h-[600px] lg:min-h-[min(68vh,680px)] xl:min-h-[min(72vh,760px)]">
+    <div id="top" className="-mx-4 flex flex-col overflow-x-hidden sm:-mx-5 md:-mx-8">
+      <section className="relative z-30 left-1/2 w-screen max-w-[100vw] -translate-x-1/2 bg-[#1c355e] min-h-[min(62vh,480px)] sm:min-h-[540px] md:min-h-[600px] lg:min-h-[min(68vh,680px)] xl:min-h-[min(72vh,760px)]">
         <Carousel
-          opts={{ loop: true, align: 'start' }}
-          plugins={[plugin.current]}
-          onMouseEnter={() => plugin.current.stop()}
-          onMouseLeave={() => plugin.current.reset()}
-          className="absolute inset-0 h-full min-h-[inherit] w-full"
+          opts={carouselOpts}
+          plugins={[heroAutoplay]}
+          onMouseEnter={() => heroAutoplay.stop()}
+          onMouseLeave={() => heroAutoplay.reset()}
+          className="absolute inset-0 h-full min-h-[inherit] w-full overflow-hidden"
         >
-          <CarouselContent className="flex h-full min-h-[inherit]">
+          <CarouselContent className="flex h-full min-h-[inherit] will-change-transform">
             {heroSlides.map((slide, i) => (
-              <CarouselItem key={i} className="h-full min-h-[inherit] basis-full">
+              <CarouselItem key={slide.image} className="h-full min-h-[inherit] basis-full">
                 <div
                   className="relative flex h-full w-full min-w-0 min-h-[min(62vh,480px)] items-center justify-center overflow-hidden bg-primary sm:min-h-[540px] md:min-h-[600px] lg:min-h-[min(68vh,680px)] xl:min-h-[min(72vh,760px)]"
                   role="img"
@@ -203,13 +232,29 @@ const Index = () => {
         <div className="absolute inset-0 bg-[#1c355e]/60 pointer-events-none" aria-hidden />
 
         <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center px-3 pt-28 sm:px-6 sm:pt-32 md:pt-40">
-          <h1 className="mt-4 text-center font-heading text-2xl font-bold tracking-tight text-white drop-shadow-md sm:mt-6 sm:text-4xl md:text-5xl lg:text-6xl">
+          <motion.h1
+            className="mt-4 text-center font-heading text-2xl font-bold tracking-tight text-white drop-shadow-md sm:mt-6 sm:text-4xl md:text-5xl lg:text-6xl"
+            initial={reduceMotion === true ? { opacity: 1, y: 0 } : { opacity: 0, y: 22 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.45 }}
+            transition={
+              reduceMotion === true ? { duration: 0 } : { duration: 0.55, ease: easeOut, delay: 0.05 }
+            }
+          >
             Post Graduate Studies
-          </h1>
+          </motion.h1>
 
-          <nav className="pointer-events-auto mt-8 flex max-w-6xl flex-row flex-wrap items-center justify-center gap-x-1 gap-y-2 sm:mt-10 sm:gap-x-2 md:gap-x-3">
-            {heroNavItems.map((item, i) => (
-              <div key={item.title} className="group relative flex flex-row items-center gap-1 sm:gap-2 md:gap-3">
+          <motion.nav
+            className="pointer-events-auto mt-8 flex max-w-6xl flex-row flex-wrap items-center justify-center gap-2 sm:mt-10 sm:gap-2.5 md:gap-3"
+            initial={reduceMotion === true ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.35 }}
+            transition={
+              reduceMotion === true ? { duration: 0 } : { duration: 0.5, ease: easeOut, delay: 0.18 }
+            }
+          >
+            {heroNavItems.map((item) => (
+              <div key={item.title} className="relative">
                 {item.dropdown ? (
                   <HeroNavDropdown
                     parentTitle={item.title}
@@ -218,24 +263,11 @@ const Index = () => {
                     renderNavLink={renderNavLink}
                   />
                 ) : (
-                  renderNavLink(
-                    item.title,
-                    item.href,
-                    'py-1.5 text-xs font-semibold text-white/90 drop-shadow-lg transition-colors hover:text-[#00a651] md:text-sm'
-                  )
-                )}
-
-                {i < heroNavItems.length - 1 && (
-                  <ArrowRight
-                    className="hidden shrink-0 text-[#00a651] drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] sm:block"
-                    size={14}
-                    strokeWidth={2.5}
-                    aria-hidden
-                  />
+                  renderNavLink(item.title, item.href, heroNavPill)
                 )}
               </div>
             ))}
-          </nav>
+          </motion.nav>
         </div>
       </section>
 

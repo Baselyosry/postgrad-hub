@@ -275,7 +275,7 @@ function DesktopNavItem({ item }: { item: NavItem }) {
     return (
       <AnyLink
         href={item.href}
-        className="flex items-center gap-1 whitespace-nowrap px-2 py-1.5 text-xs font-semibold text-white transition-colors hover:text-[#00a651] dark:hover:text-accent-green xl:px-2.5 xl:py-2 xl:text-sm 2xl:px-3"
+        className="flex items-center gap-1 whitespace-nowrap px-1.5 py-1.5 text-xs font-semibold text-white/90 drop-shadow-lg transition-colors hover:text-[#00a651] dark:hover:text-accent-green md:px-2 md:text-sm"
       >
         {item.title}
       </AnyLink>
@@ -292,7 +292,7 @@ function DesktopNavItem({ item }: { item: NavItem }) {
       <button
         type="button"
         className={cn(
-          'flex items-center gap-1 whitespace-nowrap px-2 py-1.5 text-xs font-semibold text-white transition-colors hover:text-[#00a651] dark:hover:text-accent-green xl:px-2.5 xl:py-2 xl:text-sm 2xl:px-3',
+          'flex items-center gap-1 whitespace-nowrap px-1.5 py-1.5 text-xs font-semibold text-white/90 drop-shadow-lg transition-colors hover:text-[#00a651] dark:hover:text-accent-green md:px-2 md:text-sm',
           open && 'text-[#00a651] dark:text-accent-green'
         )}
         onClick={() => setOpen((v) => !v)}
@@ -519,9 +519,9 @@ export function PublicLayout({ children }: { children: ReactNode }) {
             />
           </Link>
 
-          {/* Desktop nav — lg+; flex-wrap avoids horizontal overflow on mid-size screens */}
+          {/* Desktop nav — lg+; spacing matches Index hero nav (compact inline row + wrap) */}
           <nav
-            className="hidden min-h-[44px] min-w-0 flex-1 flex-wrap items-center justify-center gap-x-0.5 gap-y-1 px-1 sm:gap-x-1 lg:flex"
+            className="hidden min-w-0 flex-1 flex-row flex-wrap items-center justify-center gap-x-1 gap-y-2 sm:gap-x-2 md:gap-x-3 lg:flex"
             aria-label="Main navigation"
           >
             {NAV.map((item) => (

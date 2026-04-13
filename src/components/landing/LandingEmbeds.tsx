@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import StaffCv from '@/pages/StaffCv';
 import StudyPlan from '@/pages/StudyPlan';
@@ -18,6 +19,8 @@ const h2 = 'font-heading text-2xl font-bold tracking-tight text-primary md:text-
 const lead = 'mt-2 text-sm leading-relaxed text-muted-foreground md:text-base';
 
 const inner = 'container mx-auto max-w-6xl px-4 md:px-6 lg:px-8';
+
+const revealEase = [0.22, 1, 0.36, 1] as const;
 
 function LandingSection({
   id,
@@ -41,10 +44,18 @@ function LandingSection({
   /** When true, only the section shell and inner container render (used for custom in-component titles). */
   hideHeader?: boolean;
 }) {
+  const reduceMotion = useReducedMotion();
+
   return (
-    <section
+    <motion.section
       id={id}
       className={cn(variant === 'tinted' ? 'landing-section-alt' : 'landing-section', className)}
+      initial={reduceMotion === true ? { opacity: 1, y: 0 } : { opacity: 0, y: 36 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.12, margin: '0px 0px -40px 0px' }}
+      transition={
+        reduceMotion === true ? { duration: 0 } : { duration: 0.55, ease: revealEase }
+      }
     >
       <div className={inner}>
         {!hideHeader && (
@@ -57,11 +68,13 @@ function LandingSection({
         )}
         {children}
       </div>
-    </section>
+    </motion.section>
   );
 }
 
 export function LandingEmbeds() {
+  const reduceMotion = useReducedMotion();
+
   return (
     <>
       <div id="academics" className="landing-section-anchor scroll-mt-24">
@@ -178,9 +191,18 @@ export function LandingEmbeds() {
         <LandingServicesSection embedded />
       </LandingSection>
 
-      <section id="contact" className={cn("landing-section !py-0 scroll-mt-24")}>
+      <motion.section
+        id="contact"
+        className={cn('landing-section !py-0 scroll-mt-24')}
+        initial={reduceMotion === true ? { opacity: 1, y: 0 } : { opacity: 0, y: 36 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.12, margin: '0px 0px -40px 0px' }}
+        transition={
+          reduceMotion === true ? { duration: 0 } : { duration: 0.55, ease: revealEase }
+        }
+      >
         <Contact embedded />
-      </section>
+      </motion.section>
     </>
   );
 }

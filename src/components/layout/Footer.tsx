@@ -78,18 +78,11 @@ export function Footer() {
     <footer className="relative mt-auto bg-header-navy text-white">
       <div className="container mx-auto max-w-7xl px-4 pb-12 pt-12 sm:px-6 md:px-8 md:pb-14 md:pt-14">
           <div className="mb-12 flex justify-center md:mb-14">
-            <div
-              className={cn(
-                "flex h-32 w-32 items-center justify-center rounded-full bg-white p-2 shadow-lg ring-4 ring-white/10 sm:h-36 sm:w-36",
-                "md:h-40 md:w-40"
-              )}
-            >
-              <img
-                src="/logo2.png"
-                alt="Misr University for Science and Technology"
-                className="h-[85%] w-[85%] object-contain"
-              />
-            </div>
+            <img
+              src="/logos/must-footer.svg"
+              alt="Misr University for Science and Technology"
+              className="h-28 w-auto object-contain sm:h-32 md:h-36"
+            />
           </div>
 
           <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8 xl:gap-12">
