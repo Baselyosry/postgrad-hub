@@ -48,14 +48,14 @@
     --subheading-navy: var(--header-navy);
     --body-text: 0 0% 20%;
 
-    /* Admin sidebar: light gray surface, dark text (MUST / institutional clarity) */
-    --sidebar-background: 220 14% 96%;
-    --sidebar-foreground: 226 45% 14%;
+    /* Admin sidebar: white panel, MUST navy text, green hover (matches public portal) */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 226 57% 20%;
     --sidebar-primary: var(--accent-green);
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 12% 90%;
-    --sidebar-accent-foreground: 226 50% 12%;
-    --sidebar-border: 220 13% 86%;
+    --sidebar-accent: 149 42% 94%;
+    --sidebar-accent-foreground: 226 57% 18%;
+    --sidebar-border: 226 35% 90%;
     --sidebar-ring: var(--accent-green);
 
     --success: 149 78% 29%;
@@ -108,15 +108,15 @@
 
     --body-text: 210 20% 88%;
 
-    /* Sidebar stays a light panel in dark mode for legibility */
-    --sidebar-background: 220 14% 94%;
-    --sidebar-foreground: 226 45% 12%;
-    --sidebar-primary: 149 55% 42%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 12% 88%;
-    --sidebar-accent-foreground: 226 50% 10%;
-    --sidebar-border: 220 12% 82%;
-    --sidebar-ring: 149 55% 42%;
+    /* Admin sidebar: same navy shell as cards, green accents */
+    --sidebar-background: 226 32% 14%;
+    --sidebar-foreground: 210 25% 92%;
+    --sidebar-primary: 149 55% 48%;
+    --sidebar-primary-foreground: 226 40% 10%;
+    --sidebar-accent: 226 28% 20%;
+    --sidebar-accent-foreground: 210 25% 95%;
+    --sidebar-border: 226 25% 22%;
+    --sidebar-ring: 149 55% 48%;
 
     --success: 149 50% 45%;
     --success-foreground: 0 0% 100%;
@@ -254,7 +254,7 @@
   }
 
   .btn-primary-institutional {
-    @apply bg-header-navy text-white transition-colors duration-200 hover:bg-header-navy/90;
+    @apply bg-header-navy text-white transition-colors duration-200 hover:bg-header-navy/90 dark:bg-primary dark:hover:bg-primary/90;
   }
 
   .text-highlight {

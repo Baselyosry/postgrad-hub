@@ -30,9 +30,9 @@ import { motion } from 'framer-motion';
 import { toast } from '@/hooks/use-toast';
 
 const statusColors: Record<string, string> = {
-  pending: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
-  approved: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-  rejected: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
+  pending: 'border border-amber-200/80 bg-amber-50 text-amber-950 dark:border-amber-800/50 dark:bg-amber-950/35 dark:text-amber-200',
+  approved: 'border border-accent-green/30 bg-notice-bg text-accent-green dark:border-emerald-700/40 dark:bg-emerald-950/40 dark:text-emerald-200',
+  rejected: 'border border-destructive/25 bg-destructive/10 text-destructive dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-200',
 };
 
 const Admin = () => {
@@ -210,79 +210,83 @@ const Admin = () => {
       <PageHeader title="Admin Dashboard" description="Manage your postgraduate portal content and student submissions." />
 
       <div className="mb-8 flex flex-wrap gap-3">
-        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
           <Link to="/admin/staff-cv" className="gap-2">
             <Users className="h-4 w-4" />
             Staff CV
           </Link>
         </Button>
-        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
           <Link to="/admin/study-plans" className="gap-2">
             <ScrollText className="h-4 w-4" />
             Study plans
           </Link>
         </Button>
-        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
           <Link to="/admin/schedules" className="gap-2">
             <CalendarDays className="h-4 w-4" />
             Schedules
           </Link>
         </Button>
-        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
           <Link to="/admin/research-plans" className="gap-2">
             <FlaskConical className="h-4 w-4" />
             Research plans
           </Link>
         </Button>
-        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
           <Link to="/admin/research-database" className="gap-2">
             <Database className="h-4 w-4" />
             Research database
           </Link>
         </Button>
-        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
           <Link to="/admin/templates" className="gap-2">
             <FileDown className="h-4 w-4" />
             Templates
           </Link>
         </Button>
-        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
           <Link to="/admin/archive" className="gap-2">
             <Archive className="h-4 w-4" />
             Thesis archive
           </Link>
         </Button>
-        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
           <Link to="/admin/admissions" className="gap-2">
             <BookOpen className="h-4 w-4" />
             Degree requirements
           </Link>
         </Button>
-        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
           <Link to="/admin/admission-docs" className="gap-2">
             <FileText className="h-4 w-4" />
             Admission pages
           </Link>
         </Button>
-        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
           <Link to="/admin/news" className="gap-2">
             <Newspaper className="h-4 w-4" />
             News
           </Link>
         </Button>
-        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
           <Link to="/admin/events" className="gap-2">
             <PartyPopper className="h-4 w-4" />
             Events
           </Link>
         </Button>
-        <Button asChild className="bg-primary text-white hover:bg-primary/90">
+        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
           <Link to="/admin/services" className="gap-2">
             <Wrench className="h-4 w-4" />
             Services
           </Link>
         </Button>
-        <Button asChild variant="outline" className="gap-2">
+        <Button
+          asChild
+          variant="outline"
+          className="gap-2 border-header-navy/25 text-header-navy hover:bg-notice-bg hover:text-header-navy dark:border-border dark:text-foreground dark:hover:bg-muted"
+        >
           <Link to="/admin/inquiries" className="gap-2">
             <Mail className="h-4 w-4" />
             Inquiries
@@ -293,9 +297,9 @@ const Admin = () => {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 mb-8">
         {stats.map((s, i) => (
           <motion.div key={s.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
-            <Card className="border-border">
+            <Card className="card-institutional border-header-navy/10 dark:border-border">
               <CardContent className="flex items-center gap-4 p-5">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-notice-bg text-accent-green shadow-sm dark:bg-accent-green/15 dark:text-accent-green">
                   <s.icon className="h-5 w-5" />
                 </div>
                 <div>
@@ -310,7 +314,7 @@ const Admin = () => {
       </div>
 
       <Tabs defaultValue="submissions">
-        <TabsList className="flex h-auto w-full flex-wrap gap-1 p-1 sm:inline-flex sm:h-10 sm:w-auto">
+        <TabsList className="flex h-auto w-full flex-wrap gap-1 border border-header-navy/10 bg-white p-1 sm:inline-flex sm:h-10 sm:w-auto dark:border-border dark:bg-muted/40">
           <TabsTrigger value="submissions">Student Submissions</TabsTrigger>
           <TabsTrigger value="inquiries">Inquiries</TabsTrigger>
         </TabsList>

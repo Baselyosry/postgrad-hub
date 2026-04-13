@@ -83,7 +83,10 @@ export function AppSidebar() {
           {items.map((item) => (
             <SidebarMenuItem key={item.url}>
               <SidebarMenuButton asChild isActive={isActive(item.url)}>
-                <NavLink to={item.url} activeClassName="bg-sidebar-accent text-sidebar-accent-foreground">
+                <NavLink
+                  to={item.url}
+                  activeClassName="bg-accent-green/12 font-semibold text-header-navy dark:bg-accent-green/20 dark:text-sidebar-foreground"
+                >
                   <item.icon className="mr-2 h-4 w-4 shrink-0" />
                   {!collapsed && <span>{item.title}</span>}
                 </NavLink>
@@ -97,15 +100,15 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader className="border-b border-sidebar-border p-4">
+      <SidebarHeader className="border-b border-sidebar-border bg-notice-bg/35 p-4 dark:bg-sidebar-accent/60">
         <div className="flex items-center gap-3">
           <img src="/logo2.png" alt="MUST" className="h-8 w-8 shrink-0 object-contain" />
           {!collapsed && (
             <div className="min-w-0">
-              <h2 className="truncate font-heading text-sm font-bold text-sidebar-foreground">
+              <h2 className="truncate font-heading text-sm font-bold text-header-navy dark:text-sidebar-foreground">
                 Admin Panel
               </h2>
-              <p className="truncate text-xs text-sidebar-foreground/60">Postgraduate Portal</p>
+              <p className="truncate text-xs text-accent-green dark:text-sidebar-foreground/70">Postgraduate Portal</p>
             </div>
           )}
         </div>
@@ -129,7 +132,10 @@ export function AppSidebar() {
                 {studentNav.map((item) => (
                   <SidebarMenuItem key={item.url}>
                     <SidebarMenuButton asChild isActive={isActive(item.url)}>
-                      <NavLink to={item.url} activeClassName="bg-sidebar-accent text-sidebar-accent-foreground">
+                      <NavLink
+                  to={item.url}
+                  activeClassName="bg-accent-green/12 font-semibold text-header-navy dark:bg-accent-green/20 dark:text-sidebar-foreground"
+                >
                         <item.icon className="mr-2 h-4 w-4 shrink-0" />
                         {!collapsed && <span>{item.title}</span>}
                       </NavLink>
