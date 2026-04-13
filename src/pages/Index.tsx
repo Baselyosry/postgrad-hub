@@ -18,11 +18,22 @@ import { LandingEmbeds } from '@/components/landing/LandingEmbeds';
 
 const assetUrl = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
-const heroSlides = [
+type HeroSlide = {
+  image: string;
+  title: string;
+  caption: string;
+  /** Where to anchor the image when `object-cover` crops (same as CSS `object-position`). */
+  objectPosition?: string;
+};
+
+const heroSlides: HeroSlide[] = [
   { image: assetUrl('hero/slide-1.jpg'), title: '', caption: '' },
-  { image: assetUrl('hero/slide-2.jpg'), title: '', caption: '' },
-  { image: assetUrl('hero/slide-3.jpg'), title: '', caption: '' },
-  { image: assetUrl('hero/slide-4.jpg'), title: '', caption: '' },
+  {
+    image: assetUrl('hero/slide-2.jpg'),
+    title: '',
+    caption: '',
+    objectPosition: 'center top',
+  },
   { image: assetUrl('hero/slide-5.jpg'), title: '', caption: '' },
 ];
 
@@ -219,7 +230,8 @@ const Index = () => {
                   <img
                     src={slide.image}
                     alt=""
-                    className="absolute inset-0 z-0 m-0 h-full w-full object-cover object-center"
+                    className="absolute inset-0 z-0 m-0 h-full w-full object-cover"
+                    style={{ objectPosition: slide.objectPosition ?? 'center' }}
                   />
                 </div>
               </CarouselItem>
