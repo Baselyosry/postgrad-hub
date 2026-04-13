@@ -210,7 +210,10 @@ const Index = () => {
   };
 
   return (
-    <div id="top" className="-mx-4 flex flex-col overflow-x-hidden sm:-mx-5 md:-mx-8">
+    <div
+      id="top"
+      className="-mx-4 flex flex-col overflow-x-hidden sm:-mx-5 md:-mx-8 lg:-mr-12 xl:-mr-14"
+    >
       <section className="relative z-30 left-1/2 w-screen max-w-[100vw] -translate-x-1/2 bg-[#1c355e] min-h-[min(62vh,480px)] sm:min-h-[540px] md:min-h-[600px] lg:min-h-[min(68vh,680px)] xl:min-h-[min(72vh,760px)]">
         <Carousel
           opts={carouselOpts}
