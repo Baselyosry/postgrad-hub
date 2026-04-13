@@ -29,6 +29,7 @@ import { toast } from "@/hooks/use-toast";
 import { Plus, Pencil, Trash2, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { PdfUploadField } from "@/components/admin/PdfUploadField";
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { ConfirmDeleteDialog } from "@/components/admin/ConfirmDeleteDialog";
 
 type Personal = { email?: string; phone?: string; academic_title?: string; bio?: string };
@@ -403,11 +404,12 @@ const AdminStaffCv = () => {
                 />
               </div>
               <div className="space-y-2 sm:col-span-2">
-                <Label>Photo URL</Label>
-                <Input
+                <ImageUploadField
+                  id="staff_cv_photo"
+                  label="Photo"
                   value={form.photo_url}
-                  onChange={(e) => setForm((f) => ({ ...f, photo_url: e.target.value }))}
-                  placeholder="https://… or /staff/your-photo.png (file in public/staff/)"
+                  onChange={(url) => setForm((f) => ({ ...f, photo_url: url }))}
+                  storageFolder="staff-photos"
                 />
               </div>
               <div className="space-y-2 sm:col-span-2">

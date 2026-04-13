@@ -23,6 +23,7 @@ import { toast } from "@/hooks/use-toast";
 import { Plus, Pencil, Trash2, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { ConfirmDeleteDialog } from "@/components/admin/ConfirmDeleteDialog";
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
 type Row = {
   id: string;
@@ -345,11 +346,12 @@ const AdminNews = () => {
               <Textarea rows={8} value={form.body} onChange={(e) => setForm((f) => ({ ...f, body: e.target.value }))} />
             </div>
             <div className="space-y-2">
-              <Label>Image link (URL)</Label>
-              <Input
+              <ImageUploadField
+                id="news_image"
+                label="Hero image"
                 value={form.image_url}
-                onChange={(e) => setForm((f) => ({ ...f, image_url: e.target.value }))}
-                placeholder="https://…"
+                onChange={(url) => setForm((f) => ({ ...f, image_url: url }))}
+                storageFolder="news-images"
               />
               <p className="text-xs text-muted-foreground">Shown as the card hero image on the public News section.</p>
             </div>

@@ -28,6 +28,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { getErrorMessage, cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { Plus, Pencil, Trash2, AlertCircle } from "lucide-react";
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { useState } from "react";
 import { ConfirmDeleteDialog } from "@/components/admin/ConfirmDeleteDialog";
 
@@ -372,11 +373,12 @@ const AdminEvents = () => {
               />
             </div>
             <div className="space-y-2">
-              <Label>Image URL (card hero)</Label>
-              <Input
+              <ImageUploadField
+                id="event_image"
+                label="Card hero image"
                 value={form.image_url}
-                onChange={(e) => setForm((f) => ({ ...f, image_url: e.target.value }))}
-                placeholder="https://…"
+                onChange={(url) => setForm((f) => ({ ...f, image_url: url }))}
+                storageFolder="event-images"
               />
             </div>
             <DialogFooter>

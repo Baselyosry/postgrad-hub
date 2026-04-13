@@ -38,27 +38,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setRole(null);
   };
 
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
+  const applySession = async (session: Session | null) => {
+    try {
       if (session?.user) {
         await checkRole(session.user.id);
       } else {
         setRole(null);
       }
+    } catch {
+      setRole(null);
+    } finally {
       setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      // Never await Supabase RPC/queries inside this callback — it can deadlock the auth
+      // client and hang all later requests (e.g. admin saves) until refresh. See supabase-js#2013.
+      setTimeout(() => {
+        void applySession(session);
+      }, 0);
     });
 
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
+    void supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      if (session?.user) {
-        await checkRole(session.user.id);
-      } else {
-        setRole(null);
-      }
-      setLoading(false);
+      void applySession(session);
     });
 
     return () => subscription.unsubscribe();
