@@ -1,158 +1,231 @@
-import { useMemo } from "react";
-import { PageHeader } from "@/components/PageHeader";
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { cn, getErrorMessage } from "@/lib/utils";
+import { PageHeader } from "@/components/PageHeader";
 import { supabase, isSupabaseConfigured } from "@/integrations/supabase/client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { SkeletonCard } from "@/components/SkeletonCard";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ExternalLink } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { RegulationPdfBlock } from "@/components/RegulationPdfBlock";
+import {
+  REGULATION_TRACK_COPY,
+  type RegulationTrack,
+} from "@/pages/academics/RegulationsTrackPage";
+import {
+  PROGRAM_GROUP_LABELS,
+  PROGRAM_GROUP_ORDER,
+  type ProgramGroupId,
+  type ResearchPlanRow,
+  groupByProgram,
+  partitionStudyPlanByRegulationTrack,
+} from "@/lib/study-plan-grouping";
 
-type StudyPlanRow = {
-  id: string;
-  title: string;
-  program: string | null;
-  description: string | null;
-  file_url: string | null;
-};
-
-type PlanTab = "masters" | "phd" | "diplomas" | "other";
-
-function planCategory(row: Pick<StudyPlanRow, "title" | "program">): PlanTab {
-  const blob = `${row.title} ${row.program ?? ""}`.toLowerCase();
-  if (/\bph\.?\s*d\b|phd|doctoral|doctorate|\bd\.?\s*phil\b|\bdoctor of\b/.test(blob)) return "phd";
-  if (
-    /\bdiploma\b|\bcertificate\b|pg cert|postgraduate cert|postgrad cert|professional cert|graduate certificate\b/.test(
-      blob
-    )
-  )
-    return "diplomas";
-  if (/\bmaster\b|\bm\.?\s*sc\b|\bm\.?\s*a\b|\bmba\b|\bmsc\b|\bm\.s\b|\bms\b/.test(blob)) return "masters";
-  return "other";
+function parseTrack(raw: string | null): RegulationTrack {
+  return raw === "phd" ? "phd" : "masters";
 }
 
-const TAB_META: { id: PlanTab; label: string; description: string }[] = [
-  { id: "masters", label: "Master's", description: "Master’s programmes and coursework plans." },
-  { id: "phd", label: "PhD", description: "Doctoral study plans and milestones." },
-  { id: "diplomas", label: "Diplomas & certificates", description: "Diplomas, certificates, and shorter qualifications." },
-  { id: "other", label: "All other", description: "Programmes that did not match the categories above." },
-];
-
-function PlanCards({ rows }: { rows: StudyPlanRow[] }) {
-  if (!rows.length) {
-    return <p className="text-sm text-muted-foreground">No plans in this category.</p>;
-  }
+function RegulationDocumentCard({ row }: { row: ResearchPlanRow }) {
   return (
-    <div className="space-y-4 pt-2">
-      {rows.map((row) => (
-        <Card key={row.id} className="card-institutional border border-border/80 shadow-sm">
-          <CardHeader className="pb-2">
-            <CardTitle className="font-heading text-lg text-primary">{row.title}</CardTitle>
-            {row.program && <p className="text-sm font-medium text-muted-foreground">{row.program}</p>}
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {row.description && (
-              <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-wrap">{row.description}</p>
-            )}
-            {row.file_url && (
-              <a
-                href={row.file_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-              >
-                Download PDF <ExternalLink className="h-3.5 w-3.5" />
-              </a>
-            )}
-          </CardContent>
-        </Card>
-      ))}
+    <div className="rounded-lg border border-border/80 bg-background/90 p-4 shadow-sm transition-shadow hover:shadow-md sm:p-5">
+      <h4 className="font-heading text-base font-semibold text-primary sm:text-lg">{row.title}</h4>
+      <div className="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
+        {row.summary ? (
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-foreground/80">Summary</p>
+            <p className="mt-1 whitespace-pre-wrap">{row.summary}</p>
+          </div>
+        ) : null}
+        {row.milestones ? (
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-foreground/80">Milestones</p>
+            <p className="mt-1 whitespace-pre-wrap">{row.milestones}</p>
+          </div>
+        ) : null}
+        <div className="border-t border-border/60 pt-3 mt-1">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground/80">PDF</p>
+          <RegulationPdfBlock title={row.title} fileUrl={row.file_url} compact surface="study-plan" />
+        </div>
+      </div>
     </div>
   );
 }
 
+function ProgrammeSubcard({
+  groupId,
+  rows,
+  embedded,
+}: {
+  groupId: ProgramGroupId;
+  rows: ResearchPlanRow[];
+  embedded: boolean;
+}) {
+  const { title, subtitle } = PROGRAM_GROUP_LABELS[groupId];
+
+  return (
+    <Card
+      className={cn(
+        "border-border/90 bg-muted/15 shadow-sm",
+        embedded ? "rounded-lg" : "rounded-xl"
+      )}
+    >
+      <CardHeader className={cn("space-y-1 border-b border-border/60 bg-muted/25 pb-3", embedded ? "px-4 pt-4" : "px-5 pt-5 sm:px-6")}>
+        <CardTitle className="font-heading text-base text-primary sm:text-lg">{title}</CardTitle>
+        <CardDescription className="text-xs sm:text-sm">{subtitle}</CardDescription>
+      </CardHeader>
+      <CardContent className={cn("space-y-3", embedded ? "p-4" : "p-4 sm:p-6 sm:pt-5")}>
+        {rows.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No regulation documents for this programme yet.</p>
+        ) : (
+          <div className="grid gap-3 sm:gap-4">
+            {rows.map((row) => (
+              <RegulationDocumentCard key={row.id} row={row} />
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+function TrackColumn({
+  track,
+  rows,
+  embedded,
+}: {
+  track: RegulationTrack;
+  rows: ResearchPlanRow[];
+  embedded: boolean;
+}) {
+  const byProgram = groupByProgram(rows);
+  const { title, description } = REGULATION_TRACK_COPY[track];
+
+  return (
+    <Card
+      id={`study-plan-${track}`}
+      className={cn(
+        "scroll-mt-28 overflow-hidden border-primary/15 shadow-md ring-1 ring-primary/5",
+        embedded ? "rounded-xl" : "rounded-2xl"
+      )}
+    >
+      <CardHeader
+        className={cn(
+          "border-b border-primary/10 bg-gradient-to-br from-primary/[0.06] to-transparent",
+          embedded ? "px-4 py-4" : "px-5 py-6 sm:px-8 sm:py-8"
+        )}
+      >
+        <CardTitle className="font-heading text-xl text-primary sm:text-2xl">{title}</CardTitle>
+        <CardDescription className="mt-2 max-w-prose text-pretty text-sm leading-relaxed sm:text-base">
+          {description}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className={cn("grid gap-5 sm:gap-6", embedded ? "p-4" : "p-4 sm:p-6 lg:p-8")}>
+        {PROGRAM_GROUP_ORDER.map((groupId) => (
+          <ProgrammeSubcard key={groupId} groupId={groupId} rows={byProgram[groupId]} embedded={embedded} />
+        ))}
+      </CardContent>
+    </Card>
+  );
+}
+
 const StudyPlan = ({ embedded = false }: { embedded?: boolean }) => {
+  const [searchParams] = useSearchParams();
+
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["public-study-plans"],
+    queryKey: ["public-research-plans-study-page"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("study_plans").select("*").order("created_at", { ascending: false });
+      const { data, error } = await supabase
+        .from("research_plans")
+        .select("*")
+        .order("created_at", { ascending: false });
       if (error) throw error;
-      return data as StudyPlanRow[];
+      return data as ResearchPlanRow[];
     },
     enabled: isSupabaseConfigured,
   });
 
-  const grouped = useMemo(() => {
-    const g: Record<PlanTab, StudyPlanRow[]> = {
-      masters: [],
-      phd: [],
-      diplomas: [],
-      other: [],
-    };
-    for (const row of data ?? []) {
-      g[planCategory(row)].push(row);
+  useEffect(() => {
+    if (embedded) return;
+    const track = parseTrack(searchParams.get("track"));
+    const el = document.getElementById(`study-plan-${track}`);
+    if (el) {
+      const t = window.setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
+      return () => window.clearTimeout(t);
     }
-    return g;
-  }, [data]);
-
-  const defaultTab = useMemo(() => {
-    const first = TAB_META.find((t) => grouped[t.id].length > 0);
-    return first?.id ?? "other";
-  }, [grouped]);
+  }, [embedded, searchParams]);
 
   if (!isSupabaseConfigured) {
     return (
-      <div>
-        {!embedded && <PageHeader title="Study plan" description="Program study plans and timelines." />}
+      <div className={cn(!embedded && "container mx-auto max-w-6xl px-4 py-8 sm:px-6")}>
+        {!embedded && (
+          <PageHeader
+            title="Study plan"
+            description="Master's and PhD regulations, milestones, and official documents."
+          />
+        )}
         <Alert>
           <AlertTitle>Configuration required</AlertTitle>
-          <AlertDescription>Connect Supabase to load study plans.</AlertDescription>
+          <AlertDescription>Connect Supabase to load regulations.</AlertDescription>
         </Alert>
       </div>
     );
   }
 
+  const { mastersRows, phdRows, showingAllUnderMastersFallback } = partitionStudyPlanByRegulationTrack(
+    data ?? []
+  );
+
   return (
-    <div>
-      {!embedded && (
-        <PageHeader title="Study plan" description="Structured coursework and progression for postgraduate programs." />
+    <div
+      className={cn(
+        "w-full min-w-0",
+        !embedded && "container mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12"
       )}
+    >
+      {!embedded && (
+        <PageHeader
+          title="Study plan"
+          description="Master's and PhD regulations, milestones, and downloadable documents for postgraduate programmes."
+        />
+      )}
+
       {isError && (
-        <Alert variant="destructive" className="mb-6">
-          <AlertTitle>Could not load study plans</AlertTitle>
-          <AlertDescription>{error instanceof Error ? error.message : "Unknown error"}</AlertDescription>
+        <Alert variant="destructive" className={cn("mb-6", embedded && "mt-2")}>
+          <AlertTitle>Could not load regulations</AlertTitle>
+          <AlertDescription>{getErrorMessage(error)}</AlertDescription>
         </Alert>
       )}
+
+      {showingAllUnderMastersFallback && !isError && !isLoading ? (
+        <Alert className={cn("mb-6 border-primary/25 bg-primary/[0.04]", embedded && "mt-2")}>
+          <AlertTitle>Regulation track not set</AlertTitle>
+          <AlertDescription className="text-pretty">
+            No items are tagged for the Master&apos;s or PhD columns yet, so every entry is shown under
+            Master&apos;s. In Admin → Study plan & regulations, set &quot;Regulation track&quot; to Master&apos;s or PhD
+            for each entry. Apply pending Supabase migrations so the{" "}
+            <code className="rounded bg-muted px-1 py-0.5 text-xs">regulation_track</code> column exists (run{" "}
+            <code className="rounded bg-muted px-1 py-0.5 text-xs">supabase db push</code> or link this migration in
+            the SQL editor).
+          </AlertDescription>
+        </Alert>
+      ) : null}
+
       {isLoading ? (
-        <SkeletonCard />
-      ) : !data?.length ? (
-        <p className="text-sm text-muted-foreground">No study plans published yet.</p>
-      ) : (
-        <Tabs defaultValue={defaultTab} className="w-full">
-          <TabsList className="mb-6 flex h-auto min-h-10 w-full flex-wrap justify-start gap-1 bg-muted/50 p-1 sm:gap-2">
-            {TAB_META.map((t) => (
-              <TabsTrigger
-                key={t.id}
-                value={t.id}
-                className="flex-none px-3 py-2 text-xs font-semibold sm:text-sm"
-              >
-                {t.label}
-                {grouped[t.id].length > 0 && (
-                  <span className="ml-1.5 rounded-full bg-primary/15 px-1.5 py-0.5 text-[10px] tabular-nums text-primary">
-                    {grouped[t.id].length}
-                  </span>
-                )}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-          {TAB_META.map((t) => (
-            <TabsContent key={t.id} value={t.id} className="mt-0 focus-visible:outline-none">
-              <p className="mb-4 max-w-3xl text-sm text-muted-foreground">{t.description}</p>
-              <PlanCards rows={grouped[t.id]} />
-            </TabsContent>
-          ))}
-        </Tabs>
-      )}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
+          <Skeleton className="h-[420px] w-full rounded-2xl" />
+          <Skeleton className="h-[420px] w-full rounded-2xl" />
+        </div>
+      ) : !isError ? (
+        <div
+          className={cn(
+            "grid min-w-0 grid-cols-1 items-stretch gap-6 sm:gap-8",
+            embedded ? "lg:grid-cols-1" : "lg:grid-cols-2 lg:gap-10 xl:gap-12"
+          )}
+        >
+          <TrackColumn track="masters" rows={mastersRows} embedded={embedded} />
+          <TrackColumn track="phd" rows={phdRows} embedded={embedded} />
+        </div>
+      ) : null}
     </div>
   );
 };
