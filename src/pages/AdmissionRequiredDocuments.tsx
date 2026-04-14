@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SkeletonCard } from "@/components/SkeletonCard";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ExternalLink } from "lucide-react";
+import { normalizeMultiline } from "@/lib/normalizeMultiline";
 const AdmissionRequiredDocuments = ({ embedded = false }: { embedded?: boolean }) => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["public-admission-docs"],
@@ -80,7 +81,9 @@ const AdmissionRequiredDocuments = ({ embedded = false }: { embedded?: boolean }
                 <CardTitle className="font-heading text-lg">{row.title}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 text-sm text-muted-foreground">
-                {row.body && <div className="whitespace-pre-wrap">{row.body}</div>}
+                {row.body && (
+                  <div className="whitespace-pre-wrap leading-relaxed">{normalizeMultiline(row.body)}</div>
+                )}
                 {row.file_url && (
                   <a
                     href={row.file_url}
