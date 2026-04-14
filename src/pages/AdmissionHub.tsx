@@ -15,7 +15,7 @@ const cards = [
       "bg-[linear-gradient(145deg,rgba(26,43,95,0.98),rgba(26,43,95,0.9)_55%,rgba(16,133,69,0.92))] text-white border-header-navy/10 shadow-[0_36px_80px_-42px_rgba(15,39,68,0.58)]",
     iconClassName: "bg-white/12 text-white",
     titleClassName: "text-white",
-    descriptionClassName: "text-white/82",
+    descriptionClassName: "text-white/70",
     arrowClassName: "text-white/88",
   },
   {

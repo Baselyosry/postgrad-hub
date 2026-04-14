@@ -29,7 +29,7 @@ const cards = [
     surfaceClassName:
       "bg-[linear-gradient(135deg,rgba(26,43,95,0.98),rgba(26,43,95,0.9)_55%,rgba(16,133,69,0.92))] text-white border-header-navy/10 shadow-[0_36px_80px_-38px_rgba(15,39,68,0.55)]",
     titleClassName: "text-white",
-    descriptionClassName: "text-white/82",
+    descriptionClassName: "text-white/70",
     arrowClassName: "text-white/90",
   },
   {
@@ -88,13 +88,7 @@ const cards = [
     icon: FlaskConical,
     className: "md:col-span-1 xl:col-span-3",
   },
-  {
-    title: "Templates",
-    description: "Forms and document templates.",
-    href: "/academics/research-templates",
-    icon: FileDown,
-    className: "md:col-span-2 xl:col-span-6",
-  },
+  
 ];
 
 export function HomeHighlights() {
