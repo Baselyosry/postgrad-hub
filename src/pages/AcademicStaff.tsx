@@ -76,7 +76,7 @@ function SectionPanel({
 const heroHeaderProps = {
   variant: "hero" as const,
   title: "Academic staff",
-  className: "mx-auto max-w-4xl px-5 py-6 md:px-6 md:py-7 lg:px-8 lg:py-7",
+  className: "mx-auto w-[73vw] max-w-none px-5 py-6 md:px-6 md:py-12 lg:px-10 lg:py-12 mt-10  ",
   heroClassName:
     "bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,249,250,0.98)_54%,rgba(237,246,255,0.94))] dark:bg-[linear-gradient(135deg,rgba(14,22,41,0.96),rgba(18,30,52,0.98)_54%,rgba(19,48,66,0.82))]",
   heroAccentClassName: "bg-[linear-gradient(90deg,#108545,#1A2B5F,#3B82F6)]",
@@ -150,7 +150,7 @@ const AcademicStaff = ({ embedded = false }: { embedded?: boolean }) => {
       ) : !data?.length ? (
         <p className="text-sm text-muted-foreground">No staff profiles published yet.</p>
       ) : (
-        <div className="space-y-8">
+        <div className="mx-auto w-[73vw] space-y-8">
           {data.map((row) => {
             const p = (row.personal_data && typeof row.personal_data === "object" ? row.personal_data : {}) as Personal;
             const quals = Array.isArray(row.qualifications) ? (row.qualifications as Qual[]) : [];
