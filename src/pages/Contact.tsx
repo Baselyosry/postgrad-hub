@@ -183,7 +183,7 @@ const Contact = ({ embedded = false }: { embedded?: boolean }) => {
 
   return (
     <div>
-      <PageHeader title="Contact Us" description="Reach the postgraduate office by email or message." />
+      <PageHeader variant="hero" title="Contact Us" description="Reach the postgraduate office by email or message." />
       {splitLayout}
     </div>
   );

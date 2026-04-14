@@ -46,7 +46,7 @@ const News = ({ embedded = false }: { embedded?: boolean }) => {
 
   const inner = (
     <>
-      {!embedded && <PageHeader title="News" description="Announcements and updates from the postgraduate office." />}
+      {!embedded && <PageHeader variant="hero" title="News" description="Announcements and updates from the postgraduate office." />}
       {embedded ? (
         <h2 className="mb-10 text-center font-heading text-2xl font-bold tracking-tight text-accent-green md:text-3xl">News</h2>
       ) : null}
@@ -190,7 +190,7 @@ const News = ({ embedded = false }: { embedded?: boolean }) => {
   if (!isSupabaseConfigured) {
     return (
       <div className={cn(!embedded && "container mx-auto max-w-6xl px-4 py-10")}>
-        {!embedded && <PageHeader title="News" description="Postgraduate programme news and updates." />}
+        {!embedded && <PageHeader variant="hero" title="News" description="Postgraduate programme news and updates." />}
         <Alert>
           <AlertTitle>Configuration required</AlertTitle>
           <AlertDescription>Connect Supabase to load news.</AlertDescription>

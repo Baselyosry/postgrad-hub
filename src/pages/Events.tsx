@@ -39,7 +39,7 @@ const Events = ({ embedded = false }: { embedded?: boolean }) => {
 
   const inner = (
     <>
-      {!embedded && <PageHeader title="Events" description="Thesis defences, seminars, and important dates." />}
+      {!embedded && <PageHeader variant="hero" title="Events" description="Thesis defences, seminars, and important dates." />}
       {embedded ? (
         <h2 className="mb-10 text-center font-heading text-2xl font-bold tracking-tight text-accent-green md:text-3xl">
           Related Events
@@ -152,7 +152,7 @@ const Events = ({ embedded = false }: { embedded?: boolean }) => {
   if (!isSupabaseConfigured) {
     return (
       <div className={cn(!embedded && "container mx-auto max-w-6xl px-4 py-10")}>
-        {!embedded && <PageHeader title="Events" description="Defences, deadlines, and postgraduate events." />}
+        {!embedded && <PageHeader variant="hero" title="Events" description="Defences, deadlines, and postgraduate events." />}
         <Alert>
           <AlertTitle>Configuration required</AlertTitle>
           <AlertDescription>Connect Supabase to load events.</AlertDescription>
