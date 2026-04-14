@@ -54,11 +54,11 @@ const News = ({ embedded = false }: { embedded?: boolean }) => {
           variant="hero"
           title="News"
           description="Announcements and updates from the postgraduate office."
-          heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,249,250,0.98)_52%,rgba(236,245,255,0.94))]"
+          heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,249,250,0.98)_52%,rgba(236,245,255,0.94))] dark:bg-[linear-gradient(135deg,rgba(14,22,41,0.96),rgba(18,30,52,0.98)_52%,rgba(20,44,62,0.84))]"
           heroAccentClassName="bg-[linear-gradient(90deg,#1A2B5F,#2C7BE5,#108545)]"
           heroBadges={[
             { icon: Newspaper },
-            { icon: CalendarClock, className: "bg-white text-header-navy" },
+            { icon: CalendarClock, className: "bg-white text-header-navy dark:bg-card dark:text-foreground dark:ring-1 dark:ring-white/10" },
             { icon: ImageIcon, className: "bg-accent-green text-white" },
           ]}
         />
@@ -99,7 +99,7 @@ const News = ({ embedded = false }: { embedded?: boolean }) => {
                         </Badge>
                       ) : null}
                       {formatNewsDateLong(active.published_at ?? null) ? (
-                        <Badge variant="secondary" className="rounded-full bg-white/90 text-header-navy">
+                        <Badge variant="secondary" className="rounded-full bg-white/90 text-header-navy dark:bg-card/90 dark:text-foreground">
                           <CalendarClock className="mr-1 h-3.5 w-3.5" />
                           {formatNewsDateLong(active.published_at ?? null)}
                         </Badge>
@@ -161,7 +161,7 @@ const News = ({ embedded = false }: { embedded?: boolean }) => {
                 <Card
                   key={row.id}
                   className={cn(
-                    "group overflow-hidden rounded-[28px] border border-border/70 bg-white/95 shadow-[0_18px_50px_-30px_rgba(15,39,68,0.28)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_70px_-34px_rgba(15,39,68,0.38)]",
+                    "group overflow-hidden rounded-[28px] border border-border/70 bg-white/95 shadow-[0_18px_50px_-30px_rgba(15,39,68,0.28)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_70px_-34px_rgba(15,39,68,0.38)] dark:border-white/10 dark:bg-card/95 dark:shadow-[0_18px_50px_-30px_rgba(0,0,0,0.7)] dark:hover:shadow-[0_30px_70px_-34px_rgba(0,0,0,0.8)]",
                     isFeatured && "border-accent-green/30 ring-1 ring-accent-green/10",
                     !embedded && index === 0 && "md:col-span-2 xl:col-span-2"
                   )}
@@ -188,7 +188,7 @@ const News = ({ embedded = false }: { embedded?: boolean }) => {
                           </Badge>
                         ) : null}
                         {dateLong ? (
-                          <Badge variant="secondary" className="rounded-full bg-white/90 text-header-navy backdrop-blur-sm">
+                          <Badge variant="secondary" className="rounded-full bg-white/90 text-header-navy backdrop-blur-sm dark:bg-card/90 dark:text-foreground">
                             <CalendarClock className="mr-1 h-3.5 w-3.5" />
                             {dateLong}
                           </Badge>
@@ -208,7 +208,7 @@ const News = ({ embedded = false }: { embedded?: boolean }) => {
                     <div className="space-y-3">
                       <h3
                         className={cn(
-                          "font-heading text-xl font-bold leading-tight text-header-navy transition-colors group-hover:text-accent-green",
+                          "font-heading text-xl font-bold leading-tight text-header-navy transition-colors group-hover:text-accent-green dark:text-foreground",
                           !embedded && index === 0 && "text-2xl md:text-[1.9rem]",
                           isFeatured && "text-accent-green"
                         )}
@@ -268,11 +268,11 @@ const News = ({ embedded = false }: { embedded?: boolean }) => {
             variant="hero"
             title="News"
             description="Postgraduate programme news and updates."
-            heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,249,250,0.98)_52%,rgba(236,245,255,0.94))]"
+            heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,249,250,0.98)_52%,rgba(236,245,255,0.94))] dark:bg-[linear-gradient(135deg,rgba(14,22,41,0.96),rgba(18,30,52,0.98)_52%,rgba(20,44,62,0.84))]"
             heroAccentClassName="bg-[linear-gradient(90deg,#1A2B5F,#2C7BE5,#108545)]"
             heroBadges={[
               { icon: Newspaper },
-              { icon: CalendarClock, className: "bg-white text-header-navy" },
+              { icon: CalendarClock, className: "bg-white text-header-navy dark:bg-card dark:text-foreground dark:ring-1 dark:ring-white/10" },
               { icon: ImageIcon, className: "bg-accent-green text-white" },
             ]}
           />

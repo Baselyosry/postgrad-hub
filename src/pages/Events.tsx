@@ -43,11 +43,11 @@ const Events = ({ embedded = false }: { embedded?: boolean }) => {
           variant="hero"
           title="Events"
           description="Thesis defences, seminars, and important dates."
-          heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(249,249,250,0.98)_54%,rgba(238,245,255,0.94))]"
+          heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(249,249,250,0.98)_54%,rgba(238,245,255,0.94))] dark:bg-[linear-gradient(135deg,rgba(14,22,41,0.96),rgba(18,30,52,0.98)_54%,rgba(18,46,66,0.84))]"
           heroAccentClassName="bg-[linear-gradient(90deg,#1A2B5F,#108545,#56A3FF)]"
           heroBadges={[
             { icon: CalendarDays },
-            { icon: MapPin, className: "bg-white text-header-navy" },
+            { icon: MapPin, className: "bg-white text-header-navy dark:bg-card dark:text-foreground dark:ring-1 dark:ring-white/10" },
             { icon: Clock, className: "bg-accent-green text-white" },
           ]}
         />
@@ -94,7 +94,7 @@ const Events = ({ embedded = false }: { embedded?: boolean }) => {
               return (
                 <Card
                   key={row.id}
-                  className="group overflow-hidden rounded-[24px] border border-border/80 bg-card shadow-[0_16px_45px_-30px_rgba(15,39,68,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_-32px_rgba(15,39,68,0.42)]"
+                  className="group overflow-hidden rounded-[24px] border border-border/80 bg-card shadow-[0_16px_45px_-30px_rgba(15,39,68,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_-32px_rgba(15,39,68,0.42)] dark:border-white/10 dark:shadow-[0_16px_45px_-30px_rgba(0,0,0,0.7)] dark:hover:shadow-[0_24px_60px_-32px_rgba(0,0,0,0.78)]"
                 >
                   <div className="relative aspect-[5/4] w-full shrink-0 overflow-hidden bg-muted">
                     <img
@@ -116,7 +116,7 @@ const Events = ({ embedded = false }: { embedded?: boolean }) => {
 
                     <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent p-4">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="inline-flex items-center gap-2 rounded-full bg-white/92 px-3 py-1.5 text-sm font-medium text-white backdrop-blur-sm">
+                        <span className="inline-flex items-center gap-2 rounded-full bg-white/92 px-3 py-1.5 text-sm font-medium text-header-navy backdrop-blur-sm dark:bg-card/88 dark:text-foreground">
                           <MapPin className="h-4 w-4 text-accent-green" />
                           {locationText}
                         </span>
@@ -127,21 +127,21 @@ const Events = ({ embedded = false }: { embedded?: boolean }) => {
                   <CardContent className="space-y-4 px-5 pb-5 pt-5">
                     <div className="flex flex-wrap items-center gap-2 text-sm">
                       {parts?.dateLong ? (
-                        <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1.5 font-medium text-header-navy">
+                        <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1.5 font-medium text-header-navy dark:text-foreground">
                           <CalendarDays className="h-4 w-4 text-accent-green" />
                           {parts.dateLong}
                         </span>
                       ) : null}
 
                       {timeText ? (
-                        <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1.5 font-medium text-header-navy">
+                        <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1.5 font-medium text-header-navy dark:text-foreground">
                           <Clock className="h-4 w-4 text-accent-green" />
                           {timeText}
                         </span>
                       ) : null}
                     </div>
 
-                    <h3 className="line-clamp-2 pr-1 font-heading text-lg font-bold leading-snug text-header-navy transition-colors group-hover:text-accent-green">
+                    <h3 className="line-clamp-2 pr-1 font-heading text-lg font-bold leading-snug text-header-navy transition-colors group-hover:text-accent-green dark:text-foreground">
                       {row.title}
                     </h3>
 
@@ -179,11 +179,11 @@ const Events = ({ embedded = false }: { embedded?: boolean }) => {
             variant="hero"
             title="Events"
             description="Defences, deadlines, and postgraduate events."
-            heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(249,249,250,0.98)_54%,rgba(238,245,255,0.94))]"
+            heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(249,249,250,0.98)_54%,rgba(238,245,255,0.94))] dark:bg-[linear-gradient(135deg,rgba(14,22,41,0.96),rgba(18,30,52,0.98)_54%,rgba(18,46,66,0.84))]"
             heroAccentClassName="bg-[linear-gradient(90deg,#1A2B5F,#108545,#56A3FF)]"
             heroBadges={[
               { icon: CalendarDays },
-              { icon: MapPin, className: "bg-white text-header-navy" },
+              { icon: MapPin, className: "bg-white text-header-navy dark:bg-card dark:text-foreground dark:ring-1 dark:ring-white/10" },
               { icon: Clock, className: "bg-accent-green text-white" },
             ]}
           />

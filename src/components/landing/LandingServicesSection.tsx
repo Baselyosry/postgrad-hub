@@ -42,7 +42,7 @@ export function LandingServicesSection({ embedded = false }: Props) {
         id={`service-${svc.slug}`}
         key={svc.id}
         className={cn(
-          'group relative scroll-mt-28 overflow-hidden rounded-[1.7rem] border border-header-navy/10 bg-white/92 shadow-[0_24px_70px_-44px_rgba(15,39,68,0.28)] transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-1 hover:border-accent-green/30 hover:shadow-[0_30px_90px_-48px_rgba(15,39,68,0.34)] dark:bg-card dark:shadow-none',
+          'group relative scroll-mt-28 overflow-hidden rounded-[1.7rem] border border-header-navy/10 bg-white/92 shadow-[0_24px_70px_-44px_rgba(15,39,68,0.28)] transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-1 hover:border-accent-green/30 hover:shadow-[0_30px_90px_-48px_rgba(15,39,68,0.34)] dark:border-white/10 dark:bg-card/95 dark:shadow-[0_24px_70px_-44px_rgba(0,0,0,0.68)] dark:hover:shadow-[0_30px_90px_-48px_rgba(0,0,0,0.76)]',
           isFeatured && 'lg:col-span-2'
         )}
       >
@@ -63,7 +63,7 @@ export function LandingServicesSection({ embedded = false }: Props) {
           <div className="flex items-start gap-4">
             <div
               className={cn(
-                'flex h-14 w-14 shrink-0 items-center justify-center rounded-[1.2rem] bg-header-navy/8 text-header-navy transition-colors duration-200 group-hover:bg-accent-green/12 group-hover:text-accent-green',
+                'flex h-14 w-14 shrink-0 items-center justify-center rounded-[1.2rem] bg-header-navy/8 text-header-navy transition-colors duration-200 group-hover:bg-accent-green/12 group-hover:text-accent-green dark:bg-white/10 dark:text-foreground dark:group-hover:bg-accent-green/16',
                 isFeatured && 'bg-[linear-gradient(135deg,#1A2B5F,#108545)] text-white'
               )}
             >
@@ -113,7 +113,7 @@ export function LandingServicesSection({ embedded = false }: Props) {
                   size="sm"
                   variant="outline"
                   className={cn(
-                    'h-11 rounded-full border-primary/20 px-5 text-base text-primary hover:border-accent-green hover:bg-accent-green/10 hover:text-accent-green',
+                    'h-11 rounded-full border-primary/20 px-5 text-base text-primary hover:border-accent-green hover:bg-accent-green/10 hover:text-accent-green dark:border-white/10 dark:text-foreground dark:hover:border-accent-green/50 dark:hover:bg-accent-green/10 dark:hover:text-accent-green',
                     isFeatured && 'h-12 px-6 text-base'
                   )}
                 >
@@ -137,11 +137,11 @@ export function LandingServicesSection({ embedded = false }: Props) {
           title="Services"
           description="Research tools and resources."
           className="mb-12"
-          heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,249,250,0.98)_58%,rgba(233,247,239,0.92))]"
+          heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,249,250,0.98)_58%,rgba(233,247,239,0.92))] dark:bg-[linear-gradient(135deg,rgba(14,22,41,0.96),rgba(18,30,52,0.98)_58%,rgba(17,52,41,0.82))]"
           heroAccentClassName="bg-[linear-gradient(90deg,#108545,#1A2B5F)]"
           heroBadges={[
             { icon: Library },
-            { icon: ShieldCheck, className: 'bg-white text-header-navy' },
+            { icon: ShieldCheck, className: 'bg-white text-header-navy dark:bg-card dark:text-foreground dark:ring-1 dark:ring-white/10' },
             { icon: Mail, className: 'bg-accent-green text-white' },
           ]}
         />

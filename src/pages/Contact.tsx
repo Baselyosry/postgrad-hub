@@ -25,7 +25,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const fieldClass =
-  "h-12 rounded-2xl border border-border/70 bg-background/90 px-4 text-header-navy shadow-none placeholder:text-muted-foreground/80 focus-visible:ring-2 focus-visible:ring-accent-green/30 dark:text-foreground";
+  "h-12 rounded-2xl border border-border/70 bg-background/90 px-4 text-foreground shadow-none placeholder:text-muted-foreground/80 focus-visible:ring-2 focus-visible:ring-accent-green/30 dark:border-white/10 dark:bg-background/80";
 
 const Contact = ({ embedded = false }: { embedded?: boolean }) => {
   const {
@@ -75,8 +75,8 @@ const Contact = ({ embedded = false }: { embedded?: boolean }) => {
 
   const content = (
     <div className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[linear-gradient(180deg,rgba(26,43,95,0.05),transparent)]" aria-hidden />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-full bg-[radial-gradient(circle_at_top,rgba(16,133,69,0.08),transparent_28%),linear-gradient(180deg,#ffffff_0%,#f8f9fa_100%)]" aria-hidden />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[linear-gradient(180deg,rgba(26,43,95,0.05),transparent)] dark:bg-[linear-gradient(180deg,rgba(93,130,214,0.14),transparent)]" aria-hidden />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-full bg-[radial-gradient(circle_at_top,rgba(16,133,69,0.08),transparent_28%),linear-gradient(180deg,#ffffff_0%,#f8f9fa_100%)] dark:bg-[radial-gradient(circle_at_top,rgba(16,133,69,0.12),transparent_30%),linear-gradient(180deg,rgba(11,18,35,1)_0%,rgba(15,24,43,1)_100%)]" aria-hidden />
 
       <div className={cn("relative", !embedded && "container mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12")}>
         {!embedded && (
@@ -84,11 +84,11 @@ const Contact = ({ embedded = false }: { embedded?: boolean }) => {
             variant="hero"
             title="Contact Us"
             description="Reach the postgraduate office by email or send us a message through the form below."
-            heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,249,250,0.98)_54%,rgba(236,247,244,0.94))]"
+            heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,249,250,0.98)_54%,rgba(236,247,244,0.94))] dark:bg-[linear-gradient(135deg,rgba(14,22,41,0.96),rgba(18,30,52,0.98)_54%,rgba(15,54,51,0.82))]"
             heroAccentClassName="bg-[linear-gradient(90deg,#108545,#1A2B5F,#0EA5A4)]"
             heroBadges={[
               { icon: Mail },
-              { icon: Send, className: "bg-white text-header-navy" },
+              { icon: Send, className: "bg-white text-header-navy dark:bg-card dark:text-foreground dark:ring-1 dark:ring-white/10" },
               { icon: Phone, className: "bg-accent-green text-white" },
             ]}
           />
@@ -96,7 +96,7 @@ const Contact = ({ embedded = false }: { embedded?: boolean }) => {
 
         <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-stretch">
           <div className="grid gap-6">
-            <Card className="overflow-hidden rounded-[28px] border-header-navy/10 bg-[linear-gradient(145deg,rgba(26,43,95,0.98),rgba(26,43,95,0.92)_58%,rgba(16,133,69,0.92))] text-white shadow-[0_36px_80px_-42px_rgba(15,39,68,0.58)]">
+            <Card className="overflow-hidden rounded-[28px] border-header-navy/10 bg-[linear-gradient(145deg,rgba(26,43,95,0.98),rgba(26,43,95,0.92)_58%,rgba(16,133,69,0.92))] text-white shadow-[0_36px_80px_-42px_rgba(15,39,68,0.58)] dark:border-white/10 dark:shadow-[0_36px_80px_-42px_rgba(0,0,0,0.76)]">
               <CardContent className="relative p-0">
                 <div className="relative aspect-[5/4] min-h-[320px] overflow-hidden">
                   <img
@@ -121,15 +121,15 @@ const Contact = ({ embedded = false }: { embedded?: boolean }) => {
             </Card>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <Card className="rounded-3xl border-header-navy/10 bg-white/92 shadow-[0_20px_55px_-40px_rgba(15,39,68,0.45)]">
+              <Card className="rounded-3xl border-header-navy/10 bg-white/92 shadow-[0_20px_55px_-40px_rgba(15,39,68,0.45)] dark:border-white/10 dark:bg-card/92 dark:shadow-[0_20px_55px_-40px_rgba(0,0,0,0.72)]">
                 <CardContent className="p-5">
                   <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-accent-green/10 text-accent-green">
                     <Mail className="h-5 w-5" />
                   </span>
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-header-navy/60">Email</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-header-navy/60 dark:text-foreground/60">Email</p>
                   <a
                     href="mailto:postgrad@must.edu.eg"
-                    className="mt-2 block break-all font-heading text-lg font-semibold text-header-navy transition-colors hover:text-accent-green"
+                    className="mt-2 block break-all font-heading text-lg font-semibold text-header-navy transition-colors hover:text-accent-green dark:text-foreground"
                   >
                     postgrad@must.edu.eg
                   </a>
@@ -137,47 +137,47 @@ const Contact = ({ embedded = false }: { embedded?: boolean }) => {
                 </CardContent>
               </Card>
 
-              <Card className="rounded-3xl border-header-navy/10 bg-white/92 shadow-[0_20px_55px_-40px_rgba(15,39,68,0.45)]">
+              <Card className="rounded-3xl border-header-navy/10 bg-white/92 shadow-[0_20px_55px_-40px_rgba(15,39,68,0.45)] dark:border-white/10 dark:bg-card/92 dark:shadow-[0_20px_55px_-40px_rgba(0,0,0,0.72)]">
                 <CardContent className="p-5">
-                  <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-header-navy/8 text-header-navy">
+                  <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-header-navy/8 text-header-navy dark:bg-white/10 dark:text-foreground">
                     <Phone className="h-5 w-5" />
                   </span>
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-header-navy/60">Phone</p>
-                  <p className="mt-2 font-heading text-lg font-semibold text-header-navy">Contact via office channels</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-header-navy/60 dark:text-foreground/60">Phone</p>
+                  <p className="mt-2 font-heading text-lg font-semibold text-header-navy dark:text-foreground">Contact via office channels</p>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">Use the message form and include your phone number if you want a callback.</p>
                 </CardContent>
               </Card>
 
-              <Card className="rounded-3xl border-header-navy/10 bg-white/92 shadow-[0_20px_55px_-40px_rgba(15,39,68,0.45)]">
+              <Card className="rounded-3xl border-header-navy/10 bg-white/92 shadow-[0_20px_55px_-40px_rgba(15,39,68,0.45)] dark:border-white/10 dark:bg-card/92 dark:shadow-[0_20px_55px_-40px_rgba(0,0,0,0.72)]">
                 <CardContent className="p-5">
-                  <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-header-navy/8 text-header-navy">
+                  <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-header-navy/8 text-header-navy dark:bg-white/10 dark:text-foreground">
                     <MapPin className="h-5 w-5" />
                   </span>
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-header-navy/60">Office</p>
-                  <p className="mt-2 font-heading text-lg font-semibold text-header-navy">MUST Postgraduate Studies</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-header-navy/60 dark:text-foreground/60">Office</p>
+                  <p className="mt-2 font-heading text-lg font-semibold text-header-navy dark:text-foreground">MUST Postgraduate Studies</p>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">Use this page for postgraduate administration enquiries and support.</p>
                 </CardContent>
               </Card>
 
-              <Card className="rounded-3xl border-header-navy/10 bg-white/92 shadow-[0_20px_55px_-40px_rgba(15,39,68,0.45)]">
+              <Card className="rounded-3xl border-header-navy/10 bg-white/92 shadow-[0_20px_55px_-40px_rgba(15,39,68,0.45)] dark:border-white/10 dark:bg-card/92 dark:shadow-[0_20px_55px_-40px_rgba(0,0,0,0.72)]">
                 <CardContent className="p-5">
                   <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-accent-green/10 text-accent-green">
                     <Clock3 className="h-5 w-5" />
                   </span>
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-header-navy/60">Response</p>
-                  <p className="mt-2 font-heading text-lg font-semibold text-header-navy">We’ll reply as soon as possible</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-header-navy/60 dark:text-foreground/60">Response</p>
+                  <p className="mt-2 font-heading text-lg font-semibold text-header-navy dark:text-foreground">We’ll reply as soon as possible</p>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">Please include your full name, email, and enough detail in your message.</p>
                 </CardContent>
               </Card>
             </div>
           </div>
 
-          <Card className="rounded-[30px] border-header-navy/10 bg-white/95 shadow-[0_32px_90px_-50px_rgba(15,39,68,0.38)]">
+          <Card className="rounded-[30px] border-header-navy/10 bg-white/95 shadow-[0_32px_90px_-50px_rgba(15,39,68,0.38)] dark:border-white/10 dark:bg-card/95 dark:shadow-[0_32px_90px_-50px_rgba(0,0,0,0.78)]">
             <CardContent className="p-6 sm:p-8 lg:p-10">
               <div className="mb-8 flex items-start justify-between gap-4">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent-green">Send a message</p>
-                  <h3 className="mt-2 font-heading text-3xl font-bold text-header-navy">We’d love to hear from you</h3>
+                  <h3 className="mt-2 font-heading text-3xl font-bold text-header-navy dark:text-foreground">We’d love to hear from you</h3>
                   <p className="mt-3 max-w-lg text-sm leading-7 text-muted-foreground sm:text-base">
                     Fill in the form and submit your enquiry directly to the postgraduate office.
                   </p>
@@ -196,7 +196,7 @@ const Contact = ({ embedded = false }: { embedded?: boolean }) => {
               <form onSubmit={handleSubmit((d) => mutation.mutate(d))} className="space-y-5">
                 <div className="grid gap-5 md:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="contact-name" className="text-sm font-medium text-header-navy">
+                    <Label htmlFor="contact-name" className="text-sm font-medium text-header-navy dark:text-foreground">
                       Full name
                     </Label>
                     <Input
@@ -210,7 +210,7 @@ const Contact = ({ embedded = false }: { embedded?: boolean }) => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="contact-email" className="text-sm font-medium text-header-navy">
+                    <Label htmlFor="contact-email" className="text-sm font-medium text-header-navy dark:text-foreground">
                       Email address
                     </Label>
                     <Input
@@ -226,7 +226,7 @@ const Contact = ({ embedded = false }: { embedded?: boolean }) => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="contact-phone" className="text-sm font-medium text-header-navy">
+                  <Label htmlFor="contact-phone" className="text-sm font-medium text-header-navy dark:text-foreground">
                     Phone number
                   </Label>
                   <Input
@@ -241,7 +241,7 @@ const Contact = ({ embedded = false }: { embedded?: boolean }) => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="contact-message" className="text-sm font-medium text-header-navy">
+                  <Label htmlFor="contact-message" className="text-sm font-medium text-header-navy dark:text-foreground">
                     Message
                   </Label>
                   <Textarea
@@ -249,7 +249,7 @@ const Contact = ({ embedded = false }: { embedded?: boolean }) => {
                     placeholder="Write your message here"
                     rows={7}
                     className={cn(
-                      "min-h-[180px] resize-none rounded-2xl border border-border/70 bg-background/90 px-4 py-3 text-header-navy shadow-none placeholder:text-muted-foreground/80 focus-visible:ring-2 focus-visible:ring-accent-green/30 dark:text-foreground"
+                      "min-h-[180px] resize-none rounded-2xl border border-border/70 bg-background/90 px-4 py-3 text-foreground shadow-none placeholder:text-muted-foreground/80 focus-visible:ring-2 focus-visible:ring-accent-green/30 dark:border-white/10 dark:bg-background/80"
                     )}
                     {...register("message")}
                     aria-invalid={!!errors.message}

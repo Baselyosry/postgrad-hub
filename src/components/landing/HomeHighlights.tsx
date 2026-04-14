@@ -27,7 +27,7 @@ const cards = [
     className: "xl:col-span-6 xl:row-span-2",
     iconClassName: "bg-header-navy text-white",
     surfaceClassName:
-      "bg-[linear-gradient(135deg,rgba(26,43,95,0.98),rgba(26,43,95,0.9)_55%,rgba(16,133,69,0.92))] text-white border-header-navy/10 shadow-[0_36px_80px_-38px_rgba(15,39,68,0.55)]",
+      "bg-[linear-gradient(135deg,rgba(26,43,95,0.98),rgba(26,43,95,0.9)_55%,rgba(16,133,69,0.92))] text-white border-header-navy/10 shadow-[0_36px_80px_-38px_rgba(15,39,68,0.55)] dark:border-white/10 dark:bg-[linear-gradient(135deg,rgba(28,45,89,0.98),rgba(26,39,73,0.96)_55%,rgba(18,96,59,0.88))] dark:shadow-[0_36px_80px_-38px_rgba(0,0,0,0.78)]",
     titleClassName: "text-white",
     descriptionClassName: "text-white/70",
     arrowClassName: "text-white/90",
@@ -96,7 +96,7 @@ export function HomeHighlights() {
 
   return (
     <section
-      className="scroll-mt-24 border-b border-header-navy/10 bg-[radial-gradient(circle_at_top,rgba(16,133,69,0.08),transparent_34%),linear-gradient(180deg,#ffffff_0%,#f8f9fa_100%)] py-14 md:py-18 lg:py-20"
+      className="scroll-mt-24 border-b border-header-navy/10 bg-[radial-gradient(circle_at_top,rgba(16,133,69,0.08),transparent_34%),linear-gradient(180deg,#ffffff_0%,#f8f9fa_100%)] py-14 dark:border-white/10 dark:bg-[radial-gradient(circle_at_top,rgba(16,133,69,0.12),transparent_36%),linear-gradient(180deg,rgba(11,18,35,1)_0%,rgba(15,24,43,1)_100%)] md:py-18 lg:py-20"
       aria-label="Quick links"
     >
       <div className="container mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
@@ -126,7 +126,7 @@ export function HomeHighlights() {
               <Link
                 to={card.href}
                 className={cn(
-                  "group relative flex h-full min-h-[180px] flex-col overflow-hidden rounded-[1.5rem] border border-header-navy/10 bg-white/90 p-5 shadow-[0_22px_60px_-36px_rgba(15,39,68,0.24)] transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-1 hover:border-accent-green/35 hover:shadow-[0_28px_80px_-42px_rgba(15,39,68,0.32)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-green/45 focus-visible:ring-offset-2 md:p-6",
+                  "group relative flex h-full min-h-[180px] flex-col overflow-hidden rounded-[1.5rem] border border-header-navy/10 bg-white/90 p-5 shadow-[0_22px_60px_-36px_rgba(15,39,68,0.24)] transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-1 hover:border-accent-green/35 hover:shadow-[0_28px_80px_-42px_rgba(15,39,68,0.32)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-green/45 focus-visible:ring-offset-2 focus-visible:ring-offset-background dark:border-white/10 dark:bg-card/95 dark:shadow-[0_22px_60px_-36px_rgba(0,0,0,0.68)] dark:hover:shadow-[0_28px_80px_-42px_rgba(0,0,0,0.78)] md:p-6",
                   card.surfaceClassName
                 )}
               >
@@ -135,7 +135,7 @@ export function HomeHighlights() {
                 <div className="relative flex items-start justify-between gap-4">
                   <span
                     className={cn(
-                      "flex h-12 w-12 shrink-0 items-center justify-center rounded-[1rem] bg-header-navy/8 text-header-navy transition-colors duration-200 group-hover:bg-accent-green/12 group-hover:text-accent-green",
+                      "flex h-12 w-12 shrink-0 items-center justify-center rounded-[1rem] bg-header-navy/8 text-header-navy transition-colors duration-200 group-hover:bg-accent-green/12 group-hover:text-accent-green dark:bg-white/10 dark:text-foreground dark:group-hover:bg-accent-green/16",
                       card.iconClassName
                     )}
                   >
@@ -144,7 +144,7 @@ export function HomeHighlights() {
 
                   <ArrowUpRight
                     className={cn(
-                      "h-5 w-5 shrink-0 text-header-navy/45 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent-green",
+                      "h-5 w-5 shrink-0 text-header-navy/45 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent-green dark:text-muted-foreground dark:group-hover:text-accent-green",
                       card.arrowClassName
                     )}
                     aria-hidden
@@ -154,7 +154,7 @@ export function HomeHighlights() {
                 <div className="relative mt-auto pt-8">
                   <h3
                     className={cn(
-                      "font-heading text-lg font-semibold leading-snug tracking-tight text-header-navy md:text-xl",
+                      "font-heading text-lg font-semibold leading-snug tracking-tight text-header-navy dark:text-foreground md:text-xl",
                       card.titleClassName
                     )}
                   >

@@ -29,7 +29,7 @@ export function PostgraduateCard({ name, bio, image, index = 0, cvLink = '#staff
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.05 }}
-      className="card-institutional overflow-hidden rounded-md bg-white p-0 shadow-sm"
+      className="card-institutional overflow-hidden rounded-md bg-white p-0 shadow-sm dark:bg-card"
     >
       <div className="flex flex-col items-center text-center">
         <div className="h-64 w-full overflow-hidden bg-primary/5">
@@ -52,7 +52,7 @@ export function PostgraduateCard({ name, bio, image, index = 0, cvLink = '#staff
               )}
             </Button>
             {cvPdfUrl ? (
-              <Button asChild variant="outline" className="border-primary/30 text-primary gap-1.5">
+              <Button asChild variant="outline" className="border-primary/30 text-primary gap-1.5 dark:border-white/10 dark:text-foreground">
                 <a href={cvPdfUrl} target="_blank" rel="noopener noreferrer">
                   <FileDown className="h-4 w-4" />
                   Download PDF

@@ -85,11 +85,11 @@ export default function AdmissionRequiredDocuments({ embedded = false }: { embed
             variant="hero"
             title="Required documents"
             description="Prepare the full document checklist before starting your application."
-            heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(249,249,247,0.98)_54%,rgba(236,247,239,0.92))]"
+            heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(249,249,247,0.98)_54%,rgba(236,247,239,0.92))] dark:bg-[linear-gradient(135deg,rgba(14,22,41,0.96),rgba(16,29,48,0.98)_54%,rgba(21,49,44,0.84))]"
             heroAccentClassName="bg-[linear-gradient(90deg,#1A2B5F,#108545,#87B943)]"
             heroBadges={[
               { icon: ClipboardList },
-              { icon: FileText, className: "bg-white text-header-navy" },
+              { icon: FileText, className: "bg-white text-header-navy dark:bg-card dark:text-foreground dark:ring-1 dark:ring-white/10" },
               { icon: ListOrdered, className: "bg-accent-green text-white" },
             ]}
           />
@@ -105,11 +105,11 @@ export default function AdmissionRequiredDocuments({ embedded = false }: { embed
   return (
     <div
       className={cn(
-        "relative overflow-hidden bg-[radial-gradient(circle_at_top,rgba(16,133,69,0.08),transparent_28%),linear-gradient(180deg,#ffffff_0%,#f8f9fa_100%)]",
+        "relative overflow-hidden bg-[radial-gradient(circle_at_top,rgba(16,133,69,0.08),transparent_28%),linear-gradient(180deg,#ffffff_0%,#f8f9fa_100%)] dark:bg-[radial-gradient(circle_at_top,rgba(16,133,69,0.12),transparent_30%),linear-gradient(180deg,rgba(11,18,35,1)_0%,rgba(15,24,43,1)_100%)]",
         !embedded && "min-h-full"
       )}
     >
-      {!embedded && <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[linear-gradient(180deg,rgba(26,43,95,0.05),transparent)]" aria-hidden />}
+      {!embedded && <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[linear-gradient(180deg,rgba(26,43,95,0.05),transparent)] dark:bg-[linear-gradient(180deg,rgba(93,130,214,0.14),transparent)]" aria-hidden />}
 
       <div className={cn("relative", !embedded && "container mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12")}>
         {!embedded && (
@@ -117,20 +117,20 @@ export default function AdmissionRequiredDocuments({ embedded = false }: { embed
             variant="hero"
             title="Required documents"
             description="Review the checklist, then return to the application steps or continue to the official university portal."
-            heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(249,249,247,0.98)_54%,rgba(236,247,239,0.92))]"
+            heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(249,249,247,0.98)_54%,rgba(236,247,239,0.92))] dark:bg-[linear-gradient(135deg,rgba(14,22,41,0.96),rgba(16,29,48,0.98)_54%,rgba(21,49,44,0.84))]"
             heroAccentClassName="bg-[linear-gradient(90deg,#1A2B5F,#108545,#87B943)]"
             heroBadges={[
               { icon: ClipboardList },
-              { icon: FileText, className: "bg-white text-header-navy" },
+              { icon: FileText, className: "bg-white text-header-navy dark:bg-card dark:text-foreground dark:ring-1 dark:ring-white/10" },
               { icon: ListOrdered, className: "bg-accent-green text-white" },
             ]}
           />
         )}
 
         <div className="mb-8 grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-          <Card className="rounded-2xl border-header-navy/10 bg-white/92 shadow-[0_24px_70px_-44px_rgba(15,39,68,0.3)]">
+          <Card className="rounded-2xl border-header-navy/10 bg-white/92 shadow-[0_24px_70px_-44px_rgba(15,39,68,0.3)] dark:border-white/10 dark:bg-card/95 dark:shadow-[0_24px_70px_-44px_rgba(0,0,0,0.68)]">
             <CardHeader className="pb-4">
-              <CardTitle className="font-heading text-xl text-header-navy">Checklist overview</CardTitle>
+              <CardTitle className="font-heading text-xl text-header-navy dark:text-foreground">Checklist overview</CardTitle>
               <CardDescription className="text-sm leading-7 sm:text-base">
                 Gather all required documents before submission to avoid delays during application review.
               </CardDescription>
@@ -139,13 +139,13 @@ export default function AdmissionRequiredDocuments({ embedded = false }: { embed
 
           <div className="grid gap-4">
             <Link to="/admission/how-to-apply" className="group block">
-              <Card className="rounded-2xl border-header-navy/10 bg-white/92 shadow-[0_24px_70px_-44px_rgba(15,39,68,0.3)] transition-all duration-200 group-hover:-translate-y-0.5 group-hover:border-accent-green/35">
+              <Card className="rounded-2xl border-header-navy/10 bg-white/92 shadow-[0_24px_70px_-44px_rgba(15,39,68,0.3)] transition-all duration-200 group-hover:-translate-y-0.5 group-hover:border-accent-green/35 dark:border-white/10 dark:bg-card/95 dark:shadow-[0_24px_70px_-44px_rgba(0,0,0,0.68)]">
                 <CardHeader className="flex flex-row items-center justify-between gap-4 space-y-0">
                   <div className="space-y-1">
-                    <CardTitle className="font-heading text-lg text-header-navy">How to apply</CardTitle>
+                    <CardTitle className="font-heading text-lg text-header-navy dark:text-foreground">How to apply</CardTitle>
                     <CardDescription>Go back to the step-by-step guide.</CardDescription>
                   </div>
-                  <ArrowRight className="h-5 w-5 text-header-navy/50 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-accent-green" />
+                  <ArrowRight className="h-5 w-5 text-header-navy/50 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-accent-green dark:text-muted-foreground" />
                 </CardHeader>
               </Card>
             </Link>
@@ -177,7 +177,7 @@ export default function AdmissionRequiredDocuments({ embedded = false }: { embed
             <Skeleton className="h-[260px] w-full rounded-2xl" />
           </div>
         ) : !data?.length ? (
-          <Card className="rounded-2xl border-header-navy/10 bg-white/92 shadow-[0_24px_70px_-44px_rgba(15,39,68,0.3)]">
+          <Card className="rounded-2xl border-header-navy/10 bg-white/92 shadow-[0_24px_70px_-44px_rgba(15,39,68,0.3)] dark:border-white/10 dark:bg-card/95 dark:shadow-[0_24px_70px_-44px_rgba(0,0,0,0.68)]">
             <CardContent className="p-6 text-sm leading-7 text-muted-foreground sm:p-8">
               Content will appear here once administrators add document checklist blocks. The{" "}
               <a
