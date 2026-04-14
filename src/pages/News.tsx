@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { cn, getErrorMessage } from "@/lib/utils";
-import { CalendarClock, ChevronDown, ImageIcon, User } from "lucide-react";
+import { CalendarClock, ChevronDown, ImageIcon, Newspaper, User } from "lucide-react";
 
 function formatNewsDateLong(iso: string | null) {
   if (!iso) return null;
@@ -46,7 +46,20 @@ const News = ({ embedded = false }: { embedded?: boolean }) => {
 
   const inner = (
     <>
-      {!embedded && <PageHeader variant="hero" title="News" description="Announcements and updates from the postgraduate office." />}
+      {!embedded && (
+        <PageHeader
+          variant="hero"
+          title="News"
+          description="Announcements and updates from the postgraduate office."
+          heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,249,250,0.98)_52%,rgba(236,245,255,0.94))]"
+          heroAccentClassName="bg-[linear-gradient(90deg,#1A2B5F,#2C7BE5,#108545)]"
+          heroBadges={[
+            { icon: Newspaper },
+            { icon: CalendarClock, className: 'bg-white text-header-navy' },
+            { icon: ImageIcon, className: 'bg-accent-green text-white' },
+          ]}
+        />
+      )}
       {embedded ? (
         <h2 className="mb-10 text-center font-heading text-2xl font-bold tracking-tight text-accent-green md:text-3xl">News</h2>
       ) : null}
@@ -190,7 +203,20 @@ const News = ({ embedded = false }: { embedded?: boolean }) => {
   if (!isSupabaseConfigured) {
     return (
       <div className={cn(!embedded && "container mx-auto max-w-6xl px-4 py-10")}>
-        {!embedded && <PageHeader variant="hero" title="News" description="Postgraduate programme news and updates." />}
+        {!embedded && (
+          <PageHeader
+            variant="hero"
+            title="News"
+            description="Postgraduate programme news and updates."
+            heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,249,250,0.98)_52%,rgba(236,245,255,0.94))]"
+            heroAccentClassName="bg-[linear-gradient(90deg,#1A2B5F,#2C7BE5,#108545)]"
+            heroBadges={[
+              { icon: Newspaper },
+              { icon: CalendarClock, className: 'bg-white text-header-navy' },
+              { icon: ImageIcon, className: 'bg-accent-green text-white' },
+            ]}
+          />
+        )}
         <Alert>
           <AlertTitle>Configuration required</AlertTitle>
           <AlertDescription>Connect Supabase to load news.</AlertDescription>

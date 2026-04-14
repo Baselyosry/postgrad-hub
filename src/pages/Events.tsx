@@ -6,7 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Clock, ChevronDown, MapPin } from "lucide-react";
+import { Clock, ChevronDown, CalendarDays, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const assetUrl = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
@@ -39,7 +39,20 @@ const Events = ({ embedded = false }: { embedded?: boolean }) => {
 
   const inner = (
     <>
-      {!embedded && <PageHeader variant="hero" title="Events" description="Thesis defences, seminars, and important dates." />}
+      {!embedded && (
+        <PageHeader
+          variant="hero"
+          title="Events"
+          description="Thesis defences, seminars, and important dates."
+          heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(249,249,250,0.98)_54%,rgba(238,245,255,0.94))]"
+          heroAccentClassName="bg-[linear-gradient(90deg,#1A2B5F,#108545,#56A3FF)]"
+          heroBadges={[
+            { icon: CalendarDays },
+            { icon: MapPin, className: 'bg-white text-header-navy' },
+            { icon: Clock, className: 'bg-accent-green text-white' },
+          ]}
+        />
+      )}
       {embedded ? (
         <h2 className="mb-10 text-center font-heading text-2xl font-bold tracking-tight text-accent-green md:text-3xl">
           Related Events
@@ -152,7 +165,20 @@ const Events = ({ embedded = false }: { embedded?: boolean }) => {
   if (!isSupabaseConfigured) {
     return (
       <div className={cn(!embedded && "container mx-auto max-w-6xl px-4 py-10")}>
-        {!embedded && <PageHeader variant="hero" title="Events" description="Defences, deadlines, and postgraduate events." />}
+        {!embedded && (
+          <PageHeader
+            variant="hero"
+            title="Events"
+            description="Defences, deadlines, and postgraduate events."
+            heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(249,249,250,0.98)_54%,rgba(238,245,255,0.94))]"
+            heroAccentClassName="bg-[linear-gradient(90deg,#1A2B5F,#108545,#56A3FF)]"
+            heroBadges={[
+              { icon: CalendarDays },
+              { icon: MapPin, className: 'bg-white text-header-navy' },
+              { icon: Clock, className: 'bg-accent-green text-white' },
+            ]}
+          />
+        )}
         <Alert>
           <AlertTitle>Configuration required</AlertTitle>
           <AlertDescription>Connect Supabase to load events.</AlertDescription>

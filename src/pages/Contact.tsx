@@ -11,6 +11,7 @@ import { useMutation } from "@tanstack/react-query";
 import { supabase, isSupabaseConfigured } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { Mail, Phone, Send } from "lucide-react";
 
 const assetUrl = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 
@@ -183,7 +184,18 @@ const Contact = ({ embedded = false }: { embedded?: boolean }) => {
 
   return (
     <div>
-      <PageHeader variant="hero" title="Contact Us" description="Reach the postgraduate office by email or message." />
+      <PageHeader
+        variant="hero"
+        title="Contact Us"
+        description="Reach the postgraduate office by email or message."
+        heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,249,250,0.98)_54%,rgba(236,247,244,0.94))]"
+        heroAccentClassName="bg-[linear-gradient(90deg,#108545,#1A2B5F,#0EA5A4)]"
+        heroBadges={[
+          { icon: Mail },
+          { icon: Send, className: 'bg-white text-header-navy' },
+          { icon: Phone, className: 'bg-accent-green text-white' },
+        ]}
+      />
       {splitLayout}
     </div>
   );

@@ -132,7 +132,19 @@ export function LandingServicesSection({ embedded = false }: Props) {
   return (
     <div>
       {!embedded && (
-        <PageHeader variant="hero" title="Services" description="Research tools and resources." className="mb-12" />
+        <PageHeader
+          variant="hero"
+          title="Services"
+          description="Research tools and resources."
+          className="mb-12"
+          heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,249,250,0.98)_58%,rgba(233,247,239,0.92))]"
+          heroAccentClassName="bg-[linear-gradient(90deg,#108545,#1A2B5F)]"
+          heroBadges={[
+            { icon: Library },
+            { icon: ShieldCheck, className: 'bg-white text-header-navy' },
+            { icon: Mail, className: 'bg-accent-green text-white' },
+          ]}
+        />
       )}
       {isError && (
         <Alert variant="destructive" className="mb-6">

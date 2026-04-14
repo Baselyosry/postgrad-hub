@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowUpRight, ClipboardList, ListOrdered } from "lucide-react";
+import { ArrowUpRight, ClipboardList, FileText, ListOrdered } from "lucide-react";
 
 import { PageHeader } from "@/components/PageHeader";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -36,6 +36,13 @@ export default function AdmissionHub() {
           variant="hero"
           title="Admission"
           description="Choose a topic below, or use the official university admission portal for programme listings and intake deadlines."
+          heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(249,249,247,0.98)_54%,rgba(236,247,239,0.92))]"
+          heroAccentClassName="bg-[linear-gradient(90deg,#1A2B5F,#108545,#87B943)]"
+          heroBadges={[
+            { icon: ListOrdered },
+            { icon: ClipboardList, className: 'bg-white text-header-navy' },
+            { icon: FileText, className: 'bg-accent-green text-white' },
+          ]}
         />
 
         <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">

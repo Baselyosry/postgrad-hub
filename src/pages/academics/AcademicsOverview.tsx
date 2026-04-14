@@ -80,6 +80,13 @@ export default function AcademicsOverview() {
           variant="hero"
           title="Academics"
           description="Postgraduate academics: staff, study plan and regulations, research planning, submissions, and schedules."
+          heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(247,249,252,0.98)_54%,rgba(230,244,255,0.92))]"
+          heroAccentClassName="bg-[linear-gradient(90deg,#108545,#1A2B5F,#2C7BE5)]"
+          heroBadges={[
+            { icon: Users },
+            { icon: BookMarked, className: 'bg-white text-header-navy' },
+            { icon: FlaskConical, className: 'bg-accent-green text-white' },
+          ]}
         />
 
         <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-12 xl:auto-rows-[minmax(190px,1fr)]">
