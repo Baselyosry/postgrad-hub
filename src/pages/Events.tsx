@@ -114,11 +114,11 @@ const Events = ({ embedded = false }: { embedded?: boolean }) => {
                       </div>
                     )}
 
-                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent p-4">
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-4 pt-10">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="inline-flex items-center gap-2 rounded-full bg-white/92 px-3 py-1.5 text-sm font-medium text-header-navy backdrop-blur-sm dark:bg-card/88 dark:text-foreground">
-                          <MapPin className="h-4 w-4 text-accent-green" />
-                          {locationText}
+                        <span className="inline-flex max-w-full items-center gap-2 text-sm font-medium text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.85)]">
+                          <MapPin className="h-4 w-4 shrink-0 text-accent-green" aria-hidden />
+                          <span className="leading-snug">{locationText}</span>
                         </span>
                       </div>
                     </div>
