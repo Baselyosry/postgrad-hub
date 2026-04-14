@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import StaffCv from '@/pages/StaffCv';
+import AcademicStaff from '@/pages/AcademicStaff';
 import StudyPlan from '@/pages/StudyPlan';
 import Schedules from '@/pages/Schedules';
 import ResearchPlan from '@/pages/ResearchPlan';
@@ -84,7 +84,7 @@ export function LandingEmbeds() {
           title="Staff CV"
           description="Faculty profiles, qualifications, and downloadable CVs (PDF)."
         >
-          <StaffCv embedded />
+          <AcademicStaff embedded />
         </LandingSection>
 
         <LandingSection

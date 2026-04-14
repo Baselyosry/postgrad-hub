@@ -33,7 +33,7 @@ const SubmitApplication = lazy(() => import("./pages/SubmitApplication"));
 const Submissions = lazy(() => import("./pages/Submissions"));
 
 const AcademicsOverview = lazy(() => import("./pages/academics/AcademicsOverview"));
-const StaffCv = lazy(() => import("./pages/StaffCv"));
+const AcademicStaff = lazy(() => import("./pages/AcademicStaff"));
 const StudyPlan = lazy(() => import("./pages/StudyPlan"));
 const ResearchPlan = lazy(() => import("./pages/ResearchPlan"));
 const RegulationsMasters = lazy(() => import("./pages/academics/RegulationsMasters"));
@@ -82,7 +82,7 @@ const App = () => (
                   <Routes>
                     <Route path="/" element={<Index />} />
                     <Route path="/academics" element={<AcademicsOverview />} />
-                    <Route path="/academics/academic-staff" element={<StaffCv />} />
+                    <Route path="/academics/academic-staff" element={<AcademicStaff />} />
                     <Route path="/academics/study-plan" element={<StudyPlan />} />
                     <Route path="/academics/research-plan" element={<ResearchPlan />} />
                     <Route path="/academics/regulations/masters" element={<RegulationsMasters />} />
