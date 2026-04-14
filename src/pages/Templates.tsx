@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { SkeletonCard } from '@/components/SkeletonCard';
 import { EmptyState } from '@/components/EmptyState';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { getErrorMessage } from '@/lib/utils';
+import { getErrorMessage, cn } from '@/lib/utils';
 import { FileText, Download, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -21,10 +21,16 @@ const Templates = ({ embedded = false }: { embedded?: boolean }) => {
   });
 
   return (
-    <div>
+    <div
+      className={cn(
+        'w-full min-w-0',
+        !embedded &&
+          'container mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12'
+      )}
+    >
       {!embedded && (
         <PageHeader
-          title="Document Download Center"
+          title="Document templates"
           description="Download standardized academic forms, proposal templates, and thesis formatting guides."
         />
       )}
