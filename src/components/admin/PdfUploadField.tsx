@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -16,6 +16,8 @@ type Props = {
   storageFolder: string;
   /** Show manual URL input (default true) */
   showUrlInput?: boolean;
+  /** Shown under the controls (e.g. where the file appears on the site) */
+  helperText?: ReactNode;
 };
 
 export function PdfUploadField({
@@ -25,6 +27,7 @@ export function PdfUploadField({
   onChange,
   storageFolder,
   showUrlInput = true,
+  helperText,
 }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
@@ -95,9 +98,10 @@ export function PdfUploadField({
           id={id}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          placeholder="Or paste a public PDF URL…"
+          placeholder="Or paste a public HTTPS URL to a PDF…"
         />
       ) : null}
+      {helperText ? <p className="text-xs leading-relaxed text-muted-foreground">{helperText}</p> : null}
     </div>
   );
 }
