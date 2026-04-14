@@ -7,7 +7,7 @@ import { ResearchCard } from '@/components/ResearchCard';
 import { SkeletonCard } from '@/components/SkeletonCard';
 import { EmptyState } from '@/components/EmptyState';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { getErrorMessage } from '@/lib/utils';
+import { getErrorMessage, cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useArchiveData } from '@/hooks/useArchiveData';
 import { Search, AlertCircle } from 'lucide-react';
@@ -26,10 +26,16 @@ const ArchivePage = ({ embedded = false }: { embedded?: boolean }) => {
   }, [params]);
 
   return (
-    <div>
+    <div
+      className={cn(
+        'w-full min-w-0',
+        !embedded &&
+          'container mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12'
+      )}
+    >
       {!embedded && (
         <PageHeader
-          title="Digital Research Archive"
+          title="Thesis & research archive"
           description="Browse published faculty research and successfully defended theses."
         />
       )}
