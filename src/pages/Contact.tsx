@@ -11,7 +11,7 @@ import { useMutation } from "@tanstack/react-query";
 import { supabase, isSupabaseConfigured } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { Mail, Phone, Send } from "lucide-react";
+import { Mail, Phone, Send, MapPin, Clock3, ChevronRight } from "lucide-react";
 
 const assetUrl = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 
@@ -25,7 +25,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const fieldClass =
-  "border-0 bg-zinc-100 text-header-navy shadow-none placeholder:text-muted-foreground/80 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-accent-green/30 dark:bg-zinc-800/80 dark:text-foreground dark:focus-visible:bg-card";
+  "h-12 rounded-2xl border border-border/70 bg-background/90 px-4 text-header-navy shadow-none placeholder:text-muted-foreground/80 focus-visible:ring-2 focus-visible:ring-accent-green/30 dark:text-foreground";
 
 const Contact = ({ embedded = false }: { embedded?: boolean }) => {
   const {
@@ -59,7 +59,6 @@ const Contact = ({ embedded = false }: { embedded?: boolean }) => {
       reset();
     },
     onError: (err: Error) => {
-      console.error("[Contact] Submission failed:", err);
       const msg = err instanceof Error ? err.message : "Unknown error";
       toast({
         title: "Submission failed",
@@ -74,131 +73,217 @@ const Contact = ({ embedded = false }: { embedded?: boolean }) => {
 
   const formDisabled = mutation.isPending || !isSupabaseConfigured;
 
-  const splitLayout = (
-    <div
-      className={cn(
-        "grid min-h-[min(100vh,640px)] w-full overflow-hidden bg-white lg:min-h-[520px] lg:grid-cols-2 dark:bg-card"
-      )}
-    >
-      <div className="relative min-h-[280px] lg:min-h-full">
-        <img
-          src={assetUrl("hero/slide-1.jpg")}
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover object-center"
-        />
-        <div className="absolute inset-0 bg-header-navy/75 backdrop-blur-[2px]" aria-hidden />
-        <div className="relative z-10 flex h-full min-h-[280px] flex-col justify-center px-6 py-10 sm:px-10 lg:px-12 lg:py-14">
-          <h2 className="font-heading text-3xl font-bold leading-tight text-white sm:text-4xl">Reach us on any time.</h2>
-          <p className="mt-4 max-w-md text-base text-white/90 sm:text-lg">Or contact us by email</p>
-          <a
-            href="mailto:postgrad@must.edu.eg"
-            className="mt-2 inline-flex w-fit text-lg font-semibold text-accent-green transition-colors hover:text-accent-green/90"
-          >
-            postgrad@must.edu.eg
-          </a>
-        </div>
-      </div>
+  const content = (
+    <div className="relative overflow-hidden">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[linear-gradient(180deg,rgba(26,43,95,0.05),transparent)]" aria-hidden />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-full bg-[radial-gradient(circle_at_top,rgba(16,133,69,0.08),transparent_28%),linear-gradient(180deg,#ffffff_0%,#f8f9fa_100%)]" aria-hidden />
 
-      <div className="relative flex flex-col items-center justify-center bg-zinc-50 px-4 py-10 sm:px-8 lg:px-10 dark:bg-muted/30">
-        <Card className="relative z-10 w-full max-w-md border-0 shadow-xl lg:-mt-8 xl:max-w-lg">
-          <CardContent className="p-6 sm:p-8">
-            <h3 className="font-heading text-2xl font-bold text-header-navy dark:text-header-navy">Leave a message</h3>
-            {!isSupabaseConfigured && (
-              <p className="mt-2 text-sm text-destructive">Supabase is not configured; the form cannot be submitted.</p>
-            )}
-            <form onSubmit={handleSubmit((d) => mutation.mutate(d))} className="mt-6 space-y-5">
-              <div className="grid gap-4 sm:grid-cols-2">
+      <div className={cn("relative", !embedded && "container mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12")}>
+        {!embedded && (
+          <PageHeader
+            variant="hero"
+            title="Contact Us"
+            description="Reach the postgraduate office by email or send us a message through the form below."
+            heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,249,250,0.98)_54%,rgba(236,247,244,0.94))]"
+            heroAccentClassName="bg-[linear-gradient(90deg,#108545,#1A2B5F,#0EA5A4)]"
+            heroBadges={[
+              { icon: Mail },
+              { icon: Send, className: "bg-white text-header-navy" },
+              { icon: Phone, className: "bg-accent-green text-white" },
+            ]}
+          />
+        )}
+
+        <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-stretch">
+          <div className="grid gap-6">
+            <Card className="overflow-hidden rounded-[28px] border-header-navy/10 bg-[linear-gradient(145deg,rgba(26,43,95,0.98),rgba(26,43,95,0.92)_58%,rgba(16,133,69,0.92))] text-white shadow-[0_36px_80px_-42px_rgba(15,39,68,0.58)]">
+              <CardContent className="relative p-0">
+                <div className="relative aspect-[5/4] min-h-[320px] overflow-hidden">
+                  <img
+                    src={assetUrl("hero/slide-1.jpg")}
+                    alt=""
+                    className="absolute inset-0 h-full w-full object-cover object-center opacity-30"
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(9,22,56,0.1),rgba(9,22,56,0.72))]" />
+                  <div className="relative z-10 flex h-full flex-col justify-end p-6 sm:p-8">
+                    <span className="mb-3 inline-flex w-fit items-center rounded-full bg-white/12 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-white/85 backdrop-blur-sm">
+                      Postgraduate Office
+                    </span>
+                    <h2 className="max-w-md font-heading text-3xl font-bold leading-tight text-white sm:text-4xl">
+                      Let’s help you with admissions, schedules, and postgraduate enquiries.
+                    </h2>
+                    <p className="mt-4 max-w-lg text-sm leading-7 text-white/85 sm:text-base">
+                      Send your message and the office can follow up with you by email. For direct contact, use the details below.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Card className="rounded-3xl border-header-navy/10 bg-white/92 shadow-[0_20px_55px_-40px_rgba(15,39,68,0.45)]">
+                <CardContent className="p-5">
+                  <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-accent-green/10 text-accent-green">
+                    <Mail className="h-5 w-5" />
+                  </span>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-header-navy/60">Email</p>
+                  <a
+                    href="mailto:postgrad@must.edu.eg"
+                    className="mt-2 block break-all font-heading text-lg font-semibold text-header-navy transition-colors hover:text-accent-green"
+                  >
+                    postgrad@must.edu.eg
+                  </a>
+                  <p className="mt-2 text-sm leading-6 text-muted-foreground">Best for programme questions, follow-up, and general enquiries.</p>
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-3xl border-header-navy/10 bg-white/92 shadow-[0_20px_55px_-40px_rgba(15,39,68,0.45)]">
+                <CardContent className="p-5">
+                  <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-header-navy/8 text-header-navy">
+                    <Phone className="h-5 w-5" />
+                  </span>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-header-navy/60">Phone</p>
+                  <p className="mt-2 font-heading text-lg font-semibold text-header-navy">Contact via office channels</p>
+                  <p className="mt-2 text-sm leading-6 text-muted-foreground">Use the message form and include your phone number if you want a callback.</p>
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-3xl border-header-navy/10 bg-white/92 shadow-[0_20px_55px_-40px_rgba(15,39,68,0.45)]">
+                <CardContent className="p-5">
+                  <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-header-navy/8 text-header-navy">
+                    <MapPin className="h-5 w-5" />
+                  </span>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-header-navy/60">Office</p>
+                  <p className="mt-2 font-heading text-lg font-semibold text-header-navy">MUST Postgraduate Studies</p>
+                  <p className="mt-2 text-sm leading-6 text-muted-foreground">Use this page for postgraduate administration enquiries and support.</p>
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-3xl border-header-navy/10 bg-white/92 shadow-[0_20px_55px_-40px_rgba(15,39,68,0.45)]">
+                <CardContent className="p-5">
+                  <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-accent-green/10 text-accent-green">
+                    <Clock3 className="h-5 w-5" />
+                  </span>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-header-navy/60">Response</p>
+                  <p className="mt-2 font-heading text-lg font-semibold text-header-navy">We’ll reply as soon as possible</p>
+                  <p className="mt-2 text-sm leading-6 text-muted-foreground">Please include your full name, email, and enough detail in your message.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          <Card className="rounded-[30px] border-header-navy/10 bg-white/95 shadow-[0_32px_90px_-50px_rgba(15,39,68,0.38)]">
+            <CardContent className="p-6 sm:p-8 lg:p-10">
+              <div className="mb-8 flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent-green">Send a message</p>
+                  <h3 className="mt-2 font-heading text-3xl font-bold text-header-navy">We’d love to hear from you</h3>
+                  <p className="mt-3 max-w-lg text-sm leading-7 text-muted-foreground sm:text-base">
+                    Fill in the form and submit your enquiry directly to the postgraduate office.
+                  </p>
+                </div>
+                <span className="hidden h-14 w-14 items-center justify-center rounded-2xl bg-accent-green/10 text-accent-green sm:flex">
+                  <Send className="h-6 w-6" />
+                </span>
+              </div>
+
+              {!isSupabaseConfigured && (
+                <div className="mb-6 rounded-2xl border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+                  Supabase is not configured, so the form cannot be submitted right now.
+                </div>
+              )}
+
+              <form onSubmit={handleSubmit((d) => mutation.mutate(d))} className="space-y-5">
+                <div className="grid gap-5 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="contact-name" className="text-sm font-medium text-header-navy">
+                      Full name
+                    </Label>
+                    <Input
+                      id="contact-name"
+                      placeholder="Enter your name"
+                      className={fieldClass}
+                      {...register("name")}
+                      aria-invalid={!!errors.name}
+                    />
+                    {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="contact-email" className="text-sm font-medium text-header-navy">
+                      Email address
+                    </Label>
+                    <Input
+                      id="contact-email"
+                      type="email"
+                      placeholder="Enter your email"
+                      className={fieldClass}
+                      {...register("email")}
+                      aria-invalid={!!errors.email}
+                    />
+                    {errors.email && <p className="text-xs text-destructive">{errors.email.message}</p>}
+                  </div>
+                </div>
+
                 <div className="space-y-2">
-                  <Label htmlFor="contact-name" className="sr-only">
-                    Name
+                  <Label htmlFor="contact-phone" className="text-sm font-medium text-header-navy">
+                    Phone number
                   </Label>
                   <Input
-                    id="contact-name"
-                    placeholder="Name"
+                    id="contact-phone"
+                    type="tel"
+                    placeholder="Enter your phone number"
                     className={fieldClass}
-                    {...register("name")}
-                    aria-invalid={!!errors.name}
+                    {...register("phone_number")}
+                    aria-invalid={!!errors.phone_number}
                   />
-                  {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
+                  {errors.phone_number && <p className="text-xs text-destructive">{errors.phone_number.message}</p>}
                 </div>
+
                 <div className="space-y-2">
-                  <Label htmlFor="contact-email" className="sr-only">
-                    Email
+                  <Label htmlFor="contact-message" className="text-sm font-medium text-header-navy">
+                    Message
                   </Label>
-                  <Input
-                    id="contact-email"
-                    type="email"
-                    placeholder="Email"
-                    className={fieldClass}
-                    {...register("email")}
-                    aria-invalid={!!errors.email}
+                  <Textarea
+                    id="contact-message"
+                    placeholder="Write your message here"
+                    rows={7}
+                    className={cn(
+                      "min-h-[180px] resize-none rounded-2xl border border-border/70 bg-background/90 px-4 py-3 text-header-navy shadow-none placeholder:text-muted-foreground/80 focus-visible:ring-2 focus-visible:ring-accent-green/30 dark:text-foreground"
+                    )}
+                    {...register("message")}
+                    aria-invalid={!!errors.message}
                   />
-                  {errors.email && <p className="text-xs text-destructive">{errors.email.message}</p>}
+                  {errors.message && <p className="text-xs text-destructive">{errors.message.message}</p>}
                 </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="contact-phone" className="sr-only">
-                  Phone
-                </Label>
-                <Input
-                  id="contact-phone"
-                  type="tel"
-                  placeholder="Phone"
-                  className={fieldClass}
-                  {...register("phone_number")}
-                  aria-invalid={!!errors.phone_number}
-                />
-                {errors.phone_number && <p className="text-xs text-destructive">{errors.phone_number.message}</p>}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="contact-message" className="sr-only">
-                  Message
-                </Label>
-                <Textarea
-                  id="contact-message"
-                  placeholder="Say Something"
-                  rows={5}
-                  className={cn(fieldClass, "min-h-[140px] resize-none")}
-                  {...register("message")}
-                  aria-invalid={!!errors.message}
-                />
-                {errors.message && <p className="text-xs text-destructive">{errors.message.message}</p>}
-              </div>
-              <Button
-                type="submit"
-                disabled={formDisabled}
-                className="h-12 w-full rounded-full bg-accent-green text-base font-semibold text-white hover:bg-accent-green/90"
-              >
-                {mutation.isPending ? "Sending…" : "Send Message"}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+
+                <div className="flex flex-col gap-4 border-t border-border/70 pt-5 sm:flex-row sm:items-center sm:justify-between">
+                  <p className="text-sm leading-6 text-muted-foreground">
+                    By submitting this form, your enquiry is stored in the portal so the office can review it.
+                  </p>
+
+                  <Button
+                    type="submit"
+                    disabled={formDisabled}
+                    className="h-12 rounded-full bg-accent-green px-7 text-base font-semibold text-white hover:bg-accent-green/90"
+                  >
+                    {mutation.isPending ? "Sending…" : "Send Message"}
+                    <ChevronRight className="ml-1 h-4 w-4" />
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
 
   if (embedded) {
-    return splitLayout;
+    return content;
   }
 
-  return (
-    <div>
-      <PageHeader
-        variant="hero"
-        title="Contact Us"
-        description="Reach the postgraduate office by email or message."
-        heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,249,250,0.98)_54%,rgba(236,247,244,0.94))]"
-        heroAccentClassName="bg-[linear-gradient(90deg,#108545,#1A2B5F,#0EA5A4)]"
-        heroBadges={[
-          { icon: Mail },
-          { icon: Send, className: 'bg-white text-header-navy' },
-          { icon: Phone, className: 'bg-accent-green text-white' },
-        ]}
-      />
-      {splitLayout}
-    </div>
-  );
+  return <div>{content}</div>;
 };
 
 export default Contact;
