@@ -16,7 +16,7 @@ import Contact from '@/pages/Contact';
 import { LandingServicesSection } from '@/components/landing/LandingServicesSection';
 
 const h2 = 'font-heading text-2xl font-bold tracking-tight text-primary md:text-3xl';
-const lead = 'mt-2 text-sm leading-relaxed text-muted-foreground md:text-base';
+const lead = 'mt-2 text-base leading-relaxed text-muted-foreground md:text-lg';
 
 const inner = 'container mx-auto max-w-6xl px-4 md:px-6 lg:px-8';
 
@@ -91,7 +91,7 @@ export function LandingEmbeds() {
           id="study-plan"
           variant="plain"
           title="Study plan"
-          description="Program study plans and PDF downloads."
+          description="Master's and PhD regulations, milestones, and downloadable documents from the postgraduate office."
         >
           <StudyPlan embedded />
         </LandingSection>
