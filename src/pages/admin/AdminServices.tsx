@@ -69,7 +69,7 @@ const AdminServices = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-services"] });
-      queryClient.invalidateQueries({ queryKey: ["public-service"] });
+      queryClient.invalidateQueries({ queryKey: ["landing-services"] });
       toast({ title: "Service updated" });
       setOpen(false);
       setEditing(null);
