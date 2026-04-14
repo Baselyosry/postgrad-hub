@@ -339,10 +339,11 @@ export type Database = {
         Row: {
           id: string
           title: string
-          authors: string | null
-          year: number | null
+          authors: string
+          year: number
           keywords: string | null
-          abstract: string | null
+          abstract: string
+          publication_place: string
           url: string | null
           pdf_url: string | null
           created_at: string
@@ -351,10 +352,11 @@ export type Database = {
         Insert: {
           id?: string
           title: string
-          authors?: string | null
-          year?: number | null
+          authors: string
+          year: number
           keywords?: string | null
-          abstract?: string | null
+          abstract: string
+          publication_place: string
           url?: string | null
           pdf_url?: string | null
           created_at?: string
@@ -363,10 +365,11 @@ export type Database = {
         Update: {
           id?: string
           title?: string
-          authors?: string | null
-          year?: number | null
+          authors?: string
+          year?: number
           keywords?: string | null
-          abstract?: string | null
+          abstract?: string
+          publication_place?: string
           url?: string | null
           pdf_url?: string | null
           created_at?: string
@@ -381,6 +384,8 @@ export type Database = {
           summary: string | null
           milestones: string | null
           file_url: string | null
+          regulation_track: string
+          program_group: string | null
           created_at: string
           updated_at: string
         }
@@ -390,6 +395,8 @@ export type Database = {
           summary?: string | null
           milestones?: string | null
           file_url?: string | null
+          regulation_track?: string
+          program_group?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -399,6 +406,8 @@ export type Database = {
           summary?: string | null
           milestones?: string | null
           file_url?: string | null
+          regulation_track?: string
+          program_group?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -441,6 +450,7 @@ export type Database = {
           department: string | null
           photo_url: string | null
           cv_pdf_url: string | null
+          google_scholar_url: string | null
           personal_data: Json
           qualifications: Json
           experience: Json
@@ -455,6 +465,7 @@ export type Database = {
           department?: string | null
           photo_url?: string | null
           cv_pdf_url?: string | null
+          google_scholar_url?: string | null
           personal_data?: Json
           qualifications?: Json
           experience?: Json
@@ -469,11 +480,54 @@ export type Database = {
           department?: string | null
           photo_url?: string | null
           cv_pdf_url?: string | null
+          google_scholar_url?: string | null
           personal_data?: Json
           qualifications?: Json
           experience?: Json
           skills?: Json
           sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      thesis_upload_submissions: {
+        Row: {
+          id: string
+          user_id: string
+          submission_type: string
+          thesis_name: string
+          supervisor_name: string
+          student_name: string
+          student_id: string
+          file_url: string
+          status: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          submission_type: string
+          thesis_name: string
+          supervisor_name: string
+          student_name: string
+          student_id: string
+          file_url: string
+          status?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          submission_type?: string
+          thesis_name?: string
+          supervisor_name?: string
+          student_name?: string
+          student_id?: string
+          file_url?: string
+          status?: string
           created_at?: string
           updated_at?: string
         }
