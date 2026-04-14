@@ -42,7 +42,6 @@ const heroNavItems = [
     title: 'Academics',
     href: '/academics',
     dropdown: [
-      { title: 'Overview', href: '/academics' },
       { title: 'Academic staff', href: '/academics/academic-staff' },
       { title: 'Study plan', href: '/academics/study-plan' },
       { title: 'Schedules', href: '/schedules' },
@@ -57,7 +56,6 @@ const heroNavItems = [
     title: 'Admission',
     href: '/admission',
     dropdown: [
-      { title: 'Overview', href: '/admission' },
       { title: 'How to Apply', href: '/admission/how-to-apply' },
       { title: 'Required Documents', href: '/admission/required-documents' },
       { title: 'University admission portal', href: 'https://admission.must.edu.eg/', external: true },
