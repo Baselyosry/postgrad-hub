@@ -1,4 +1,3 @@
-import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { PageHeader } from '@/components/PageHeader';
 import { Card, CardContent } from '@/components/ui/card';
@@ -12,7 +11,6 @@ import { z } from 'zod';
 import { useMutation } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
-import { SkeletonCard } from '@/components/SkeletonCard';
 import { PdfUploadField } from '@/components/admin/PdfUploadField';
 
 const schema = z.object({
@@ -27,7 +25,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export default function Submissions() {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
 
   const {
     register,
@@ -35,17 +33,25 @@ export default function Submissions() {
     control,
     setValue,
     watch,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: { submission_type: 'proposal', thesis_name: '', supervisor_name: '', student_name: '', student_id: '', file_url: '' },
+    defaultValues: {
+      submission_type: 'proposal',
+      thesis_name: '',
+      supervisor_name: '',
+      student_name: '',
+      student_id: '',
+      file_url: '',
+    },
   });
 
   const mutation = useMutation({
     mutationFn: async (data: FormData) => {
       const { error } = await supabase.from('thesis_upload_submissions').insert([
         {
-          user_id: user!.id,
+          user_id: user?.id ?? null,
           submission_type: data.submission_type,
           thesis_name: data.thesis_name,
           supervisor_name: data.supervisor_name,
@@ -58,25 +64,12 @@ export default function Submissions() {
     },
     onSuccess: () => {
       toast({ title: 'Submitted', description: 'Your document was uploaded successfully.' });
-      setValue('file_url', '');
-      setValue('thesis_name', '');
-      setValue('supervisor_name', '');
-      setValue('student_name', '');
-      setValue('student_id', '');
+      reset();
     },
     onError: (err: Error) => {
       toast({ title: 'Submission failed', description: err.message, variant: 'destructive' });
     },
   });
-
-  if (loading) {
-    return (
-      <div className="container max-w-2xl px-4 py-10">
-        <SkeletonCard />
-      </div>
-    );
-  }
-  if (!user) return <Navigate to="/login" replace />;
 
   return (
     <div className="container mx-auto max-w-2xl px-4 py-10 md:py-12">
@@ -146,7 +139,7 @@ export default function Submissions() {
               {errors.file_url && <p className="text-sm text-destructive">{errors.file_url.message}</p>}
             </div>
             <Button type="submit" className="w-full sm:w-auto" disabled={mutation.isPending}>
-              {mutation.isPending ? 'Submitting…' : 'Submit'}
+              {mutation.isPending ? 'Submitting…' : 'Submit' }
             </Button>
           </form>
         </CardContent>
