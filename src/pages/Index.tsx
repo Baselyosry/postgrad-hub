@@ -1,6 +1,6 @@
-import { useEffect, useState, useMemo, type MouseEvent, type ReactNode } from 'react';
+import { useEffect, useState, useMemo, type ReactNode } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { useLocation } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { isSupabaseConfigured } from '@/integrations/supabase/client';
@@ -14,7 +14,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
-import { LandingEmbeds } from '@/components/landing/LandingEmbeds';
+import { HomeHighlights } from '@/components/landing/HomeHighlights';
 
 const assetUrl = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
@@ -22,7 +22,6 @@ type HeroSlide = {
   image: string;
   title: string;
   caption: string;
-  /** Where to anchor the image when `object-cover` crops (same as CSS `object-position`). */
   objectPosition?: string;
 };
 
@@ -38,50 +37,54 @@ const heroSlides: HeroSlide[] = [
 ];
 
 const heroNavItems = [
-  { title: 'Home', href: '#top' },
+  { title: 'Home', href: '/' },
   {
-    title: 'Academic Stuff',
-    href: '#academics',
+    title: 'Academics',
+    href: '/academics',
     dropdown: [
-      { title: 'Staff CV', href: '#staff-cv' },
-      { title: 'Study Plan', href: '#study-plan' },
-      { title: 'Schedules', href: '#schedules' },
-      { title: 'Research Plan', href: '#research-plan' },
-      { title: 'Research Database', href: '#research-database' },
-      { title: 'Templates', href: '#templates' },
+      { title: 'Overview', href: '/academics' },
+      { title: 'Academic staff', href: '/academics/academic-staff' },
+      { title: 'Study plan', href: '/academics/study-plan' },
+      { title: 'Schedules', href: '/schedules' },
+      { title: 'Research plan', href: '/academics/research-plan' },
+      { title: 'Research database', href: '/research/database' },
+      { title: 'Thesis & research archive', href: '/academics/thesis-research-archive' },
+      { title: 'Document templates', href: '/academics/research-templates' },
+      { title: 'Submission portal', href: '/submissions' },
     ],
   },
   {
     title: 'Admission',
-    href: '#admission',
+    href: '/admission',
     dropdown: [
+      { title: 'Overview', href: '/admission' },
+      { title: 'How to Apply', href: '/admission/how-to-apply' },
+      { title: 'Required Documents', href: '/admission/required-documents' },
       { title: 'University admission portal', href: 'https://admission.must.edu.eg/', external: true },
-      { title: 'How to Apply', href: '#how-to-apply' },
-      { title: 'Required Documents', href: '#required-documents' },
     ],
   },
-  { title: 'News', href: '#news' },
-  { title: 'Events', href: '#events' },
+  { title: 'News', href: '/news' },
+  { title: 'Events', href: '/events' },
   {
     title: 'Services',
-    href: '#services',
+    href: '/services',
     dropdown: [
-      { title: 'iThenticate & EKB', href: '#services' },
+      { title: 'Outlook Email', href: '/services#service-outlook' },
+      { title: 'iThenticate', href: '/services#service-ithenticate' },
+      { title: 'Egyptian Knowledge Bank (EKB)', href: '/services#service-ekb' },
     ],
   },
-  { title: 'Contact Us', href: '#contact' },
-];
+  { title: 'Contact Us', href: '/contact' },
+] as const;
 
-/** Frosted pill controls over the hero carousel (matches glass nav reference). */
 const heroNavPill =
-  'inline-flex items-center justify-center whitespace-nowrap rounded-full bg-black/40 px-4 py-2 text-xs font-medium text-white shadow-sm backdrop-blur-md transition-[background-color,color] hover:bg-black/55 hover:text-[#00a651] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/35 md:px-5 md:text-sm';
+  'inline-flex items-center justify-center whitespace-nowrap rounded-full bg-zinc-200/90 px-4 py-2.5 text-sm font-semibold text-[#0f2744] shadow-sm backdrop-blur-md transition-[background-color,color,box-shadow] hover:bg-zinc-100 hover:text-[#00a651] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1c355e]/35 dark:bg-zinc-200/85 dark:text-[#0f2744] md:px-5 md:py-3 md:text-base';
 
-/** Hero dropdown: same glass language as pills; green accent + hovers for MUST identity. */
 const heroDropdownPanel =
-  'flex max-h-[min(70vh,420px)] flex-col gap-1 overflow-y-auto overscroll-contain rounded-2xl border border-white/15 bg-black/45 p-1.5 shadow-xl shadow-black/40 backdrop-blur-md border-t-[3px] border-t-[#00a651]';
+  'flex max-h-[min(70vh,420px)] flex-col gap-1 overflow-y-auto overscroll-contain rounded-2xl border border-zinc-300/90 bg-zinc-100/95 p-1.5 shadow-xl shadow-black/25 backdrop-blur-md border-t-[3px] border-t-[#00a651] dark:border-border dark:bg-popover dark:shadow-black/40';
 
 const heroDropdownLink =
-  'block rounded-full px-4 py-2 text-left text-xs font-medium text-white/95 shadow-sm transition-[background-color,color] hover:bg-[#00a651]/25 hover:text-[#00a651] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a651]/45';
+  'block rounded-full px-4 py-2.5 text-left text-sm font-medium text-[#0f2744] shadow-sm transition-[background-color,color] hover:bg-[#00a651]/15 hover:text-[#00a651] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a651]/40 dark:text-foreground dark:hover:bg-muted md:px-5 md:text-base';
 
 type HeroDropItem = { title: string; href: string; external?: boolean };
 
@@ -103,24 +106,31 @@ function HeroNavDropdown({
     if (!isMobile) setOpen(false);
   }, [isMobile]);
 
+  const internalParent = parentHref.startsWith('/') && !parentHref.startsWith('//');
+
   return (
     <div className="group relative">
-      <a
-        href={parentHref}
-        onClick={(e) => {
-          if (!isMobile) return;
-          e.preventDefault();
-          setOpen((v) => !v);
-        }}
-        className={cn(heroNavPill, isMobile && open && 'bg-black/55 text-[#00a651]')}
-        aria-expanded={isMobile ? open : undefined}
-      >
-        {parentTitle}
-      </a>
+      {isMobile ? (
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          className={cn(heroNavPill, open && 'bg-zinc-100 text-[#00a651] ring-2 ring-[#00a651]/35')}
+          aria-expanded={open}
+        >
+          {parentTitle}
+        </button>
+      ) : internalParent ? (
+        <Link to={parentHref} className={heroNavPill}>
+          {parentTitle}
+        </Link>
+      ) : (
+        <a href={parentHref} className={heroNavPill}>
+          {parentTitle}
+        </a>
+      )}
       <div
         className={cn(
           'absolute left-1/2 top-full z-[70] min-w-[min(100vw-2rem,280px)] max-w-[min(100vw-2rem,320px)] -translate-x-1/2',
-          // Invisible strip above the panel so pointer can move from pill → menu without closing (md+ hover)
           'before:pointer-events-auto before:absolute before:bottom-full before:left-1/2 before:h-3 before:w-[min(100vw-2rem,320px)] before:-translate-x-1/2 before:content-[""]',
           'animate-in fade-in zoom-in-95 duration-200',
           isMobile ? (open ? 'block' : 'hidden') : 'hidden md:group-hover:block'
@@ -144,7 +154,6 @@ const Index = () => {
   const location = useLocation();
   const reduceMotion = useReducedMotion();
 
-  /** Autoplay uses animated slides (`jump: false`); delay leaves time for glide + viewing each image. */
   const heroAutoplay = useMemo(
     () =>
       Autoplay({
@@ -158,7 +167,6 @@ const Index = () => {
     () => ({
       loop: true,
       align: 'start' as const,
-      /** Embla scroll damping — higher = slower/smoother glide between slides (not milliseconds). */
       duration: reduceMotion === true ? 0 : 52,
     }),
     [reduceMotion]
@@ -171,28 +179,7 @@ const Index = () => {
       document.getElementById(raw)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 150);
     return () => window.clearTimeout(t);
-  }, [location.hash, location.search]);
-
-  const handleSectionNavigation = (href: string) => (event: MouseEvent<HTMLAnchorElement>) => {
-    if (href === '#top') {
-      event.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      window.history.replaceState(null, '', window.location.pathname);
-      return;
-    }
-    if (!href.startsWith('#')) return;
-    if (href === '#') {
-      event.preventDefault();
-      return;
-    }
-
-    const section = document.querySelector(href);
-    if (!section) return;
-
-    event.preventDefault();
-    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    window.history.replaceState(null, '', href);
-  };
+  }, [location.hash, location.pathname]);
 
   const renderNavLink = (title: string, href: string, className: string, external?: boolean) => {
     if (external || href.startsWith('http')) {
@@ -202,8 +189,15 @@ const Index = () => {
         </a>
       );
     }
+    if (href.startsWith('/')) {
+      return (
+        <Link to={href} className={className}>
+          {title}
+        </Link>
+      );
+    }
     return (
-      <a href={href} onClick={handleSectionNavigation(href)} className={className}>
+      <a href={href} className={className}>
         {title}
       </a>
     );
@@ -212,9 +206,9 @@ const Index = () => {
   return (
     <div
       id="top"
-      className="-mx-4 flex flex-col overflow-x-hidden sm:-mx-5 md:-mx-8 lg:-mr-12 xl:-mr-14"
+      className="-mx-3 flex flex-col overflow-x-hidden sm:-mx-4 md:-mx-6 lg:-mx-8 lg:-mr-12 xl:-mr-14"
     >
-      <section className="relative z-30 left-1/2 w-screen max-w-[100vw] -translate-x-1/2 bg-[#1c355e] min-h-[min(62vh,480px)] sm:min-h-[540px] md:min-h-[600px] lg:min-h-[min(68vh,680px)] xl:min-h-[min(72vh,760px)]">
+      <section className="relative z-30 w-full bg-[#1c355e] min-h-[min(62vh,480px)] sm:min-h-[540px] md:min-h-[600px] lg:min-h-[min(68vh,680px)] xl:min-h-[min(72vh,760px)]">
         <Carousel
           opts={carouselOpts}
           plugins={[heroAutoplay]}
@@ -223,12 +217,12 @@ const Index = () => {
           className="absolute inset-0 h-full min-h-[inherit] w-full overflow-hidden"
         >
           <CarouselContent className="flex h-full min-h-[inherit] will-change-transform">
-            {heroSlides.map((slide, i) => (
+            {heroSlides.map((slide) => (
               <CarouselItem key={slide.image} className="h-full min-h-[inherit] basis-full">
                 <div
                   className="relative flex h-full w-full min-w-0 min-h-[min(62vh,480px)] items-center justify-center overflow-hidden bg-primary sm:min-h-[540px] md:min-h-[600px] lg:min-h-[min(68vh,680px)] xl:min-h-[min(72vh,760px)]"
                   role="img"
-                  aria-label={slide.title}
+                  aria-label={slide.title || 'Campus'}
                 >
                   <img
                     src={slide.image}
@@ -241,14 +235,15 @@ const Index = () => {
             ))}
           </CarouselContent>
           <CarouselPrevious className="left-4 md:left-8 border-white/40 bg-white/20 text-white hover:bg-[#00a651] hover:text-white hover:border-[#00a651] transition-all z-20 h-10 w-10 md:h-12 md:w-12 pointer-events-auto" />
-          <CarouselNext className="right-4 md:right-8 border-white/40 bg-white/20 text-white hover:bg-[#00a651] hover:text-white hover:border-[#00a651] transition-all z-20 h-10 w-10 md:h-12 md:w-12 pointer-events-auto" />
+          {/* lg+: inset past fixed search/social rail (PublicLayout z-40) so the control stays clickable */}
+          <CarouselNext className="right-4 border-white/40 bg-white/20 text-white hover:bg-[#00a651] hover:text-white hover:border-[#00a651] transition-all z-20 h-10 w-10 pointer-events-auto md:right-8 md:h-12 md:w-12 lg:right-[5.5rem] xl:right-24" />
         </Carousel>
 
         <div className="absolute inset-0 bg-[#1c355e]/60 pointer-events-none" aria-hidden />
 
-        <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center px-3 pt-28 sm:px-6 sm:pt-32 md:pt-40">
+        <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center px-3 pt-36 sm:px-6 sm:pt-40 md:pt-48">
           <motion.h1
-            className="mt-4 text-center font-heading text-2xl font-bold tracking-tight text-white drop-shadow-md sm:mt-6 sm:text-4xl md:text-5xl lg:text-6xl"
+            className="pointer-events-none mt-6 text-center font-heading text-2xl font-bold tracking-tight text-white drop-shadow-md sm:mt-8 sm:text-4xl md:text-5xl lg:text-6xl"
             initial={reduceMotion === true ? { opacity: 1, y: 0 } : { opacity: 0, y: 22 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.45 }}
@@ -256,11 +251,11 @@ const Index = () => {
               reduceMotion === true ? { duration: 0 } : { duration: 0.55, ease: easeOut, delay: 0.05 }
             }
           >
-            Post Graduate Studies
+            Post Graduate Studies Platform
           </motion.h1>
 
           <motion.nav
-            className="pointer-events-auto mt-8 flex max-w-6xl flex-row flex-wrap items-center justify-center gap-2 sm:mt-10 sm:gap-2.5 md:gap-3"
+            className="pointer-events-auto mt-10 flex max-w-6xl flex-row flex-wrap items-center justify-center gap-2 sm:mt-12 sm:gap-2.5 md:gap-3"
             initial={reduceMotion === true ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.35 }}
@@ -270,13 +265,26 @@ const Index = () => {
           >
             {heroNavItems.map((item) => (
               <div key={item.title} className="relative">
-                {item.dropdown ? (
+                {'dropdown' in item && item.dropdown ? (
                   <HeroNavDropdown
                     parentTitle={item.title}
                     parentHref={item.href}
                     items={item.dropdown}
                     renderNavLink={renderNavLink}
                   />
+                ) : item.title === 'Home' ? (
+                  <Link
+                    to="/"
+                    className={heroNavPill}
+                    onClick={(e) => {
+                      if (location.pathname === '/') {
+                        e.preventDefault();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }
+                    }}
+                  >
+                    {item.title}
+                  </Link>
                 ) : (
                   renderNavLink(item.title, item.href, heroNavPill)
                 )}
@@ -301,7 +309,7 @@ const Index = () => {
         </div>
       )}
 
-      <LandingEmbeds />
+      <HomeHighlights />
     </div>
   );
 };
