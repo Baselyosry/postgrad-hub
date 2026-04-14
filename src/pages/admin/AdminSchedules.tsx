@@ -91,7 +91,7 @@ const AdminSchedules = () => {
   const openEdit = (row: ScheduleRecord) => {
     setForm({
       title: row.title,
-      category: row.category,
+      category: row.category === "research_plan" ? "study" : row.category,
       file_url: row.file_url ?? "",
     });
     setEditingId(row.id);
@@ -282,7 +282,6 @@ const AdminSchedules = () => {
                 <SelectContent>
                   <SelectItem value="study">Lectures</SelectItem>
                   <SelectItem value="exams">Exams</SelectItem>
-                  <SelectItem value="research_plan">Research plan</SelectItem>
                 </SelectContent>
               </Select>
             </div>
