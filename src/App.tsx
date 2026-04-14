@@ -18,6 +18,7 @@ const SignUp = lazy(() => import("./pages/SignUp"));
 const Admin = lazy(() => import("./pages/Admin"));
 const AdminArchive = lazy(() => import("./pages/admin/AdminArchive"));
 const AdminSchedules = lazy(() => import("./pages/admin/AdminSchedules"));
+const AdminAcademicCalendar = lazy(() => import("./pages/admin/AdminAcademicCalendar"));
 const AdminTemplates = lazy(() => import("./pages/admin/AdminTemplates"));
 const AdminInquiries = lazy(() => import("./pages/admin/AdminInquiries"));
 const AdminAdmissions = lazy(() => import("./pages/admin/AdminAdmissions"));
@@ -37,6 +38,7 @@ const AcademicsOverview = lazy(() => import("./pages/academics/AcademicsOverview
 const AcademicStaff = lazy(() => import("./pages/AcademicStaff"));
 const StudyPlan = lazy(() => import("./pages/StudyPlan"));
 const ResearchPlan = lazy(() => import("./pages/ResearchPlan"));
+const AcademicCalendar = lazy(() => import("./pages/AcademicCalendar"));
 const RegulationsMasters = lazy(() => import("./pages/academics/RegulationsMasters"));
 const RegulationsPhd = lazy(() => import("./pages/academics/RegulationsPhd"));
 const SchedulesStandalonePage = lazy(() => import("./pages/SchedulesStandalonePage"));
@@ -86,6 +88,7 @@ const App = () => (
                     <Route path="/academics/academic-staff" element={<AcademicStaff />} />
                     <Route path="/academics/study-plan" element={<StudyPlan />} />
                     <Route path="/academics/research-plan" element={<ResearchPlan />} />
+                    <Route path="/academics/academic-calendar" element={<AcademicCalendar />} />
                     <Route path="/academics/regulations/masters" element={<RegulationsMasters />} />
                     <Route path="/academics/regulations/phd" element={<RegulationsPhd />} />
                     <Route path="/schedules" element={<SchedulesStandalonePage />} />
@@ -116,6 +119,7 @@ const App = () => (
                       <Route path={ADMIN_PATHS.thesisArchive} element={<AdminArchive />} />
                       <Route path="/admin/archive" element={<Navigate to={ADMIN_PATHS.thesisArchive} replace />} />
                       <Route path="/admin/schedules" element={<AdminSchedules />} />
+                      <Route path={ADMIN_PATHS.academicCalendar} element={<AdminAcademicCalendar />} />
                       <Route path="/admin/templates" element={<AdminTemplates />} />
                       <Route path={ADMIN_PATHS.contactInquiries} element={<AdminInquiries />} />
                       <Route path="/admin/inquiries" element={<Navigate to={ADMIN_PATHS.contactInquiries} replace />} />

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, BookMarked, CalendarDays, Database, FileDown, FlaskConical, Library, Send, Users } from 'lucide-react';
+import { ArrowUpRight, BookMarked, Calendar, CalendarDays, Database, FileDown, FlaskConical, Library, Send, Users } from 'lucide-react';
 
 import { PageHeader } from '@/components/PageHeader';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -48,7 +48,7 @@ const links = [
     className: 'xl:col-span-4',
   },
   {
-    title: 'Thesis & research archive',
+    title: 'Research & thesis archive',
     description: 'Defended theses and faculty research outputs.',
     href: '/academics/thesis-research-archive',
     icon: Library,
@@ -66,6 +66,13 @@ const links = [
     description: 'Upload proposals or theses.',
     href: '/submissions',
     icon: Send,
+    className: 'xl:col-span-4',
+  },
+  {
+    title: 'Academic calendar',
+    description: 'Official term dates and academic year PDFs.',
+    href: '/academics/academic-calendar',
+    icon: Calendar,
     className: 'xl:col-span-4',
   },
 ];

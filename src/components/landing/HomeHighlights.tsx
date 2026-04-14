@@ -41,7 +41,7 @@ const cards = [
   },
   {
     title: "Research",
-    description: "Database, thesis archive, and templates.",
+    description: "Database, research & thesis archive, and templates.",
     href: "/research/database",
     icon: Database,
     className: "md:col-span-1 xl:col-span-3",

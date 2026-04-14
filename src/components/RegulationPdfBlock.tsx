@@ -5,7 +5,7 @@ import { getErrorMessage, resolvePublicMediaUrl } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Download, ExternalLink, Loader2 } from "lucide-react";
 
-type PdfSurface = "study-plan" | "research-plan" | "schedules";
+type PdfSurface = "study-plan" | "research-plan" | "schedules" | "academic-calendar";
 
 type Props = {
   title: string;
@@ -25,6 +25,8 @@ const defaultEmptyHint: Record<PdfSurface, string> = {
     "No PDF attached for this entry. In Admin, open Study plan & regulations, edit the matching row, and upload a PDF there.",
   schedules:
     "No PDF attached for this schedule. In Admin → Schedules, edit this entry and add a PDF in the file field.",
+  "academic-calendar":
+    "No PDF attached. In Admin → Academic calendar, edit this entry and upload a PDF.",
 };
 
 export function RegulationPdfBlock({ title, fileUrl, compact, surface = "research-plan", emptyHint }: Props) {

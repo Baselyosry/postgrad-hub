@@ -46,12 +46,17 @@ const PUBLIC_ROUTES: Record<string, BreadcrumbCrumb[]> = {
   "/academics/thesis-research-archive": trail(
     { label: "Home", href: "/" },
     { label: "Academics", href: "/academics" },
-    { label: "Thesis & research archive" }
+    { label: "Research & thesis archive" }
   ),
   "/academics/research-templates": trail(
     { label: "Home", href: "/" },
     { label: "Academics", href: "/academics" },
     { label: "Document templates" }
+  ),
+  "/academics/academic-calendar": trail(
+    { label: "Home", href: "/" },
+    { label: "Academics", href: "/academics" },
+    { label: "Academic calendar" }
   ),
   "/schedules": trail(
     { label: "Home", href: "/" },
@@ -70,7 +75,7 @@ const PUBLIC_ROUTES: Record<string, BreadcrumbCrumb[]> = {
   "/research/thesis-archive": trail(
     { label: "Home", href: "/" },
     { label: "Academics", href: "/academics" },
-    { label: "Thesis & research archive" }
+    { label: "Research & thesis archive" }
   ),
   "/research/templates": trail(
     { label: "Home", href: "/" },
@@ -113,8 +118,9 @@ const SEGMENT_LABELS: Record<string, string> = {
   regulations: "Regulations",
   masters: "Master's regulations",
   phd: "PhD regulations",
-  "thesis-research-archive": "Thesis & research archive",
+  "thesis-research-archive": "Research & thesis archive",
   "research-templates": "Document templates",
+  "academic-calendar": "Academic calendar",
   database: "Research database",
   "how-to-apply": "How to apply",
   "required-documents": "Required documents",
@@ -170,8 +176,9 @@ const ADMIN_ROUTES: Record<string, BreadcrumbCrumb[]> = {
   "/admin": adminCrumbs(true, ""),
   [ADMIN_PATHS.staffCv]: adminCrumbs(false, "Staff CV"),
   [ADMIN_PATHS.schedules]: adminCrumbs(false, "Schedules"),
+  [ADMIN_PATHS.academicCalendar]: adminCrumbs(false, "Academic calendar"),
   [ADMIN_PATHS.templates]: adminCrumbs(false, "Templates"),
-  [ADMIN_PATHS.thesisArchive]: adminCrumbs(false, "Thesis archive"),
+  [ADMIN_PATHS.thesisArchive]: adminCrumbs(false, "Research & thesis archive"),
   [ADMIN_PATHS.contactInquiries]: adminCrumbs(false, "Contact inquiries"),
   [ADMIN_PATHS.degreeRequirements]: adminCrumbs(false, "Degree requirements"),
   [ADMIN_PATHS.studyPlanRegulations]: adminCrumbs(false, "Study plan & regulations"),
@@ -181,7 +188,7 @@ const ADMIN_ROUTES: Record<string, BreadcrumbCrumb[]> = {
   [ADMIN_PATHS.events]: adminCrumbs(false, "Events"),
   [ADMIN_PATHS.services]: adminCrumbs(false, "Services"),
   [ADMIN_PATHS.thesisUploadSubmissions]: adminCrumbs(false, "Submission portal (PDFs)"),
-  "/admin/archive": adminCrumbs(false, "Thesis archive"),
+  "/admin/archive": adminCrumbs(false, "Research & thesis archive"),
   "/admin/inquiries": adminCrumbs(false, "Contact inquiries"),
   "/admin/admissions": adminCrumbs(false, "Degree requirements"),
   "/admin/research-plans": adminCrumbs(false, "Study plan & regulations"),

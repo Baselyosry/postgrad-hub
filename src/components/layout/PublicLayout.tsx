@@ -84,9 +84,10 @@ const NAV: NavItem[] = [
     drop: [
       { title: 'Undergraduate Studies', href: 'https://must.edu.eg/undergraduate/' },
       { title: 'Post-Graduate Program', href: '/academics' },
-      { title: 'Academic calendar (PG hub)', href: '/schedules' },
+      { title: 'Schedules (PG hub)', href: '/schedules' },
       { title: 'Research database (PG hub)', href: '/research/database' },
       { title: 'Submission portal', href: '/submissions' },
+      { title: 'Academic calendar', href: '/academics/academic-calendar' },
       { title: 'International Students Affairs Sector', href: 'https://must.edu.eg/international-students/' },
     ],
   },

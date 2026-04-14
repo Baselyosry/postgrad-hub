@@ -47,9 +47,10 @@ const heroNavItems = [
       { title: 'Schedules', href: '/schedules' },
       { title: 'Research plan', href: '/academics/research-plan' },
       { title: 'Research database', href: '/research/database' },
-      { title: 'Thesis & research archive', href: '/academics/thesis-research-archive' },
+      { title: 'Research & thesis archive', href: '/academics/thesis-research-archive' },
       { title: 'Document templates', href: '/academics/research-templates' },
       { title: 'Submission portal', href: '/submissions' },
+      { title: 'Academic calendar', href: '/academics/academic-calendar' },
     ],
   },
   {

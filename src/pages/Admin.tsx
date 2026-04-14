@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Mail,
   Archive,
+  Calendar,
   CalendarDays,
   FileDown,
   FileText,
@@ -91,6 +92,16 @@ const Admin = () => {
     queryKey: ['admin-schedules-count'],
     queryFn: async () => {
       const { count, error } = await supabase.from('schedules').select('*', { count: 'exact', head: true });
+      if (error) throw error;
+      return count ?? 0;
+    },
+    enabled: isAdmin,
+  });
+
+  const { data: academicCalendarCount } = useQuery({
+    queryKey: ['admin-academic-calendar-count'],
+    queryFn: async () => {
+      const { count, error } = await supabase.from('academic_calendar').select('*', { count: 'exact', head: true });
       if (error) throw error;
       return count ?? 0;
     },
@@ -210,6 +221,7 @@ const Admin = () => {
     { label: 'Staff CV', value: staffCvCount ?? 0, icon: Users },
     { label: 'Archive Entries', value: archiveCount ?? 0, icon: Archive },
     { label: 'Schedules', value: schedulesCount ?? 0, icon: CalendarDays },
+    { label: 'Academic calendar', value: academicCalendarCount ?? 0, icon: Calendar },
     { label: 'Templates', value: templatesCount ?? 0, icon: FileDown },
     { label: 'Study plan & regulations', value: researchPlansCount ?? 0, icon: FlaskConical },
     { label: 'Research DB', value: researchDbCount ?? 0, icon: Database },
@@ -246,6 +258,12 @@ const Admin = () => {
           </Link>
         </Button>
         <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
+          <Link to={ADMIN_PATHS.academicCalendar} className="gap-2">
+            <Calendar className="h-4 w-4" />
+            Academic calendar
+          </Link>
+        </Button>
+        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
           <Link to={ADMIN_PATHS.researchDatabase} className="gap-2">
             <Database className="h-4 w-4" />
             Research database
@@ -260,7 +278,7 @@ const Admin = () => {
         <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
           <Link to={ADMIN_PATHS.thesisArchive} className="gap-2">
             <Archive className="h-4 w-4" />
-            Thesis archive
+            Research & thesis archive
           </Link>
         </Button>
         <Button asChild className="btn-primary-institutional gap-2 shadow-sm">

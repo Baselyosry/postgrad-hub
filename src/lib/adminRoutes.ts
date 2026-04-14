@@ -7,6 +7,7 @@ export const ADMIN_PATHS = {
   staffCv: '/admin/staff-cv',
   studyPlanRegulations: '/admin/study-plan-regulations',
   schedules: '/admin/schedules',
+  academicCalendar: '/admin/academic-calendar',
   researchDatabase: '/admin/research-database',
   templates: '/admin/templates',
   thesisArchive: '/admin/thesis-archive',

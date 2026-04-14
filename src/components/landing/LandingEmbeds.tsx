@@ -156,7 +156,7 @@ export function LandingEmbeds() {
       <LandingSection
         id="archive"
         variant="plain"
-        title="Thesis & research archive"
+        title="Research & thesis archive"
         description="Search theses and research publications."
       >
         <ArchivePage embedded />
