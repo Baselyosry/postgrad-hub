@@ -1,5 +1,6 @@
 import {
   BookOpen,
+  Calendar,
   CalendarDays,
   FileDown,
   Archive,
@@ -16,6 +17,7 @@ import {
   Wrench,
   FileText,
   ExternalLink,
+  FileUp,
 } from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
 import { Link } from 'react-router-dom';
@@ -39,10 +41,12 @@ const adminOverview: NavEntry[] = [
 const adminAcademics: NavEntry[] = [
   { title: 'Staff CV', url: ADMIN_PATHS.staffCv, icon: Users },
   { title: 'Schedules', url: ADMIN_PATHS.schedules, icon: CalendarDays },
+  { title: 'Academic calendar', url: ADMIN_PATHS.academicCalendar, icon: Calendar },
   { title: 'Study plan & regulations', url: ADMIN_PATHS.studyPlanRegulations, icon: FlaskConical },
   { title: 'Research database', url: ADMIN_PATHS.researchDatabase, icon: Database },
   { title: 'Templates', url: ADMIN_PATHS.templates, icon: FileDown },
-  { title: 'Thesis archive', url: ADMIN_PATHS.thesisArchive, icon: Archive },
+  { title: 'Research & thesis archive', url: ADMIN_PATHS.thesisArchive, icon: Archive },
+  { title: 'Submission portal (PDFs)', url: ADMIN_PATHS.thesisUploadSubmissions, icon: FileUp },
 ];
 
 const adminAdmission: NavEntry[] = [

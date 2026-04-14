@@ -83,7 +83,7 @@ function FooterColumn({
 
 export function Footer() {
   return (
-    <footer className="relative mt-auto bg-header-navy text-white">
+    <footer className="relative mt-auto bg-header-navy text-white dark:bg-[linear-gradient(180deg,rgba(10,16,31,1),rgba(14,22,41,1))]">
       <div className="container mx-auto max-w-7xl px-4 pb-12 pt-12 sm:px-6 md:px-8 md:pb-14 md:pt-14">
           <div className="mb-12 flex justify-center md:mb-14">
             <img
@@ -129,7 +129,7 @@ export function Footer() {
             </FooterColumn>
           </div>
 
-        <div className="mt-10 flex justify-center gap-3 border-t border-white/10 pt-8">
+        <div className="mt-10 flex justify-center gap-3 border-t border-white/10 pt-8 dark:border-white/8">
           {footerSocial.map(({ icon: Icon, href, label }) => (
             <a
               key={label}
@@ -137,7 +137,7 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={label}
-              className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-header-navy shadow-md transition-transform hover:scale-105 hover:shadow-lg"
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-header-navy shadow-md transition-transform hover:scale-105 hover:shadow-lg dark:bg-white/10 dark:text-white dark:shadow-[0_16px_40px_-28px_rgba(0,0,0,0.6)]"
             >
               <Icon className="h-5 w-5" strokeWidth={2} />
             </a>
@@ -145,8 +145,8 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-white/10 bg-white py-3.5 text-center">
-        <p className="px-4 text-sm font-medium text-zinc-800 sm:text-base">
+      <div className="border-t border-white/10 bg-white py-3.5 text-center dark:border-white/8 dark:bg-black/18">
+        <p className="px-4 text-sm font-medium text-zinc-800 dark:text-white/80 sm:text-base">
           Copyright All Rights Reserved © MUST UNIVERSITY 2026
         </p>
       </div>

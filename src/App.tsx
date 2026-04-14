@@ -18,6 +18,7 @@ const SignUp = lazy(() => import("./pages/SignUp"));
 const Admin = lazy(() => import("./pages/Admin"));
 const AdminArchive = lazy(() => import("./pages/admin/AdminArchive"));
 const AdminSchedules = lazy(() => import("./pages/admin/AdminSchedules"));
+const AdminAcademicCalendar = lazy(() => import("./pages/admin/AdminAcademicCalendar"));
 const AdminTemplates = lazy(() => import("./pages/admin/AdminTemplates"));
 const AdminInquiries = lazy(() => import("./pages/admin/AdminInquiries"));
 const AdminAdmissions = lazy(() => import("./pages/admin/AdminAdmissions"));
@@ -28,14 +29,16 @@ const AdminAdmissionDocs = lazy(() => import("./pages/admin/AdminAdmissionDocs")
 const AdminNews = lazy(() => import("./pages/admin/AdminNews"));
 const AdminEvents = lazy(() => import("./pages/admin/AdminEvents"));
 const AdminServices = lazy(() => import("./pages/admin/AdminServices"));
+const AdminThesisUploadSubmissions = lazy(() => import("./pages/admin/AdminThesisUploadSubmissions"));
 const StudentDashboard = lazy(() => import("./pages/StudentDashboard"));
 const SubmitApplication = lazy(() => import("./pages/SubmitApplication"));
 const Submissions = lazy(() => import("./pages/Submissions"));
 
 const AcademicsOverview = lazy(() => import("./pages/academics/AcademicsOverview"));
-const StaffCv = lazy(() => import("./pages/StaffCv"));
+const AcademicStaff = lazy(() => import("./pages/AcademicStaff"));
 const StudyPlan = lazy(() => import("./pages/StudyPlan"));
 const ResearchPlan = lazy(() => import("./pages/ResearchPlan"));
+const AcademicCalendar = lazy(() => import("./pages/AcademicCalendar"));
 const RegulationsMasters = lazy(() => import("./pages/academics/RegulationsMasters"));
 const RegulationsPhd = lazy(() => import("./pages/academics/RegulationsPhd"));
 const SchedulesStandalonePage = lazy(() => import("./pages/SchedulesStandalonePage"));
@@ -82,9 +85,10 @@ const App = () => (
                   <Routes>
                     <Route path="/" element={<Index />} />
                     <Route path="/academics" element={<AcademicsOverview />} />
-                    <Route path="/academics/academic-staff" element={<StaffCv />} />
+                    <Route path="/academics/academic-staff" element={<AcademicStaff />} />
                     <Route path="/academics/study-plan" element={<StudyPlan />} />
                     <Route path="/academics/research-plan" element={<ResearchPlan />} />
+                    <Route path="/academics/academic-calendar" element={<AcademicCalendar />} />
                     <Route path="/academics/regulations/masters" element={<RegulationsMasters />} />
                     <Route path="/academics/regulations/phd" element={<RegulationsPhd />} />
                     <Route path="/schedules" element={<SchedulesStandalonePage />} />
@@ -115,6 +119,7 @@ const App = () => (
                       <Route path={ADMIN_PATHS.thesisArchive} element={<AdminArchive />} />
                       <Route path="/admin/archive" element={<Navigate to={ADMIN_PATHS.thesisArchive} replace />} />
                       <Route path="/admin/schedules" element={<AdminSchedules />} />
+                      <Route path={ADMIN_PATHS.academicCalendar} element={<AdminAcademicCalendar />} />
                       <Route path="/admin/templates" element={<AdminTemplates />} />
                       <Route path={ADMIN_PATHS.contactInquiries} element={<AdminInquiries />} />
                       <Route path="/admin/inquiries" element={<Navigate to={ADMIN_PATHS.contactInquiries} replace />} />
@@ -131,6 +136,7 @@ const App = () => (
                       <Route path="/admin/news" element={<AdminNews />} />
                       <Route path="/admin/events" element={<AdminEvents />} />
                       <Route path="/admin/services" element={<AdminServices />} />
+                      <Route path={ADMIN_PATHS.thesisUploadSubmissions} element={<AdminThesisUploadSubmissions />} />
                     </Route>
                     <Route path="/dashboard" element={<StudentDashboard />} />
                     <Route path="/submit" element={<SubmitApplication />} />

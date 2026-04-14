@@ -35,7 +35,7 @@ const ArchivePage = ({ embedded = false }: { embedded?: boolean }) => {
     >
       {!embedded && (
         <PageHeader
-          title="Thesis & research archive"
+          title="Research & thesis archive"
           description="Browse published faculty research and successfully defended theses."
         />
       )}

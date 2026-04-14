@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Mail,
   Archive,
+  Calendar,
   CalendarDays,
   FileDown,
   FileText,
@@ -23,6 +24,7 @@ import {
   Database,
   FlaskConical,
   Wrench,
+  FileUp,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ADMIN_PATHS } from '@/lib/adminRoutes';
@@ -59,6 +61,23 @@ const Admin = () => {
     enabled: isAdmin,
   });
 
+  const { data: thesisPortalStats } = useQuery({
+    queryKey: ['admin-thesis-upload-stats'],
+    queryFn: async () => {
+      const { count: total, error } = await supabase
+        .from('thesis_upload_submissions')
+        .select('*', { count: 'exact', head: true });
+      if (error) throw error;
+      const { count: pending, error: errPending } = await supabase
+        .from('thesis_upload_submissions')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'pending');
+      if (errPending) throw errPending;
+      return { total: total ?? 0, pending: pending ?? 0 };
+    },
+    enabled: isAdmin,
+  });
+
   const { data: archiveCount } = useQuery({
     queryKey: ['admin-archive-count'],
     queryFn: async () => {
@@ -73,6 +92,16 @@ const Admin = () => {
     queryKey: ['admin-schedules-count'],
     queryFn: async () => {
       const { count, error } = await supabase.from('schedules').select('*', { count: 'exact', head: true });
+      if (error) throw error;
+      return count ?? 0;
+    },
+    enabled: isAdmin,
+  });
+
+  const { data: academicCalendarCount } = useQuery({
+    queryKey: ['admin-academic-calendar-count'],
+    queryFn: async () => {
+      const { count, error } = await supabase.from('academic_calendar').select('*', { count: 'exact', head: true });
       if (error) throw error;
       return count ?? 0;
     },
@@ -178,13 +207,21 @@ const Admin = () => {
 
   const unreadCount = inquiries?.filter((i) => !i.is_read).length ?? 0;
   const pendingCount = submissions?.filter((s) => s.status === 'pending').length ?? 0;
+  const thesisPending = thesisPortalStats?.pending ?? 0;
 
   const stats = [
     { label: 'Submissions', value: submissions?.length ?? 0, icon: FileText, extra: pendingCount > 0 ? `${pendingCount} pending` : undefined },
+    {
+      label: 'Submission portal (PDFs)',
+      value: thesisPortalStats?.total ?? 0,
+      icon: FileUp,
+      extra: thesisPending > 0 ? `${thesisPending} pending` : undefined,
+    },
     { label: 'Inquiries', value: inquiries?.length ?? 0, icon: Mail, extra: unreadCount > 0 ? `${unreadCount} unread` : undefined },
     { label: 'Staff CV', value: staffCvCount ?? 0, icon: Users },
     { label: 'Archive Entries', value: archiveCount ?? 0, icon: Archive },
     { label: 'Schedules', value: schedulesCount ?? 0, icon: CalendarDays },
+    { label: 'Academic calendar', value: academicCalendarCount ?? 0, icon: Calendar },
     { label: 'Templates', value: templatesCount ?? 0, icon: FileDown },
     { label: 'Study plan & regulations', value: researchPlansCount ?? 0, icon: FlaskConical },
     { label: 'Research DB', value: researchDbCount ?? 0, icon: Database },
@@ -196,7 +233,10 @@ const Admin = () => {
 
   return (
     <div>
-      <PageHeader title="Admin Dashboard" description="Manage your postgraduate portal content and student submissions." />
+      <PageHeader
+        title="Admin Dashboard"
+        description="Manage portal content. Student applications (Submit Application) appear below; proposal/thesis PDFs from /submissions have their own admin page."
+      />
 
       <div className="mb-8 flex flex-wrap gap-3">
         <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
@@ -218,6 +258,12 @@ const Admin = () => {
           </Link>
         </Button>
         <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
+          <Link to={ADMIN_PATHS.academicCalendar} className="gap-2">
+            <Calendar className="h-4 w-4" />
+            Academic calendar
+          </Link>
+        </Button>
+        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
           <Link to={ADMIN_PATHS.researchDatabase} className="gap-2">
             <Database className="h-4 w-4" />
             Research database
@@ -232,7 +278,7 @@ const Admin = () => {
         <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
           <Link to={ADMIN_PATHS.thesisArchive} className="gap-2">
             <Archive className="h-4 w-4" />
-            Thesis archive
+            Research & thesis archive
           </Link>
         </Button>
         <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
@@ -275,6 +321,12 @@ const Admin = () => {
             Inquiries
           </Link>
         </Button>
+        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
+          <Link to={ADMIN_PATHS.thesisUploadSubmissions} className="gap-2">
+            <FileUp className="h-4 w-4" />
+            Submission portal (PDFs)
+          </Link>
+        </Button>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 mb-8">
@@ -298,14 +350,14 @@ const Admin = () => {
 
       <Tabs defaultValue="submissions">
         <TabsList className="flex h-auto w-full flex-wrap gap-1 border border-header-navy/10 bg-white p-1 sm:inline-flex sm:h-10 sm:w-auto dark:border-border dark:bg-muted/40">
-          <TabsTrigger value="submissions">Student Submissions</TabsTrigger>
+          <TabsTrigger value="submissions">Student applications</TabsTrigger>
           <TabsTrigger value="inquiries">Inquiries</TabsTrigger>
         </TabsList>
 
         <TabsContent value="submissions">
           <Card>
             <CardHeader>
-              <CardTitle className="font-heading">All Submissions</CardTitle>
+              <CardTitle className="font-heading">Student applications</CardTitle>
             </CardHeader>
             <CardContent>
               {loadingSubs ? (

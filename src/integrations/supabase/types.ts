@@ -47,6 +47,36 @@ export type Database = {
         }
         Relationships: []
       }
+      academic_calendar: {
+        Row: {
+          created_at: string
+          description: string | null
+          file_url: string | null
+          id: string
+          sort_order: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          file_url?: string | null
+          id?: string
+          sort_order?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          file_url?: string | null
+          id?: string
+          sort_order?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       inquiries: {
         Row: {
           created_at: string
@@ -494,7 +524,7 @@ export type Database = {
       thesis_upload_submissions: {
         Row: {
           id: string
-          user_id: string
+          user_id: string | null
           submission_type: string
           thesis_name: string
           supervisor_name: string
@@ -507,7 +537,7 @@ export type Database = {
         }
         Insert: {
           id?: string
-          user_id: string
+          user_id?: string | null
           submission_type: string
           thesis_name: string
           supervisor_name: string
@@ -520,7 +550,7 @@ export type Database = {
         }
         Update: {
           id?: string
-          user_id?: string
+          user_id?: string | null
           submission_type?: string
           thesis_name?: string
           supervisor_name?: string

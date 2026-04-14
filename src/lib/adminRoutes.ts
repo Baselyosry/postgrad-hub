@@ -7,6 +7,7 @@ export const ADMIN_PATHS = {
   staffCv: '/admin/staff-cv',
   studyPlanRegulations: '/admin/study-plan-regulations',
   schedules: '/admin/schedules',
+  academicCalendar: '/admin/academic-calendar',
   researchDatabase: '/admin/research-database',
   templates: '/admin/templates',
   thesisArchive: '/admin/thesis-archive',
@@ -16,4 +17,6 @@ export const ADMIN_PATHS = {
   events: '/admin/events',
   services: '/admin/services',
   contactInquiries: '/admin/contact-inquiries',
+  /** Proposal/thesis PDF rows from the public submission portal (`/submissions`). */
+  thesisUploadSubmissions: '/admin/thesis-upload-submissions',
 } as const;

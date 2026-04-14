@@ -42,22 +42,21 @@ const heroNavItems = [
     title: 'Academics',
     href: '/academics',
     dropdown: [
-      { title: 'Overview', href: '/academics' },
       { title: 'Academic staff', href: '/academics/academic-staff' },
       { title: 'Study plan', href: '/academics/study-plan' },
       { title: 'Schedules', href: '/schedules' },
       { title: 'Research plan', href: '/academics/research-plan' },
       { title: 'Research database', href: '/research/database' },
-      { title: 'Thesis & research archive', href: '/academics/thesis-research-archive' },
+      { title: 'Research & thesis archive', href: '/academics/thesis-research-archive' },
       { title: 'Document templates', href: '/academics/research-templates' },
       { title: 'Submission portal', href: '/submissions' },
+      { title: 'Academic calendar', href: '/academics/academic-calendar' },
     ],
   },
   {
     title: 'Admission',
     href: '/admission',
     dropdown: [
-      { title: 'Overview', href: '/admission' },
       { title: 'How to Apply', href: '/admission/how-to-apply' },
       { title: 'Required Documents', href: '/admission/required-documents' },
       { title: 'University admission portal', href: 'https://admission.must.edu.eg/', external: true },
@@ -234,9 +233,12 @@ const Index = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="left-4 md:left-8 border-white/40 bg-white/20 text-white hover:bg-[#00a651] hover:text-white hover:border-[#00a651] transition-all z-20 h-10 w-10 md:h-12 md:w-12 pointer-events-auto" />
-          {/* lg+: inset past fixed search/social rail (PublicLayout z-40) so the control stays clickable */}
-          <CarouselNext className="right-4 border-white/40 bg-white/20 text-white hover:bg-[#00a651] hover:text-white hover:border-[#00a651] transition-all z-20 h-10 w-10 pointer-events-auto md:right-8 md:h-12 md:w-12 lg:right-[5.5rem] xl:right-24" />
+          <CarouselPrevious className="left-4 z-[45] h-10 w-10 border-white/40 bg-white/20 text-white pointer-events-auto transition-all hover:border-[#00a651] hover:bg-[#00a651] hover:text-white md:left-8 md:h-12 md:w-12" />
+          {/*
+            lg+: sit left of the fixed search + social column (PublicLayout ~3.5–4.5rem wide + gaps).
+            z-[45] above that rail (z-40) so the arrow stays clickable and not visually buried.
+          */}
+          <CarouselNext className="right-4 z-[45] h-10 w-10 border-white/40 bg-white/20 text-white pointer-events-auto transition-all hover:border-[#00a651] hover:bg-[#00a651] hover:text-white md:right-8 md:h-12 md:w-12 lg:right-28 xl:right-32 2xl:right-36" />
         </Carousel>
 
         <div className="absolute inset-0 bg-[#1c355e]/60 pointer-events-none" aria-hidden />

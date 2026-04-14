@@ -179,8 +179,8 @@ const AdminArchive = () => {
         onOpenChange={(o) => {
           if (!o) setPendingDelete(null);
         }}
-        title="Delete thesis archive entry?"
-        description="This removes the entry from the public thesis archive search. This cannot be undone."
+        title="Delete archive entry?"
+        description="This removes the entry from the public research & thesis archive. This cannot be undone."
         isDeleting={deleteMutation.isPending}
         onConfirm={() => {
           if (pendingDelete) deleteMutation.mutate(pendingDelete.id);
@@ -197,8 +197,8 @@ const AdminArchive = () => {
         }
       />
       <PageHeader
-        title="Research Archive"
-        description="Manage research archive entries. Create, edit, and delete records."
+        title="Research & thesis archive"
+        description="Manage research & thesis archive entries. Create, edit, and delete records."
       />
 
       <div className="mb-4">

@@ -48,7 +48,6 @@ const SCHEDULE_CATEGORY_INTRO: Record<"study" | "exams", { title: string; descri
   },
 };
 
-/** Subtitle under CS / IS headers (schedule context; titles match Study plan). */
 const SCHEDULE_PROGRAMME_SUBTITLE: Record<ProgramGroupId, string> = {
   cs: "Lecture and exam materials for Computer Science postgraduate programmes.",
   is: "Lecture and exam materials for Information Systems postgraduate programmes.",
@@ -167,13 +166,12 @@ const Schedules = ({
   categoryKeys,
 }: {
   embedded?: boolean;
-  /** If set, only these schedule categories are shown (e.g. lectures + exams on `/schedules`). */
   categoryKeys?: readonly CategoryKey[];
 }) => {
   const categories = categoryKeys?.length
     ? allCategories.filter((c) => (categoryKeys as readonly string[]).includes(c.key))
     : [...allCategories];
-  const defaultTab = categories[0]?.key ?? "study";
+
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["schedules"],
     queryFn: async () => {
@@ -184,6 +182,8 @@ const Schedules = ({
   });
 
   const cardCategories = new Set<CategoryKey>(["study", "exams"]);
+  const cardOnlyCategories = categories.filter((c) => cardCategories.has(c.key));
+  const tabCategories = categories.filter((c) => !cardCategories.has(c.key));
 
   return (
     <div
@@ -212,84 +212,104 @@ const Schedules = ({
         </Alert>
       )}
 
-      <Tabs defaultValue={defaultTab} className="space-y-6">
-        <TabsList className="flex h-auto w-full flex-wrap justify-start gap-1 p-1 sm:inline-flex sm:h-10 sm:w-auto sm:justify-center">
-          {categories.map((c) => (
-            <TabsTrigger key={c.key} value={c.key} className="gap-1.5 sm:gap-2">
-              <c.icon className="h-4 w-4" />
-              {c.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
+            <div className="space-y-6">
+        {cardOnlyCategories.length > 0 && (
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start">
+            {cardOnlyCategories.map((c) => {
+              const items = data?.filter((s) => s.category === c.key) ?? [];
 
-        {categories.map((c) => {
-          const items = data?.filter((s) => s.category === c.key) ?? [];
-          const useCardLayout = cardCategories.has(c.key);
-
-          return (
-            <TabsContent key={c.key} value={c.key}>
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
-                {isLoading ? (
-                  useCardLayout ? (
+              return (
+                <motion.div key={c.key} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+                  {isLoading ? (
                     <Skeleton className={cn("w-full", embedded ? "h-[360px] rounded-xl" : "h-[420px] rounded-2xl")} />
+                  ) : items.length === 0 ? (
+                    <EmptyState
+                      title="No schedules yet"
+                      description="Schedules for this category haven't been published yet."
+                    />
                   ) : (
-                    <div className="space-y-3">
-                      <SkeletonCard />
-                      <SkeletonCard />
-                      <SkeletonCard />
-                    </div>
-                  )
-                ) : items.length === 0 ? (
-                  <EmptyState
-                    title="No schedules yet"
-                    description="Schedules for this category haven't been published yet."
-                  />
-                ) : useCardLayout ? (
-                  <ScheduleCategoryCard category={c.key as "study" | "exams"} items={items} embedded={embedded} />
-                ) : (
-                  <div className="overflow-x-auto rounded-lg border border-border">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Title</TableHead>
-                          <TableHead>Date / Period</TableHead>
-                          <TableHead>Description</TableHead>
-                          <TableHead className="w-[100px]">File</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {items.map((item) => (
-                          <TableRow key={item.id}>
-                            <TableCell className="font-medium">{item.title}</TableCell>
-                            <TableCell className="text-muted-foreground">{item.date_info || "—"}</TableCell>
-                            <TableCell className="max-w-xs truncate text-muted-foreground">
-                              {item.description || "—"}
-                            </TableCell>
-                            <TableCell>
-                              {item.file_url ? (
-                                <a
-                                  href={item.file_url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-sm text-accent hover:underline"
-                                >
-                                  Download PDF
-                                </a>
-                              ) : (
-                                "—"
-                              )}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
-                )}
-              </motion.div>
-            </TabsContent>
-          );
-        })}
-      </Tabs>
+                    <ScheduleCategoryCard category={c.key as "study" | "exams"} items={items} embedded={embedded} />
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
+        )}
+
+        {tabCategories.length > 0 && (
+          <Tabs defaultValue={tabCategories[0].key} className="space-y-6">
+            <TabsList className="flex h-auto w-full flex-wrap justify-start gap-1 p-1 sm:inline-flex sm:h-10 sm:w-auto sm:justify-center">
+              {tabCategories.map((c) => (
+                <TabsTrigger key={c.key} value={c.key} className="gap-1.5 sm:gap-2">
+                  <c.icon className="h-4 w-4" />
+                  {c.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+
+            {tabCategories.map((c) => {
+              const items = data?.filter((s) => s.category === c.key) ?? [];
+
+              return (
+                <TabsContent key={c.key} value={c.key}>
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+                    {isLoading ? (
+                      <div className="space-y-3">
+                        <SkeletonCard />
+                        <SkeletonCard />
+                        <SkeletonCard />
+                      </div>
+                    ) : items.length === 0 ? (
+                      <EmptyState
+                        title="No schedules yet"
+                        description="Schedules for this category haven't been published yet."
+                      />
+                    ) : (
+                      <div className="overflow-x-auto rounded-lg border border-border">
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Title</TableHead>
+                              <TableHead>Date / Period</TableHead>
+                              <TableHead>Description</TableHead>
+                              <TableHead className="w-[100px]">File</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {items.map((item) => (
+                              <TableRow key={item.id}>
+                                <TableCell className="font-medium">{item.title}</TableCell>
+                                <TableCell className="text-muted-foreground">{item.date_info || "—"}</TableCell>
+                                <TableCell className="max-w-xs truncate text-muted-foreground">
+                                  {item.description || "—"}
+                                </TableCell>
+                                <TableCell>
+                                  {item.file_url ? (
+                                    <a
+                                      href={item.file_url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-sm text-accent hover:underline"
+                                    >
+                                      Download PDF
+                                    </a>
+                                  ) : (
+                                    "—"
+                                  )}
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+                    )}
+                  </motion.div>
+                </TabsContent>
+              );
+            })}
+          </Tabs>
+        )}
+      </div>
     </div>
   );
 };

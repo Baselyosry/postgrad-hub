@@ -26,11 +26,11 @@ export function ResearchCard({ title, author, year, type, department, abstract, 
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.05 }}
     >
-      <Card className="card-institutional h-full rounded-md border-0 bg-white shadow-sm">
+      <Card className="card-institutional h-full rounded-md border-0 bg-white shadow-sm dark:bg-card">
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between gap-2">
             <CardTitle className="font-heading text-base font-bold leading-snug tracking-[0.5px] text-primary">{title}</CardTitle>
-            <Badge variant={typeVariants[type] as 'secondary' | 'default' | 'outline'} className="shrink-0 border-secondary/30 bg-secondary/10 text-xs text-primary">
+            <Badge variant={typeVariants[type] as 'secondary' | 'default' | 'outline'} className="shrink-0 border-secondary/30 bg-secondary/10 text-xs text-primary dark:border-white/10 dark:text-foreground">
               {typeLabels[type]}
             </Badge>
           </div>
@@ -50,7 +50,7 @@ export function ResearchCard({ title, author, year, type, department, abstract, 
             </Collapsible>
           )}
           {fileUrl && (
-            <Button variant="outline" size="sm" className="mt-2 gap-2 border-primary/30 text-primary hover:bg-primary/5 hover:text-primary" asChild>
+            <Button variant="outline" size="sm" className="mt-2 gap-2 border-primary/30 text-primary hover:bg-primary/5 hover:text-primary dark:border-white/10 dark:text-foreground dark:hover:bg-white/5" asChild>
               <a href={fileUrl} target="_blank" rel="noopener noreferrer">
                 <FileText className="h-3.5 w-3.5" /> View Paper <ExternalLink className="h-3 w-3" />
               </a>

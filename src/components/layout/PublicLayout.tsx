@@ -84,9 +84,10 @@ const NAV: NavItem[] = [
     drop: [
       { title: 'Undergraduate Studies', href: 'https://must.edu.eg/undergraduate/' },
       { title: 'Post-Graduate Program', href: '/academics' },
-      { title: 'Academic calendar (PG hub)', href: '/schedules' },
+      { title: 'Schedules (PG hub)', href: '/schedules' },
       { title: 'Research database (PG hub)', href: '/research/database' },
       { title: 'Submission portal', href: '/submissions' },
+      { title: 'Academic calendar', href: '/academics/academic-calendar' },
       { title: 'International Students Affairs Sector', href: 'https://must.edu.eg/international-students/' },
     ],
   },
@@ -614,8 +615,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
       {/* ── Page content ──────────────────────────────────────── */}
       <main className="flex-1 w-full min-w-0 px-0 pb-28 pt-0 max-lg:pb-32 md:pb-12 lg:pb-10">
         <SiteBreadcrumbs />
-        {/* Right padding only here so full-bleed heroes (e.g. Index) can span the viewport; fixed rail sits in this inset. */}
-        <div className="w-full min-w-0 px-3 sm:px-4 md:px-6 lg:px-8 lg:pr-12 xl:pr-14">{children}</div>
+        <div className="w-full min-w-0">{children}</div>
       </main>
       <Footer />
     </div>
