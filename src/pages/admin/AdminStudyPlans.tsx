@@ -85,7 +85,6 @@ const AdminStudyPlans = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-study-plans"] });
       queryClient.invalidateQueries({ queryKey: ["admin-study-plans-count"] });
-      queryClient.invalidateQueries({ queryKey: ["public-study-plans"] });
       toast({ title: editingId ? "Updated" : "Created" });
       setOpen(false);
       reset();
@@ -101,7 +100,6 @@ const AdminStudyPlans = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-study-plans"] });
       queryClient.invalidateQueries({ queryKey: ["admin-study-plans-count"] });
-      queryClient.invalidateQueries({ queryKey: ["public-study-plans"] });
       setPendingDelete(null);
       toast({ title: "Deleted" });
     },
@@ -118,8 +116,8 @@ const AdminStudyPlans = () => {
         onOpenChange={(o) => {
           if (!o) setPendingDelete(null);
         }}
-        title="Delete study plan?"
-        description="This removes the study plan from the public landing page. This cannot be undone."
+        title="Delete program PDF?"
+        description="This removes a legacy program PDF record. The public Study plan page is driven by Study plan & regulations (not this table). This cannot be undone."
         isDeleting={deleteMutation.isPending}
         onConfirm={() => {
           if (pendingDelete) deleteMutation.mutate(pendingDelete.id);
@@ -133,7 +131,10 @@ const AdminStudyPlans = () => {
           ) : null
         }
       />
-      <PageHeader title="Study plans" description="Manage postgraduate study plan documents and summaries." />
+      <PageHeader
+        title="Program PDFs (legacy)"
+        description="Optional extra programme PDFs in the study_plans table. The public Study plan page uses Study plan & regulations (regulation track); edit those entries in the sidebar under Study plan & regulations."
+      />
       <div className="mb-4">
         <Button
           onClick={() => {
@@ -143,7 +144,7 @@ const AdminStudyPlans = () => {
           className="gap-2"
         >
           <Plus className="h-4 w-4" />
-          Add study plan
+          Add program PDF
         </Button>
       </div>
       {isError && (
@@ -162,7 +163,7 @@ const AdminStudyPlans = () => {
         {isLoading ? (
           <div className="p-8"><SkeletonCard /></div>
         ) : !records?.length ? (
-          <p className="p-8 text-sm text-muted-foreground">No study plans yet.</p>
+          <p className="p-8 text-sm text-muted-foreground">No legacy program PDFs yet.</p>
         ) : (
           <Table>
             <TableHeader>
@@ -222,7 +223,7 @@ const AdminStudyPlans = () => {
       >
         <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>{editingId ? "Edit study plan" : "New study plan"}</DialogTitle>
+            <DialogTitle>{editingId ? "Edit program PDF" : "New program PDF"}</DialogTitle>
           </DialogHeader>
           <form
             onSubmit={(e) => {
@@ -257,7 +258,7 @@ const AdminStudyPlans = () => {
             </div>
             <PdfUploadField
               id="study_plan_pdf"
-              label="Study plan (PDF)"
+              label="Program PDF"
               value={form.file_url}
               onChange={(url) => setForm((f) => ({ ...f, file_url: url }))}
               storageFolder="study-plans"
