@@ -1,12 +1,13 @@
 import { Facebook, Instagram, Twitter } from "lucide-react";
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 const linksColumn = [
-  { title: "Home", href: "/#top" },
+  { title: "Home", href: "/" },
   { title: "The University", href: "https://must.edu.eg/about/" },
-  { title: "Academics", href: "/#academics" },
+  { title: "Academics", href: "/academics" },
   { title: "Life At MUST", href: "https://must.edu.eg/life/" },
-  { title: "Research & Centres", href: "/#archive" },
+  { title: "Research & Centres", href: "/academics/thesis-research-archive" },
   { title: "Maps & Directions", href: "https://maps.app.goo.gl/mustuniversity" },
   { title: "FAQs", href: "https://must.edu.eg/faqs/" },
 ];
@@ -17,7 +18,7 @@ const aboutColumn = [
   { title: "Accreditation And Partnership", href: "https://must.edu.eg/accreditation/" },
   { title: "Why MUST", href: "https://must.edu.eg/why-must/" },
   { title: "Values & Principles", href: "https://must.edu.eg/values/" },
-  { title: "Contact Us", href: "/#contact" },
+  { title: "Contact Us", href: "/contact" },
   { title: "Privacy Policy", href: "https://must.edu.eg/privacy/" },
 ];
 
@@ -36,10 +37,17 @@ const footerSocial = [
 
 function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
   const external = href.startsWith("http");
+  if (!external && href.startsWith("/")) {
+    return (
+      <Link to={href} className="block text-base text-white transition-colors hover:text-white/85">
+        {children}
+      </Link>
+    );
+  }
   return (
     <a
       href={href}
-      className="block text-sm text-white transition-colors hover:text-white/85"
+      className="block text-base text-white transition-colors hover:text-white/85"
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
     >
       {children}
@@ -59,11 +67,11 @@ function FooterColumn({
   const Inner = variant === "links" ? "nav" : "div";
   return (
     <div className="min-w-0 text-center sm:text-left">
-      <h3 className="mb-4 font-heading text-sm font-bold uppercase tracking-wider text-accent-green">{title}</h3>
+      <h3 className="mb-4 font-heading text-base font-bold uppercase tracking-wider text-accent-green">{title}</h3>
       <Inner
         className={cn(
           "flex flex-col",
-          variant === "links" ? "gap-2" : "gap-4 text-sm font-bold text-white"
+          variant === "links" ? "gap-2.5" : "gap-4 text-base font-bold text-white"
         )}
         {...(variant === "links" ? { "aria-label": title } : {})}
       >
@@ -111,13 +119,13 @@ export function Footer() {
             </FooterColumn>
 
             <FooterColumn title="Contact Info" variant="text">
-              <a href="tel:16878" className="transition-opacity hover:opacity-90">
+              <a href="tel:16878" className="text-white transition-opacity hover:opacity-90">
                 16878
               </a>
-              <a href="mailto:Info@Must.Edu.Eg" className="break-all transition-opacity hover:opacity-90">
+              <a href="mailto:Info@Must.Edu.Eg" className="break-all text-white transition-opacity hover:opacity-90">
                 Info@Must.Edu.Eg
               </a>
-              <p className="leading-snug">Al Motamayez District – 6th of October, Egypt</p>
+              <p className="leading-relaxed text-white/95">Al Motamayez District – 6th of October, Egypt</p>
             </FooterColumn>
           </div>
 
@@ -138,7 +146,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-white/10 bg-white py-3.5 text-center">
-        <p className="px-4 text-xs font-medium text-zinc-800 sm:text-sm">
+        <p className="px-4 text-sm font-medium text-zinc-800 sm:text-base">
           Copyright All Rights Reserved © MUST UNIVERSITY 2026
         </p>
       </div>
