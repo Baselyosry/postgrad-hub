@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Footer } from './Footer';
+import { SiteBreadcrumbs } from '@/components/SiteBreadcrumbs';
 import {
   Search,
   X,
@@ -66,7 +67,7 @@ const NAV: NavItem[] = [
       { title: 'University Council Minutes', href: 'https://must.edu.eg/council-minutes/' },
       { title: 'Quality Assurance & Accreditation Sector', href: 'https://must.edu.eg/quality/' },
       { title: 'Accreditation & Partnerships', href: 'https://must.edu.eg/accreditation/' },
-      { title: 'Contact Us', href: '/#contact' },
+      { title: 'Contact Us', href: '/contact' },
       {
         title: 'Resources',
         sub: [
@@ -82,22 +83,27 @@ const NAV: NavItem[] = [
     title: 'Academics',
     drop: [
       { title: 'Undergraduate Studies', href: 'https://must.edu.eg/undergraduate/' },
-      { title: 'Post-Graduate Program', href: '/' },
-      { title: 'Academic calendar (PG hub)', href: '/#schedules' },
-      { title: 'Research database (PG hub)', href: '/#research-database' },
-      { title: 'Thesis archive (PG hub)', href: '/#archive' },
+      { title: 'Post-Graduate Program', href: '/academics' },
+      { title: 'Academic calendar (PG hub)', href: '/schedules' },
+      { title: 'Research database (PG hub)', href: '/research/database' },
+      { title: 'Submission portal', href: '/submissions' },
       { title: 'International Students Affairs Sector', href: 'https://must.edu.eg/international-students/' },
     ],
   },
   {
     title: 'Admission',
-    href: 'https://admission.must.edu.eg/',
+    drop: [
+      { title: 'Postgraduate admission (this portal)', href: '/admission' },
+      { title: 'How to apply', href: '/admission/how-to-apply' },
+      { title: 'Required documents', href: '/admission/required-documents' },
+      { title: 'University admission portal', href: 'https://admission.must.edu.eg/' },
+    ],
   },
   {
     title: 'MUST BUZZ',
     drop: [
-      { title: 'Postgraduate news (this portal)', href: '/#news' },
-      { title: 'Postgraduate events (this portal)', href: '/#events' },
+      { title: 'Postgraduate news (this portal)', href: '/news' },
+      { title: 'Postgraduate events (this portal)', href: '/events' },
       { title: 'MUST Events', href: 'https://must.edu.eg/events/' },
       { title: 'MUST News', href: 'https://must.edu.eg/news/' },
       { title: 'MUST Blogs', href: 'https://must.edu.eg/blogs/' },
@@ -179,7 +185,7 @@ function AnyLink({
 // ─── Flyout sub-menu (appears to the right of the dropdown item) ──────────────
 
 const menuPanel =
-  'bg-white text-[#1c355e] border-gray-100 dark:bg-popover dark:text-foreground dark:border-border';
+  'bg-zinc-100 text-[#1c355e] border-zinc-200/80 dark:bg-popover dark:text-foreground dark:border-border';
 const menuItem =
   'border-b border-gray-100 last:border-0 dark:border-border hover:bg-[#f0f7f4] hover:text-[#00a651] dark:hover:bg-muted dark:hover:text-accent-green';
 
@@ -187,7 +193,7 @@ function FlyoutMenu({ items }: { items: SubItem[] }) {
   return (
     <div
       className={cn(
-        'absolute left-full top-0 z-50 max-h-[min(70vh,520px)] min-w-[220px] max-w-[min(calc(100vw-2rem),320px)] overflow-y-auto overflow-x-hidden rounded-r-md shadow-xl border-l-2 border-[#00a651] dark:border-accent-green',
+        'absolute left-full top-0 z-50 max-h-[min(70vh,520px)] min-w-[240px] max-w-[min(calc(100vw-2rem),340px)] overflow-y-auto overflow-x-hidden rounded-r-md shadow-xl border-l-2 border-[#00a651] dark:border-accent-green',
         menuPanel
       )}
     >
@@ -195,7 +201,7 @@ function FlyoutMenu({ items }: { items: SubItem[] }) {
         <AnyLink
           key={item.title}
           href={item.href}
-          className={cn('block px-5 py-3 text-sm transition-colors', menuItem)}
+          className={cn('block px-5 py-3 text-base transition-colors', menuItem)}
         >
           {item.title}
         </AnyLink>
@@ -214,7 +220,7 @@ function DropItem({ item, onNavigate }: { item: DropItem; onNavigate: () => void
       <AnyLink
         href={item.href!}
         onClick={onNavigate}
-        className={cn('block px-5 py-3 text-sm transition-colors', menuItem)}
+        className={cn('block px-5 py-3 text-base transition-colors', menuItem)}
       >
         {item.title}
       </AnyLink>
@@ -229,7 +235,7 @@ function DropItem({ item, onNavigate }: { item: DropItem; onNavigate: () => void
     >
       <button
         type="button"
-        className={cn('flex w-full items-center justify-between px-5 py-3 text-sm transition-colors', menuItem)}
+        className={cn('flex w-full items-center justify-between px-5 py-3 text-base transition-colors', menuItem)}
       >
         {item.title}
         <ChevronRight size={13} className="shrink-0 text-[#00a651] dark:text-accent-green" />
@@ -245,7 +251,7 @@ function NavDropdown({ items, onNavigate }: { items: DropItem[]; onNavigate: () 
   return (
     <div
       className={cn(
-        'absolute left-0 top-full z-50 mt-0 max-h-[min(85vh,640px)] min-w-[260px] max-w-[min(calc(100vw-1.5rem),320px)] overflow-y-auto overflow-x-hidden rounded-b-md shadow-xl border-t-2 border-[#00a651] dark:border-accent-green lg:max-w-none',
+        'absolute left-0 top-full z-50 mt-0 max-h-[min(85vh,640px)] min-w-[280px] max-w-[min(calc(100vw-1.5rem),340px)] overflow-y-auto overflow-x-hidden rounded-b-md shadow-xl border-t-2 border-[#00a651] dark:border-accent-green lg:max-w-none',
         menuPanel
       )}
     >
@@ -275,7 +281,7 @@ function DesktopNavItem({ item }: { item: NavItem }) {
     return (
       <AnyLink
         href={item.href}
-        className="flex items-center gap-1 whitespace-nowrap px-1.5 py-1.5 text-xs font-semibold text-white/90 drop-shadow-lg transition-colors hover:text-[#00a651] dark:hover:text-accent-green md:px-2 md:text-sm"
+        className="flex items-center gap-1 whitespace-nowrap px-1.5 py-1.5 text-base font-semibold text-white/90 drop-shadow-lg transition-colors hover:text-[#00a651] dark:hover:text-accent-green sm:px-2 lg:text-lg md:px-2.5"
       >
         {item.title}
       </AnyLink>
@@ -292,7 +298,7 @@ function DesktopNavItem({ item }: { item: NavItem }) {
       <button
         type="button"
         className={cn(
-          'flex items-center gap-1 whitespace-nowrap px-1.5 py-1.5 text-xs font-semibold text-white/90 drop-shadow-lg transition-colors hover:text-[#00a651] dark:hover:text-accent-green md:px-2 md:text-sm',
+          'flex items-center gap-1 whitespace-nowrap px-1.5 py-1.5 text-base font-semibold text-white/90 drop-shadow-lg transition-colors hover:text-[#00a651] dark:hover:text-accent-green sm:px-2 lg:text-lg md:px-2.5',
           open && 'text-[#00a651] dark:text-accent-green'
         )}
         onClick={() => setOpen((v) => !v)}
@@ -323,7 +329,10 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
     if (query.trim()) {
-      navigate({ pathname: '/', search: `?q=${encodeURIComponent(query.trim())}`, hash: 'archive' });
+      navigate({
+        pathname: '/academics/thesis-research-archive',
+        search: `?q=${encodeURIComponent(query.trim())}`,
+      });
       onClose();
     }
   }
@@ -392,7 +401,7 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
           <Link
             to="/login"
             onClick={onClose}
-            className="flex items-center gap-2 text-sm font-semibold text-white transition-colors hover:text-[#00a651] dark:hover:text-accent-green"
+            className="flex items-center gap-2 text-base font-semibold text-white transition-colors hover:text-[#00a651] dark:hover:text-accent-green"
           >
             <CircleUser size={18} className="shrink-0" aria-hidden />
             Staff login
@@ -427,7 +436,7 @@ function MobileNavItem({ item, onClose }: { item: NavItem; onClose: () => void }
     return (
       <AnyLink
         href={item.href} onClick={onClose}
-        className="px-5 py-3 text-sm font-semibold text-white hover:text-[#00a651] dark:hover:text-accent-green"
+        className="px-5 py-3 text-base font-semibold text-white hover:text-[#00a651] dark:hover:text-accent-green"
       >
         {item.title}
       </AnyLink>
@@ -439,7 +448,7 @@ function MobileNavItem({ item, onClose }: { item: NavItem; onClose: () => void }
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center justify-between px-5 py-3 text-sm font-semibold text-white hover:text-[#00a651] dark:hover:text-accent-green"
+        className="flex w-full items-center justify-between px-5 py-3 text-base font-semibold text-white hover:text-[#00a651] dark:hover:text-accent-green"
       >
         {item.title}
         <ChevronDown size={14} className={cn('transition-transform', open && 'rotate-180')} />
@@ -462,7 +471,7 @@ function MobileDropItem({ item, onClose }: { item: DropItem; onClose: () => void
     return (
       <AnyLink
         href={item.href!} onClick={onClose}
-        className="block px-8 py-2.5 text-sm text-white/70 hover:text-[#00a651] dark:text-zinc-400 dark:hover:text-accent-green"
+        className="block px-8 py-2.5 text-base text-white/70 hover:text-[#00a651] dark:text-zinc-400 dark:hover:text-accent-green"
       >
         {item.title}
       </AnyLink>
@@ -474,7 +483,7 @@ function MobileDropItem({ item, onClose }: { item: DropItem; onClose: () => void
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center justify-between px-8 py-2.5 text-sm text-white/70 hover:text-[#00a651] dark:text-zinc-400 dark:hover:text-accent-green"
+        className="flex w-full items-center justify-between px-8 py-2.5 text-base text-white/70 hover:text-[#00a651] dark:text-zinc-400 dark:hover:text-accent-green"
       >
         {item.title}
         <ChevronDown size={12} className={cn('transition-transform', open && 'rotate-180')} />
@@ -484,7 +493,7 @@ function MobileDropItem({ item, onClose }: { item: DropItem; onClose: () => void
           {item.sub.map((s) => (
             <AnyLink
               key={s.title} href={s.href} onClick={onClose}
-              className="block px-12 py-2 text-xs text-white/60 hover:text-[#00a651] dark:text-zinc-500 dark:hover:text-accent-green"
+              className="block px-12 py-2 text-base text-white/60 hover:text-[#00a651] dark:text-zinc-500 dark:hover:text-accent-green"
             >
               {s.title}
             </AnyLink>
@@ -519,7 +528,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
             />
           </Link>
 
-          {/* Desktop nav — lg+; spacing matches Index hero nav (compact inline row + wrap) */}
+          {/* Desktop nav — lg+ */}
           <nav
             className="hidden min-w-0 flex-1 flex-row flex-wrap items-center justify-center gap-x-1 gap-y-2 sm:gap-x-2 md:gap-x-3 lg:flex"
             aria-label="Main navigation"
@@ -534,7 +543,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
             <ThemeToggle triggerClassName="text-white hover:bg-white/10 hover:text-white dark:text-zinc-200" />
             <Link
               to="/login"
-              className="flex items-center gap-1 rounded px-1 py-1 text-[11px] font-semibold text-white/90 transition-colors hover:text-[#00a651] dark:hover:text-accent-green sm:gap-1.5 sm:px-2 sm:text-xs md:text-sm"
+              className="flex items-center gap-1 rounded px-1 py-1 text-sm font-semibold text-white/90 transition-colors hover:text-[#00a651] dark:hover:text-accent-green sm:gap-1.5 sm:px-2 sm:text-base md:text-lg"
               aria-label="Staff login"
             >
               <CircleUser size={18} className="shrink-0 sm:h-5 sm:w-5" aria-hidden />
@@ -571,7 +580,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
         className={cn(
           'fixed z-40 flex gap-2 touch-manipulation',
           'max-lg:bottom-[max(1rem,env(safe-area-inset-bottom))] max-lg:left-1/2 max-lg:top-auto max-lg:-translate-x-1/2 max-lg:flex-row max-lg:flex-wrap max-lg:justify-center max-lg:px-2',
-          'lg:right-2 lg:top-1/3 lg:-translate-y-1/2 lg:translate-x-0 lg:flex-col lg:gap-1.5 lg:pr-2 xl:right-3'
+          'lg:right-2 lg:top-[42%] lg:-translate-y-1/2 lg:translate-x-0 lg:flex-col lg:gap-1.5 lg:pr-2 xl:right-3'
         )}
       >
         <button
@@ -603,8 +612,10 @@ export function PublicLayout({ children }: { children: ReactNode }) {
       {mobileOpen && <MobileDrawer onClose={() => setMobileOpen(false)} />}
 
       {/* ── Page content ──────────────────────────────────────── */}
-      <main className="flex-1 w-full min-w-0 px-3 pb-28 pt-0 max-lg:pb-32 sm:px-4 md:px-6 md:pb-12 lg:px-8 lg:pb-10 lg:pr-12 xl:pr-14">
-        {children}
+      <main className="flex-1 w-full min-w-0 px-0 pb-28 pt-0 max-lg:pb-32 md:pb-12 lg:pb-10">
+        <SiteBreadcrumbs />
+        {/* Right padding only here so full-bleed heroes (e.g. Index) can span the viewport; fixed rail sits in this inset. */}
+        <div className="w-full min-w-0 px-3 sm:px-4 md:px-6 lg:px-8 lg:pr-12 xl:pr-14">{children}</div>
       </main>
       <Footer />
     </div>
