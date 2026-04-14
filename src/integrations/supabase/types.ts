@@ -494,7 +494,7 @@ export type Database = {
       thesis_upload_submissions: {
         Row: {
           id: string
-          user_id: string
+          user_id: string | null
           submission_type: string
           thesis_name: string
           supervisor_name: string
@@ -507,7 +507,7 @@ export type Database = {
         }
         Insert: {
           id?: string
-          user_id: string
+          user_id?: string | null
           submission_type: string
           thesis_name: string
           supervisor_name: string
@@ -520,7 +520,7 @@ export type Database = {
         }
         Update: {
           id?: string
-          user_id?: string
+          user_id?: string | null
           submission_type?: string
           thesis_name?: string
           supervisor_name?: string
