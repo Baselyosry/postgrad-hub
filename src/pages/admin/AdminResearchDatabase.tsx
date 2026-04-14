@@ -42,6 +42,7 @@ type Row = {
   abstract: string | null;
   url: string | null;
   pdf_url: string | null;
+  publication_place: string | null;
 };
 
 function rowMatchesSearch(row: Row, q: string) {
@@ -66,6 +67,7 @@ const AdminResearchDatabase = () => {
     year: "" as string,
     keywords: "",
     abstract: "",
+    publication_place: "",
     url: "",
     pdf_url: "",
   });
@@ -101,21 +103,27 @@ const AdminResearchDatabase = () => {
   }, [records, debouncedSearch, yearFilter]);
 
   const reset = () => {
-    setForm({ title: "", authors: "", year: "", keywords: "", abstract: "", url: "", pdf_url: "" });
+    setForm({ title: "", authors: "", year: "", keywords: "", abstract: "", publication_place: "", url: "", pdf_url: "" });
     setEditingId(null);
   };
 
   const saveMutation = useMutation({
     mutationFn: async () => {
       const y = form.year.trim() ? parseInt(form.year, 10) : null;
+      const url = form.url.trim() || null;
+      const pdf = form.pdf_url.trim() || null;
+      if (!url && !pdf) {
+        throw new Error("Provide an external URL and/or a PDF.");
+      }
       const payload = {
         title: form.title.trim(),
         authors: form.authors.trim() || null,
         year: y !== null && !Number.isNaN(y) ? y : null,
         keywords: form.keywords.trim() || null,
         abstract: form.abstract.trim() || null,
-        url: form.url.trim() || null,
-        pdf_url: form.pdf_url.trim() || null,
+        publication_place: form.publication_place.trim() || null,
+        url,
+        pdf_url: pdf,
       };
       if (editingId) {
         const { error } = await supabase.from("research_database").update(payload).eq("id", editingId);
@@ -133,7 +141,9 @@ const AdminResearchDatabase = () => {
       setOpen(false);
       reset();
     },
-    onError: (err: Error) => toast({ title: "Error", description: err.message, variant: "destructive" }),
+    onError: (err: Error) => {
+      toast({ title: "Error", description: err.message, variant: "destructive" });
+    },
   });
 
   const deleteMutation = useMutation({
@@ -260,6 +270,7 @@ const AdminResearchDatabase = () => {
                             year: row.year != null ? String(row.year) : "",
                             keywords: row.keywords ?? "",
                             abstract: row.abstract ?? "",
+                            publication_place: row.publication_place ?? "",
                             url: row.url ?? "",
                             pdf_url: row.pdf_url ?? "",
                           });
@@ -303,6 +314,18 @@ const AdminResearchDatabase = () => {
                 toast({ title: "Title required", variant: "destructive" });
                 return;
               }
+              if (!form.authors.trim() || !form.year.trim() || !form.abstract.trim() || !form.publication_place.trim()) {
+                toast({
+                  title: "Required fields",
+                  description: "Authors, year, abstract, and publication place are required (keywords optional).",
+                  variant: "destructive",
+                });
+                return;
+              }
+              if (!form.url.trim() && !form.pdf_url.trim()) {
+                toast({ title: "Link or PDF required", variant: "destructive" });
+                return;
+              }
               saveMutation.mutate();
             }}
             className="space-y-4"
@@ -322,7 +345,7 @@ const AdminResearchDatabase = () => {
               </div>
             </div>
             <div className="space-y-2">
-              <Label>Keywords</Label>
+              <Label>Keywords (optional)</Label>
               <Input value={form.keywords} onChange={(e) => setForm((f) => ({ ...f, keywords: e.target.value }))} />
             </div>
             <div className="space-y-2">
@@ -330,12 +353,21 @@ const AdminResearchDatabase = () => {
               <Textarea rows={4} value={form.abstract} onChange={(e) => setForm((f) => ({ ...f, abstract: e.target.value }))} />
             </div>
             <div className="space-y-2">
-              <Label>External URL (optional)</Label>
+              <Label>Publication place</Label>
+              <Input
+                value={form.publication_place}
+                onChange={(e) => setForm((f) => ({ ...f, publication_place: e.target.value }))}
+                placeholder="Journal, venue, or institution"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>External URL</Label>
+              <p className="text-xs text-muted-foreground">At least one of URL or PDF is required.</p>
               <Input value={form.url} onChange={(e) => setForm((f) => ({ ...f, url: e.target.value }))} />
             </div>
             <PdfUploadField
               id="research_db_pdf"
-              label="Entry PDF (optional)"
+              label="Entry PDF"
               value={form.pdf_url}
               onChange={(url) => setForm((f) => ({ ...f, pdf_url: url }))}
               storageFolder="research-database"
