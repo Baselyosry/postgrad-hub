@@ -28,6 +28,7 @@ const AdminAdmissionDocs = lazy(() => import("./pages/admin/AdminAdmissionDocs")
 const AdminNews = lazy(() => import("./pages/admin/AdminNews"));
 const AdminEvents = lazy(() => import("./pages/admin/AdminEvents"));
 const AdminServices = lazy(() => import("./pages/admin/AdminServices"));
+const AdminThesisUploadSubmissions = lazy(() => import("./pages/admin/AdminThesisUploadSubmissions"));
 const StudentDashboard = lazy(() => import("./pages/StudentDashboard"));
 const SubmitApplication = lazy(() => import("./pages/SubmitApplication"));
 const Submissions = lazy(() => import("./pages/Submissions"));
@@ -131,6 +132,7 @@ const App = () => (
                       <Route path="/admin/news" element={<AdminNews />} />
                       <Route path="/admin/events" element={<AdminEvents />} />
                       <Route path="/admin/services" element={<AdminServices />} />
+                      <Route path={ADMIN_PATHS.thesisUploadSubmissions} element={<AdminThesisUploadSubmissions />} />
                     </Route>
                     <Route path="/dashboard" element={<StudentDashboard />} />
                     <Route path="/submit" element={<SubmitApplication />} />

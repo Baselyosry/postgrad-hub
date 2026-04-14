@@ -16,6 +16,7 @@ import {
   Wrench,
   FileText,
   ExternalLink,
+  FileUp,
 } from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
 import { Link } from 'react-router-dom';
@@ -43,6 +44,7 @@ const adminAcademics: NavEntry[] = [
   { title: 'Research database', url: ADMIN_PATHS.researchDatabase, icon: Database },
   { title: 'Templates', url: ADMIN_PATHS.templates, icon: FileDown },
   { title: 'Thesis archive', url: ADMIN_PATHS.thesisArchive, icon: Archive },
+  { title: 'Submission portal (PDFs)', url: ADMIN_PATHS.thesisUploadSubmissions, icon: FileUp },
 ];
 
 const adminAdmission: NavEntry[] = [

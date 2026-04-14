@@ -180,6 +180,7 @@ const ADMIN_ROUTES: Record<string, BreadcrumbCrumb[]> = {
   [ADMIN_PATHS.news]: adminCrumbs(false, "News"),
   [ADMIN_PATHS.events]: adminCrumbs(false, "Events"),
   [ADMIN_PATHS.services]: adminCrumbs(false, "Services"),
+  [ADMIN_PATHS.thesisUploadSubmissions]: adminCrumbs(false, "Submission portal (PDFs)"),
   "/admin/archive": adminCrumbs(false, "Thesis archive"),
   "/admin/inquiries": adminCrumbs(false, "Contact inquiries"),
   "/admin/admissions": adminCrumbs(false, "Degree requirements"),
