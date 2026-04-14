@@ -42,6 +42,7 @@ type StaffRow = {
   department: string | null;
   photo_url: string | null;
   cv_pdf_url: string | null;
+  google_scholar_url: string | null;
   personal_data: Personal;
   qualifications: Qual[];
   experience: Exp[];
@@ -54,6 +55,7 @@ type StaffCvFormState = {
   department: string;
   photo_url: string;
   cv_pdf_url: string;
+  google_scholar_url: string;
   sort_order: number;
   email: string;
   phone: string;
@@ -69,6 +71,7 @@ const emptyForm = (): StaffCvFormState => ({
   department: "",
   photo_url: "",
   cv_pdf_url: "",
+  google_scholar_url: "",
   sort_order: 0,
   email: "",
   phone: "",
@@ -153,6 +156,7 @@ const AdminStaffCv = () => {
       department: row.department ?? "",
       photo_url: row.photo_url ?? "",
       cv_pdf_url: row.cv_pdf_url ?? "",
+      google_scholar_url: row.google_scholar_url ?? "",
       sort_order: row.sort_order ?? 0,
       email: p.email ?? "",
       phone: p.phone ?? "",
@@ -196,6 +200,7 @@ const AdminStaffCv = () => {
         department: f.department.trim() || null,
         photo_url: f.photo_url.trim() || null,
         cv_pdf_url: f.cv_pdf_url.trim() || null,
+        google_scholar_url: f.google_scholar_url.trim() || null,
         sort_order: Number.isFinite(f.sort_order) ? f.sort_order : 0,
         personal_data,
         qualifications,
@@ -420,6 +425,18 @@ const AdminStaffCv = () => {
                   onChange={(url) => setForm((f) => ({ ...f, cv_pdf_url: url }))}
                   storageFolder="staff-cv"
                 />
+              </div>
+              <div className="space-y-2 sm:col-span-2">
+                <Label htmlFor="google_scholar_url">Google Scholar profile URL</Label>
+                <Input
+                  id="google_scholar_url"
+                  placeholder="https://scholar.google.com/citations?user=…"
+                  value={form.google_scholar_url}
+                  onChange={(e) => setForm((f) => ({ ...f, google_scholar_url: e.target.value }))}
+                />
+                <p className="text-xs text-muted-foreground">
+                  When set, the public profile shows this link instead of the CV download button.
+                </p>
               </div>
             </div>
 
