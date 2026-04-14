@@ -26,6 +26,7 @@ import {
   Wrench,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { ADMIN_PATHS } from '@/lib/adminRoutes';
 import { motion } from 'framer-motion';
 import { toast } from '@/hooks/use-toast';
 
@@ -193,11 +194,11 @@ const Admin = () => {
     { label: 'Submissions', value: submissions?.length ?? 0, icon: FileText, extra: pendingCount > 0 ? `${pendingCount} pending` : undefined },
     { label: 'Inquiries', value: inquiries?.length ?? 0, icon: Mail, extra: unreadCount > 0 ? `${unreadCount} unread` : undefined },
     { label: 'Staff CV', value: staffCvCount ?? 0, icon: Users },
-    { label: 'Study plans', value: studyPlansCount ?? 0, icon: ScrollText },
+    { label: 'Program PDFs (legacy)', value: studyPlansCount ?? 0, icon: ScrollText },
     { label: 'Archive Entries', value: archiveCount ?? 0, icon: Archive },
     { label: 'Schedules', value: schedulesCount ?? 0, icon: CalendarDays },
     { label: 'Templates', value: templatesCount ?? 0, icon: FileDown },
-    { label: 'Research plans', value: researchPlansCount ?? 0, icon: FlaskConical },
+    { label: 'Study plan & regulations', value: researchPlansCount ?? 0, icon: FlaskConical },
     { label: 'Research DB', value: researchDbCount ?? 0, icon: Database },
     { label: 'Admissions', value: admissionsCount ?? 0, icon: BookOpen },
     { label: 'Admission pages', value: admissionDocsCount ?? 0, icon: FileText },
@@ -211,73 +212,77 @@ const Admin = () => {
 
       <div className="mb-8 flex flex-wrap gap-3">
         <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to="/admin/staff-cv" className="gap-2">
+          <Link to={ADMIN_PATHS.staffCv} className="gap-2">
             <Users className="h-4 w-4" />
             Staff CV
           </Link>
         </Button>
         <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to="/admin/study-plans" className="gap-2">
+          <Link to={ADMIN_PATHS.studyPlanRegulations} className="gap-2">
+            <FlaskConical className="h-4 w-4" />
+            Study plan & regulations
+          </Link>
+        </Button>
+        <Button
+          asChild
+          variant="outline"
+          className="gap-2 border-header-navy/25 text-header-navy hover:bg-notice-bg hover:text-header-navy dark:border-border dark:text-foreground dark:hover:bg-muted"
+        >
+          <Link to={ADMIN_PATHS.programPdfsLegacy} className="gap-2">
             <ScrollText className="h-4 w-4" />
-            Study plans
+            Program PDFs (legacy)
           </Link>
         </Button>
         <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to="/admin/schedules" className="gap-2">
+          <Link to={ADMIN_PATHS.schedules} className="gap-2">
             <CalendarDays className="h-4 w-4" />
             Schedules
           </Link>
         </Button>
         <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to="/admin/research-plans" className="gap-2">
-            <FlaskConical className="h-4 w-4" />
-            Research plans
-          </Link>
-        </Button>
-        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to="/admin/research-database" className="gap-2">
+          <Link to={ADMIN_PATHS.researchDatabase} className="gap-2">
             <Database className="h-4 w-4" />
             Research database
           </Link>
         </Button>
         <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to="/admin/templates" className="gap-2">
+          <Link to={ADMIN_PATHS.templates} className="gap-2">
             <FileDown className="h-4 w-4" />
             Templates
           </Link>
         </Button>
         <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to="/admin/archive" className="gap-2">
+          <Link to={ADMIN_PATHS.thesisArchive} className="gap-2">
             <Archive className="h-4 w-4" />
             Thesis archive
           </Link>
         </Button>
         <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to="/admin/admissions" className="gap-2">
+          <Link to={ADMIN_PATHS.degreeRequirements} className="gap-2">
             <BookOpen className="h-4 w-4" />
             Degree requirements
           </Link>
         </Button>
         <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to="/admin/admission-docs" className="gap-2">
+          <Link to={ADMIN_PATHS.admissionPages} className="gap-2">
             <FileText className="h-4 w-4" />
             Admission pages
           </Link>
         </Button>
         <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to="/admin/news" className="gap-2">
+          <Link to={ADMIN_PATHS.news} className="gap-2">
             <Newspaper className="h-4 w-4" />
             News
           </Link>
         </Button>
         <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to="/admin/events" className="gap-2">
+          <Link to={ADMIN_PATHS.events} className="gap-2">
             <PartyPopper className="h-4 w-4" />
             Events
           </Link>
         </Button>
         <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to="/admin/services" className="gap-2">
+          <Link to={ADMIN_PATHS.services} className="gap-2">
             <Wrench className="h-4 w-4" />
             Services
           </Link>
@@ -287,7 +292,7 @@ const Admin = () => {
           variant="outline"
           className="gap-2 border-header-navy/25 text-header-navy hover:bg-notice-bg hover:text-header-navy dark:border-border dark:text-foreground dark:hover:bg-muted"
         >
-          <Link to="/admin/inquiries" className="gap-2">
+          <Link to={ADMIN_PATHS.contactInquiries} className="gap-2">
             <Mail className="h-4 w-4" />
             Inquiries
           </Link>
