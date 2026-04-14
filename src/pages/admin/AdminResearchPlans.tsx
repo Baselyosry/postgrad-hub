@@ -22,14 +22,25 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { SkeletonCard } from "@/components/SkeletonCard";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { getErrorMessage } from "@/lib/utils";
+import { getErrorMessage, resolvePublicMediaUrl } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
-import { Plus, Pencil, Trash2, AlertCircle } from "lucide-react";
+import { Plus, Pencil, Trash2, AlertCircle, Download } from "lucide-react";
 import { useState } from "react";
 import { PdfUploadField } from "@/components/admin/PdfUploadField";
 import { ConfirmDeleteDialog } from "@/components/admin/ConfirmDeleteDialog";
+
+type RegulationTrack = "general" | "masters" | "phd";
+
+type ProgramGroupForm = "auto" | "cs" | "is";
 
 type Row = {
   id: string;
@@ -37,6 +48,8 @@ type Row = {
   summary: string | null;
   milestones: string | null;
   file_url: string | null;
+  regulation_track?: RegulationTrack | null;
+  program_group?: string | null;
 };
 
 const AdminResearchPlans = () => {
@@ -45,7 +58,14 @@ const AdminResearchPlans = () => {
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [pendingDelete, setPendingDelete] = useState<Row | null>(null);
-  const [form, setForm] = useState({ title: "", summary: "", milestones: "", file_url: "" });
+  const [form, setForm] = useState({
+    title: "",
+    summary: "",
+    milestones: "",
+    file_url: "",
+    regulation_track: "general" as RegulationTrack,
+    program_group: "auto" as ProgramGroupForm,
+  });
 
   const { data: records, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["admin-research-plans"],
@@ -61,7 +81,14 @@ const AdminResearchPlans = () => {
   });
 
   const reset = () => {
-    setForm({ title: "", summary: "", milestones: "", file_url: "" });
+    setForm({
+      title: "",
+      summary: "",
+      milestones: "",
+      file_url: "",
+      regulation_track: "general",
+      program_group: "auto",
+    });
     setEditingId(null);
   };
 
@@ -72,6 +99,8 @@ const AdminResearchPlans = () => {
         summary: form.summary.trim() || null,
         milestones: form.milestones.trim() || null,
         file_url: form.file_url.trim() || null,
+        regulation_track: form.regulation_track,
+        program_group: form.program_group === "auto" ? null : form.program_group,
       };
       if (editingId) {
         const { error } = await supabase.from("research_plans").update(payload).eq("id", editingId);
@@ -85,6 +114,7 @@ const AdminResearchPlans = () => {
       queryClient.invalidateQueries({ queryKey: ["admin-research-plans"] });
       queryClient.invalidateQueries({ queryKey: ["admin-research-plans-count"] });
       queryClient.invalidateQueries({ queryKey: ["public-research-plans"] });
+      queryClient.invalidateQueries({ queryKey: ["public-research-plans-study-page"] });
       toast({ title: editingId ? "Updated" : "Created" });
       setOpen(false);
       reset();
@@ -101,6 +131,7 @@ const AdminResearchPlans = () => {
       queryClient.invalidateQueries({ queryKey: ["admin-research-plans"] });
       queryClient.invalidateQueries({ queryKey: ["admin-research-plans-count"] });
       queryClient.invalidateQueries({ queryKey: ["public-research-plans"] });
+      queryClient.invalidateQueries({ queryKey: ["public-research-plans-study-page"] });
       setPendingDelete(null);
       toast({ title: "Deleted" });
     },
@@ -117,8 +148,8 @@ const AdminResearchPlans = () => {
         onOpenChange={(o) => {
           if (!o) setPendingDelete(null);
         }}
-        title="Delete research plan entry?"
-        description="This removes the entry from the public research plan section. This cannot be undone."
+        title="Delete this entry?"
+        description="Removes it from the public Study plan and/or the milestones page, depending on regulation track. This cannot be undone."
         isDeleting={deleteMutation.isPending}
         onConfirm={() => {
           if (pendingDelete) deleteMutation.mutate(pendingDelete.id);
@@ -131,7 +162,10 @@ const AdminResearchPlans = () => {
           ) : null
         }
       />
-      <PageHeader title="Research plans" description="Guidelines, milestones, and defence-related research plan content." />
+      <PageHeader
+        title="Study plan & regulations"
+        description="Guidelines, milestones, and PDFs. Regulation track controls the public Study plan (Master's / PhD) or the milestones page only. Programme (CS / IS) groups entries on the Study plan page."
+      />
       <div className="mb-4">
         <Button
           onClick={() => {
@@ -160,12 +194,15 @@ const AdminResearchPlans = () => {
         {isLoading ? (
           <div className="p-8"><SkeletonCard /></div>
         ) : !records?.length ? (
-          <p className="p-8 text-sm text-muted-foreground">No research plan entries yet.</p>
+          <p className="p-8 text-sm text-muted-foreground">No entries yet.</p>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Title</TableHead>
+                <TableHead>Track</TableHead>
+                <TableHead>Programme</TableHead>
+                <TableHead className="min-w-[100px]">PDF</TableHead>
                 <TableHead className="w-[100px]">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -173,6 +210,26 @@ const AdminResearchPlans = () => {
               {records.map((row) => (
                 <TableRow key={row.id}>
                   <TableCell className="font-medium">{row.title}</TableCell>
+                  <TableCell className="text-muted-foreground capitalize">{row.regulation_track ?? "general"}</TableCell>
+                  <TableCell className="text-muted-foreground capitalize">
+                    {row.program_group === "cs" || row.program_group === "is" ? row.program_group : "auto"}
+                  </TableCell>
+                  <TableCell>
+                    {row.file_url?.trim() ? (
+                      <Button variant="outline" size="sm" className="h-8 gap-1 px-2" asChild>
+                        <a
+                          href={resolvePublicMediaUrl(row.file_url.trim()) ?? row.file_url.trim()}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Download className="h-3.5 w-3.5" aria-hidden />
+                          View PDF
+                        </a>
+                      </Button>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">None</span>
+                    )}
+                  </TableCell>
                   <TableCell>
                     <div className="flex gap-2">
                       <Button
@@ -186,6 +243,11 @@ const AdminResearchPlans = () => {
                             summary: row.summary ?? "",
                             milestones: row.milestones ?? "",
                             file_url: row.file_url ?? "",
+                            regulation_track: (row.regulation_track as RegulationTrack) ?? "general",
+                            program_group:
+                              row.program_group === "cs" || row.program_group === "is"
+                                ? (row.program_group as ProgramGroupForm)
+                                : "auto",
                           });
                           setOpen(true);
                         }}
@@ -218,7 +280,7 @@ const AdminResearchPlans = () => {
       >
         <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>{editingId ? "Edit research plan" : "New research plan"}</DialogTitle>
+            <DialogTitle>{editingId ? "Edit entry" : "New entry"}</DialogTitle>
           </DialogHeader>
           <form
             onSubmit={(e) => {
@@ -234,6 +296,44 @@ const AdminResearchPlans = () => {
             <div className="space-y-2">
               <Label>Title</Label>
               <Input value={form.title} onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))} />
+              <p className="text-xs text-muted-foreground">
+                Optional: when Programme is &quot;Infer from title&quot;, CS vs IS is guessed from the title text.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <Label>Regulation track</Label>
+              <Select
+                value={form.regulation_track}
+                onValueChange={(v) => setForm((f) => ({ ...f, regulation_track: v as RegulationTrack }))}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="general">General (milestones page only, not Study plan)</SelectItem>
+                  <SelectItem value="masters">Public Study plan — Master&apos;s column</SelectItem>
+                  <SelectItem value="phd">Public Study plan — PhD column</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Programme (Study plan CS / IS)</Label>
+              <Select
+                value={form.program_group}
+                onValueChange={(v) => setForm((f) => ({ ...f, program_group: v as ProgramGroupForm }))}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="auto">Infer from title</SelectItem>
+                  <SelectItem value="cs">Computer Science (CS)</SelectItem>
+                  <SelectItem value="is">Information Systems (IS)</SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">
+                Applies when the track is Master&apos;s or PhD. Stored as <code className="rounded bg-muted px-1 text-xs">program_group</code> in the database.
+              </p>
             </div>
             <div className="space-y-2">
               <Label>Summary</Label>
@@ -245,10 +345,18 @@ const AdminResearchPlans = () => {
             </div>
             <PdfUploadField
               id="research_plan_pdf"
-              label="Research plan (PDF)"
+              label="PDF file (public download)"
               value={form.file_url}
               onChange={(url) => setForm((f) => ({ ...f, file_url: url }))}
               storageFolder="research-plans"
+              helperText={
+                <>
+                  Use <strong>Upload PDF</strong> to store the file in Supabase Storage (<code className="rounded bg-muted px-1 text-[11px]">documents/research-plans/</code>
+                  ). The public URL is saved on this row and drives <strong>Download PDF</strong> on the Study plan page and
+                  on the milestones page (<code className="rounded bg-muted px-1 text-[11px]">/academics/research-plan</code>
+                  ). You can also paste any public HTTPS link to a PDF.
+                </>
+              }
             />
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setOpen(false)}>
