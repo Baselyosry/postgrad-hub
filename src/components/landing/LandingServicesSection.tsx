@@ -4,7 +4,7 @@ import { PageHeader } from '@/components/PageHeader';
 import { SkeletonCard } from '@/components/SkeletonCard';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Library, ShieldCheck } from 'lucide-react';
+import { ExternalLink, Library, Mail, ShieldCheck } from 'lucide-react';
 
 type Props = { embedded?: boolean };
 
@@ -46,13 +46,16 @@ export function LandingServicesSection({ embedded = false }: Props) {
         <div className="grid gap-6 lg:grid-cols-2">
           {(data ?? []).map((svc) => (
             <div
+              id={`service-${svc.slug}`}
               key={svc.id}
-              className="rounded-xl border border-border bg-bg-light p-6 shadow-sm transition hover:shadow-md dark:bg-card dark:shadow-none dark:hover:border-muted-foreground/25 dark:hover:shadow-md"
+              className="scroll-mt-28 rounded-xl border border-border bg-bg-light p-6 shadow-sm transition hover:shadow-md dark:bg-card dark:shadow-none dark:hover:border-muted-foreground/25 dark:hover:shadow-md"
             >
               <div className="flex items-start gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 dark:bg-primary/20">
                   {svc.slug === 'ekb' ? (
                     <Library className="h-6 w-6 text-primary" />
+                  ) : svc.slug === 'outlook' ? (
+                    <Mail className="h-6 w-6 text-primary" />
                   ) : (
                     <ShieldCheck className="h-6 w-6 text-primary" />
                   )}
