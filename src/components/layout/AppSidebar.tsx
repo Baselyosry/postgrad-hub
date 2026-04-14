@@ -16,11 +16,14 @@ import {
   PartyPopper,
   Wrench,
   FileText,
+  ExternalLink,
 } from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
+import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { ADMIN_PATHS } from '@/lib/adminRoutes';
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent,
   SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem,
@@ -31,34 +34,35 @@ import { Button } from '@/components/ui/button';
 type NavEntry = { title: string; url: string; icon: typeof Shield };
 
 const adminOverview: NavEntry[] = [
-  { title: 'Admin Dashboard', url: '/admin', icon: Shield },
+  { title: 'Admin Dashboard', url: ADMIN_PATHS.root, icon: Shield },
 ];
 
 const adminAcademics: NavEntry[] = [
-  { title: 'Staff CV', url: '/admin/staff-cv', icon: Users },
-  { title: 'Study plans', url: '/admin/study-plans', icon: ScrollText },
-  { title: 'Schedules', url: '/admin/schedules', icon: CalendarDays },
-  { title: 'Research plans', url: '/admin/research-plans', icon: FlaskConical },
-  { title: 'Research database', url: '/admin/research-database', icon: Database },
-  { title: 'Templates', url: '/admin/templates', icon: FileDown },
-  { title: 'Thesis archive', url: '/admin/archive', icon: Archive },
+  { title: 'Staff CV', url: ADMIN_PATHS.staffCv, icon: Users },
+  { title: 'Program PDFs (legacy)', url: ADMIN_PATHS.programPdfsLegacy, icon: ScrollText },
+  { title: 'Schedules', url: ADMIN_PATHS.schedules, icon: CalendarDays },
+  { title: 'Study plan & regulations', url: ADMIN_PATHS.studyPlanRegulations, icon: FlaskConical },
+  { title: 'Research database', url: ADMIN_PATHS.researchDatabase, icon: Database },
+  { title: 'Templates', url: ADMIN_PATHS.templates, icon: FileDown },
+  { title: 'Thesis archive', url: ADMIN_PATHS.thesisArchive, icon: Archive },
 ];
 
 const adminAdmission: NavEntry[] = [
-  { title: 'Degree requirements', url: '/admin/admissions', icon: BookOpen },
-  { title: 'Admission pages', url: '/admin/admission-docs', icon: FileText },
+  { title: 'Degree requirements', url: ADMIN_PATHS.degreeRequirements, icon: BookOpen },
+  { title: 'Admission pages', url: ADMIN_PATHS.admissionPages, icon: FileText },
 ];
 
 const adminEngagement: NavEntry[] = [
-  { title: 'News', url: '/admin/news', icon: Newspaper },
-  { title: 'Events', url: '/admin/events', icon: PartyPopper },
-  { title: 'Services (iThenticate / EKB)', url: '/admin/services', icon: Wrench },
-  { title: 'Contact inquiries', url: '/admin/inquiries', icon: Mail },
+  { title: 'News', url: ADMIN_PATHS.news, icon: Newspaper },
+  { title: 'Events', url: ADMIN_PATHS.events, icon: PartyPopper },
+  { title: 'Services (iThenticate / EKB)', url: ADMIN_PATHS.services, icon: Wrench },
+  { title: 'Contact inquiries', url: ADMIN_PATHS.contactInquiries, icon: Mail },
 ];
 
 const studentNav = [
   { title: 'Dashboard', url: '/dashboard', icon: LayoutDashboard },
-  { title: 'Submit Application', url: '/submit', icon: Send },
+  { title: 'Submission portal', url: '/submissions', icon: Send },
+  { title: 'Submit Application', url: '/submit', icon: FileText },
 ];
 
 export function AppSidebar() {
@@ -71,8 +75,8 @@ export function AppSidebar() {
   }, [location.pathname, isMobile, setOpenMobile]);
   const { isAdmin, isStudent, user, signOut } = useAuth();
   const isActive = (path: string) =>
-    path === '/admin'
-      ? location.pathname === '/admin'
+    path === ADMIN_PATHS.root
+      ? location.pathname === ADMIN_PATHS.root
       : location.pathname === path || location.pathname.startsWith(path + '/');
 
   const renderGroup = (label: string, items: NavEntry[]) => (
@@ -108,7 +112,7 @@ export function AppSidebar() {
               <h2 className="truncate font-heading text-sm font-bold text-header-navy dark:text-sidebar-foreground">
                 Admin Panel
               </h2>
-              <p className="truncate text-xs text-accent-green dark:text-sidebar-foreground/70">Postgraduate Portal</p>
+              <p className="truncate text-xs text-accent-green dark:text-sidebar-foreground/70">PG Studies Platform</p>
             </div>
           )}
         </div>
@@ -151,6 +155,20 @@ export function AppSidebar() {
       <SidebarFooter className="border-t border-sidebar-border p-3">
         {user ? (
           <>
+            {isAdmin && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent"
+                asChild
+              >
+                <Link to="/" className="flex items-center">
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  {!collapsed && 'View site'}
+                </Link>
+              </Button>
+            )}
             <Button
               type="button"
               variant="ghost"
