@@ -9,7 +9,6 @@ import {
   LayoutDashboard,
   Send,
   Users,
-  ScrollText,
   FlaskConical,
   Database,
   Newspaper,
@@ -39,7 +38,6 @@ const adminOverview: NavEntry[] = [
 
 const adminAcademics: NavEntry[] = [
   { title: 'Staff CV', url: ADMIN_PATHS.staffCv, icon: Users },
-  { title: 'Program PDFs (legacy)', url: ADMIN_PATHS.programPdfsLegacy, icon: ScrollText },
   { title: 'Schedules', url: ADMIN_PATHS.schedules, icon: CalendarDays },
   { title: 'Study plan & regulations', url: ADMIN_PATHS.studyPlanRegulations, icon: FlaskConical },
   { title: 'Research database', url: ADMIN_PATHS.researchDatabase, icon: Database },

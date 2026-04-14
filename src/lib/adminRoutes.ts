@@ -6,7 +6,6 @@ export const ADMIN_PATHS = {
   root: '/admin',
   staffCv: '/admin/staff-cv',
   studyPlanRegulations: '/admin/study-plan-regulations',
-  programPdfsLegacy: '/admin/program-pdfs-legacy',
   schedules: '/admin/schedules',
   researchDatabase: '/admin/research-database',
   templates: '/admin/templates',

@@ -160,7 +160,6 @@ const ADMIN_ROUTES: Record<string, BreadcrumbCrumb[]> = {
   [ADMIN_PATHS.thesisArchive]: adminCrumbs(false, "Thesis archive"),
   [ADMIN_PATHS.contactInquiries]: adminCrumbs(false, "Contact inquiries"),
   [ADMIN_PATHS.degreeRequirements]: adminCrumbs(false, "Degree requirements"),
-  [ADMIN_PATHS.programPdfsLegacy]: adminCrumbs(false, "Program PDFs (legacy)"),
   [ADMIN_PATHS.studyPlanRegulations]: adminCrumbs(false, "Study plan & regulations"),
   [ADMIN_PATHS.researchDatabase]: adminCrumbs(false, "Research database"),
   [ADMIN_PATHS.admissionPages]: adminCrumbs(false, "Admission pages"),
@@ -170,7 +169,6 @@ const ADMIN_ROUTES: Record<string, BreadcrumbCrumb[]> = {
   "/admin/archive": adminCrumbs(false, "Thesis archive"),
   "/admin/inquiries": adminCrumbs(false, "Contact inquiries"),
   "/admin/admissions": adminCrumbs(false, "Degree requirements"),
-  "/admin/study-plans": adminCrumbs(false, "Program PDFs (legacy)"),
   "/admin/research-plans": adminCrumbs(false, "Study plan & regulations"),
   "/admin/admission-docs": adminCrumbs(false, "Admission pages"),
 };

@@ -22,7 +22,6 @@ import {
   PartyPopper,
   Database,
   FlaskConical,
-  ScrollText,
   Wrench,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -110,16 +109,6 @@ const Admin = () => {
     enabled: isAdmin,
   });
 
-  const { data: studyPlansCount } = useQuery({
-    queryKey: ['admin-study-plans-count'],
-    queryFn: async () => {
-      const { count, error } = await supabase.from('study_plans').select('*', { count: 'exact', head: true });
-      if (error) throw error;
-      return count ?? 0;
-    },
-    enabled: isAdmin,
-  });
-
   const { data: researchPlansCount } = useQuery({
     queryKey: ['admin-research-plans-count'],
     queryFn: async () => {
@@ -194,7 +183,6 @@ const Admin = () => {
     { label: 'Submissions', value: submissions?.length ?? 0, icon: FileText, extra: pendingCount > 0 ? `${pendingCount} pending` : undefined },
     { label: 'Inquiries', value: inquiries?.length ?? 0, icon: Mail, extra: unreadCount > 0 ? `${unreadCount} unread` : undefined },
     { label: 'Staff CV', value: staffCvCount ?? 0, icon: Users },
-    { label: 'Program PDFs (legacy)', value: studyPlansCount ?? 0, icon: ScrollText },
     { label: 'Archive Entries', value: archiveCount ?? 0, icon: Archive },
     { label: 'Schedules', value: schedulesCount ?? 0, icon: CalendarDays },
     { label: 'Templates', value: templatesCount ?? 0, icon: FileDown },
@@ -221,16 +209,6 @@ const Admin = () => {
           <Link to={ADMIN_PATHS.studyPlanRegulations} className="gap-2">
             <FlaskConical className="h-4 w-4" />
             Study plan & regulations
-          </Link>
-        </Button>
-        <Button
-          asChild
-          variant="outline"
-          className="gap-2 border-header-navy/25 text-header-navy hover:bg-notice-bg hover:text-header-navy dark:border-border dark:text-foreground dark:hover:bg-muted"
-        >
-          <Link to={ADMIN_PATHS.programPdfsLegacy} className="gap-2">
-            <ScrollText className="h-4 w-4" />
-            Program PDFs (legacy)
           </Link>
         </Button>
         <Button asChild className="btn-primary-institutional gap-2 shadow-sm">

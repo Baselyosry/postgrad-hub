@@ -22,7 +22,6 @@ const AdminTemplates = lazy(() => import("./pages/admin/AdminTemplates"));
 const AdminInquiries = lazy(() => import("./pages/admin/AdminInquiries"));
 const AdminAdmissions = lazy(() => import("./pages/admin/AdminAdmissions"));
 const AdminStaffCv = lazy(() => import("./pages/admin/AdminStaffCv"));
-const AdminStudyPlans = lazy(() => import("./pages/admin/AdminStudyPlans"));
 const AdminResearchPlans = lazy(() => import("./pages/admin/AdminResearchPlans"));
 const AdminResearchDatabase = lazy(() => import("./pages/admin/AdminResearchDatabase"));
 const AdminAdmissionDocs = lazy(() => import("./pages/admin/AdminAdmissionDocs"));
@@ -122,8 +121,8 @@ const App = () => (
                       <Route path={ADMIN_PATHS.degreeRequirements} element={<AdminAdmissions />} />
                       <Route path="/admin/admissions" element={<Navigate to={ADMIN_PATHS.degreeRequirements} replace />} />
                       <Route path="/admin/staff-cv" element={<AdminStaffCv />} />
-                      <Route path={ADMIN_PATHS.programPdfsLegacy} element={<AdminStudyPlans />} />
-                      <Route path="/admin/study-plans" element={<Navigate to={ADMIN_PATHS.programPdfsLegacy} replace />} />
+                      <Route path="/admin/program-pdfs-legacy" element={<Navigate to={ADMIN_PATHS.studyPlanRegulations} replace />} />
+                      <Route path="/admin/study-plans" element={<Navigate to={ADMIN_PATHS.studyPlanRegulations} replace />} />
                       <Route path={ADMIN_PATHS.studyPlanRegulations} element={<AdminResearchPlans />} />
                       <Route path="/admin/research-plans" element={<Navigate to={ADMIN_PATHS.studyPlanRegulations} replace />} />
                       <Route path="/admin/research-database" element={<AdminResearchDatabase />} />
