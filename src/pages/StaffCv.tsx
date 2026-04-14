@@ -7,7 +7,7 @@ import { SkeletonCard } from "@/components/SkeletonCard";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { FileDown } from "lucide-react";
+import { ExternalLink, FileDown } from "lucide-react";
 
 type Personal = { email?: string; phone?: string; academic_title?: string; bio?: string };
 type Qual = { degree?: string; institution?: string; year?: string };
@@ -91,7 +91,18 @@ const StaffCv = ({ embedded = false }: { embedded?: boolean }) => {
                         {[p.email, p.phone].filter(Boolean).join(" · ")}
                       </p>
                     )}
-                    {row.cv_pdf_url ? (
+                    {(row as { google_scholar_url?: string | null }).google_scholar_url?.trim() ? (
+                      <Button variant="outline" size="sm" className="mt-3 gap-2" asChild>
+                        <a
+                          href={(row as { google_scholar_url?: string | null }).google_scholar_url!.trim()}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <ExternalLink className="h-4 w-4" />
+                          Google Scholar
+                        </a>
+                      </Button>
+                    ) : row.cv_pdf_url ? (
                       <Button variant="outline" size="sm" className="mt-3 gap-2" asChild>
                         <a href={row.cv_pdf_url} target="_blank" rel="noopener noreferrer" download>
                           <FileDown className="h-4 w-4" />
@@ -107,7 +118,7 @@ const StaffCv = ({ embedded = false }: { embedded?: boolean }) => {
                       <h3 className="mb-3 border-b border-border/60 pb-2 font-heading text-sm font-bold uppercase tracking-wide text-primary">
                         Bio
                       </h3>
-                      <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-wrap">{p.bio}</p>
+                      <p className="text-base leading-relaxed text-muted-foreground whitespace-pre-wrap">{p.bio}</p>
                     </section>
                   )}
                   {quals.length > 0 && (
@@ -115,7 +126,7 @@ const StaffCv = ({ embedded = false }: { embedded?: boolean }) => {
                       <h3 className="mb-3 border-b border-border/60 pb-2 font-heading text-sm font-bold uppercase tracking-wide text-primary">
                         Qualifications
                       </h3>
-                      <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
+                      <ul className="list-disc space-y-1 pl-5 text-base text-muted-foreground">
                         {quals.map((q, i) => (
                           <li key={i}>
                             {[q.degree, q.institution, q.year].filter(Boolean).join(" · ")}
@@ -131,7 +142,7 @@ const StaffCv = ({ embedded = false }: { embedded?: boolean }) => {
                       </h3>
                       <ul className="space-y-3">
                         {exps.map((e, i) => (
-                          <li key={i} className="text-sm text-muted-foreground border-l-2 border-primary/30 pl-3">
+                          <li key={i} className="text-base text-muted-foreground border-l-2 border-primary/30 pl-3">
                             <span className="font-medium text-foreground">
                               {[e.role, e.organization].filter(Boolean).join(" — ")}
                             </span>
