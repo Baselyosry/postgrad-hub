@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { ADMIN_PATHS } from '@/lib/adminRoutes';
 import { PageHeader } from '@/components/PageHeader';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -19,7 +20,7 @@ const Login = () => {
   // Redirect logged-in users based on role
   useEffect(() => {
     if (!authLoading && user && role) {
-      if (role === 'admin') navigate('/admin', { replace: true });
+      if (role === 'admin') navigate(ADMIN_PATHS.root, { replace: true });
       else if (role === 'student') navigate('/dashboard', { replace: true });
     }
   }, [user, role, authLoading, navigate]);
