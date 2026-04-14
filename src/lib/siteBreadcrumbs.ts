@@ -53,9 +53,20 @@ const PUBLIC_ROUTES: Record<string, BreadcrumbCrumb[]> = {
     { label: "Academics", href: "/academics" },
     { label: "Document templates" }
   ),
-  "/schedules": trail({ label: "Home", href: "/" }, { label: "Schedules" }),
-  "/research": trail({ label: "Home", href: "/" }, { label: "Research database" }),
-  "/research/database": trail({ label: "Home", href: "/" }, { label: "Research database" }),
+  "/schedules": trail(
+    { label: "Home", href: "/" },
+    { label: "Academics", href: "/academics" },
+    { label: "Schedules" }),
+
+  "/research": trail(
+    { label: "Home", href: "/" },
+    { label: "Academics", href: "/academics" },
+    { label: "Research database" }),
+  "/research/database": trail(
+    { label: "Home", href: "/" },
+    { label: "Academics", href: "/academics" },
+     { label: "Research database" }),
+
   "/research/thesis-archive": trail(
     { label: "Home", href: "/" },
     { label: "Academics", href: "/academics" },
@@ -85,7 +96,10 @@ const PUBLIC_ROUTES: Record<string, BreadcrumbCrumb[]> = {
   "/signup": trail({ label: "Home", href: "/" }, { label: "Create account" }),
   "/dashboard": trail({ label: "Home", href: "/" }, { label: "Dashboard" }),
   "/submit": trail({ label: "Home", href: "/" }, { label: "Submit application" }),
-  "/submissions": trail({ label: "Home", href: "/" }, { label: "Submission portal" }),
+  "/submissions": trail(
+    { label: "Home", href: "/" },
+    { label: "Academics", href: "/academics" },
+     { label: "Submission portal" }),
 };
 
 const SEGMENT_LABELS: Record<string, string> = {
