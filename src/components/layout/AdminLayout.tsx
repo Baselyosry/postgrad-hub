@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { AppSidebar } from './AppSidebar';
+import { AdminBreadcrumbs } from '@/components/SiteBreadcrumbs';
 
 export function AdminLayout({ children }: { children: ReactNode }) {
   return (
@@ -15,12 +16,13 @@ export function AdminLayout({ children }: { children: ReactNode }) {
               <img src="/logo2.png" alt="MUST" className="h-7 w-auto shrink-0 sm:h-8" />
               <div className="min-w-0">
                 <p className="truncate font-heading text-sm font-semibold text-white sm:text-base">Admin Panel</p>
-                <p className="hidden truncate text-xs text-white/75 sm:block">Postgraduate Portal</p>
+                <p className="hidden truncate text-xs text-white/75 sm:block">Post Graduate Studies Platform</p>
               </div>
             </div>
             <ThemeToggle triggerClassName="text-white hover:bg-white/10 hover:text-white dark:text-white dark:hover:bg-white/10" />
           </header>
           <main className="flex-1 overflow-x-auto bg-bg-off-white/80 p-3 dark:bg-background sm:p-4 md:p-6 lg:p-8">
+            <AdminBreadcrumbs />
             {children}
           </main>
         </div>
