@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { PageHeader } from "@/components/PageHeader";
+import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { supabase, isSupabaseConfigured } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,12 +21,16 @@ type ResearchDbRow = {
   abstract: string | null;
   url: string | null;
   pdf_url: string | null;
+  publication_place: string | null;
 };
 
 function rowMatchesSearch(row: ResearchDbRow, q: string) {
   if (!q.trim()) return true;
   const n = q.trim().toLowerCase();
-  const hay = [row.title, row.authors, row.keywords, row.abstract].filter(Boolean).join(" ").toLowerCase();
+  const hay = [row.title, row.authors, row.keywords, row.abstract, row.publication_place]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
   return hay.includes(n);
 }
 
@@ -63,9 +68,14 @@ const ResearchDatabase = ({ embedded = false }: { embedded?: boolean }) => {
     });
   }, [data, debouncedSearch, yearFilter]);
 
+  const pageClass = cn(
+    "w-full min-w-0",
+    !embedded && "container mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12"
+  );
+
   if (!isSupabaseConfigured) {
     return (
-      <div>
+      <div className={pageClass}>
         {!embedded && (
           <PageHeader title="Research database" description="Indexed research references and resources." />
         )}
@@ -78,7 +88,7 @@ const ResearchDatabase = ({ embedded = false }: { embedded?: boolean }) => {
   }
 
   return (
-    <div>
+    <div className={pageClass}>
       {!embedded && <PageHeader title="Research database" description="Curated research entries and links." />}
       {isError && (
         <Alert variant="destructive" className="mb-6">
@@ -88,7 +98,7 @@ const ResearchDatabase = ({ embedded = false }: { embedded?: boolean }) => {
       )}
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center">
         <Input
-          placeholder="Search title, authors, keywords…"
+          placeholder="Search title, authors, keywords, publication place…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-md"
@@ -111,60 +121,76 @@ const ResearchDatabase = ({ embedded = false }: { embedded?: boolean }) => {
       {isLoading ? (
         <SkeletonCard />
       ) : !data?.length ? (
-        <p className="text-sm text-muted-foreground">No entries yet.</p>
+        <p className="text-base text-muted-foreground">No entries yet.</p>
       ) : !filtered.length ? (
-        <p className="text-sm text-muted-foreground">No entries match your search or filter.</p>
+        <p className="text-base text-muted-foreground">No entries match your search or filter.</p>
       ) : (
         <div className="space-y-4">
           {filtered.map((row) => (
-            <Card key={row.id} className="card-institutional border border-border/80 shadow-sm">
-              <CardHeader className="pb-2">
-                <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <CardTitle className="font-heading text-lg text-primary">{row.title}</CardTitle>
-                  {row.year != null && (
-                    <span className="text-sm tabular-nums text-muted-foreground">{row.year}</span>
-                  )}
-                </div>
-                {row.authors && <p className="text-sm text-muted-foreground">{row.authors}</p>}
-                {row.keywords && <p className="text-xs text-muted-foreground/90">Keywords: {row.keywords}</p>}
-              </CardHeader>
-              <CardContent className="space-y-3 text-sm text-muted-foreground">
-                {row.abstract && (
-                  <Collapsible className="rounded-md border border-border/60 bg-muted/20 px-3 py-2 dark:bg-muted/10">
-                    <CollapsibleTrigger className="group flex w-full items-center justify-between gap-2 text-left font-medium text-primary">
-                      <span>Abstract</span>
-                      <ChevronDown className="h-4 w-4 shrink-0 transition-transform group-data-[state=open]:rotate-180" />
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0">
-                      <p className="mt-2 whitespace-pre-wrap text-muted-foreground">{row.abstract}</p>
-                    </CollapsibleContent>
-                  </Collapsible>
-                )}
-                <div className="flex flex-wrap gap-3 pt-1">
-                  {row.pdf_url && (
-                    <a
-                      href={row.pdf_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 font-medium text-primary hover:underline"
-                    >
-                      <FileDown className="h-3.5 w-3.5" />
-                      Download PDF
-                    </a>
-                  )}
-                  {row.url && (
-                    <a
-                      href={row.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 font-medium text-primary hover:underline"
-                    >
-                      Open link <ExternalLink className="h-3.5 w-3.5" />
-                    </a>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+            <Collapsible key={row.id} className="rounded-xl border border-border/80 shadow-sm data-[state=open]:shadow-md">
+              <Card className="border-0 shadow-none">
+                <CollapsibleTrigger asChild>
+                  <button
+                    type="button"
+                    className="flex w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent-green/50 data-[state=open]:[&_.chevron]:rotate-180"
+                  >
+                    <CardHeader className="w-full pb-2">
+                      <div className="flex flex-wrap items-start justify-between gap-2">
+                        <div className="min-w-0 flex-1 space-y-1">
+                          <CardTitle className="font-heading text-lg text-primary">{row.title}</CardTitle>
+                          {row.authors ? (
+                            <p className="text-base text-muted-foreground">{row.authors}</p>
+                          ) : null}
+                          {row.publication_place ? (
+                            <p className="text-base text-muted-foreground">
+                              <span className="font-medium text-foreground/80">Publication place: </span>
+                              {row.publication_place}
+                            </p>
+                          ) : null}
+                          {row.keywords ? (
+                            <p className="text-sm text-muted-foreground/90">Keywords: {row.keywords}</p>
+                          ) : null}
+                        </div>
+                        <div className="flex shrink-0 items-center gap-2">
+                          {row.year != null ? (
+                            <span className="text-base tabular-nums text-muted-foreground">{row.year}</span>
+                          ) : null}
+                          <ChevronDown className="chevron h-5 w-5 shrink-0 text-primary transition-transform" aria-hidden />
+                        </div>
+                      </div>
+                    </CardHeader>
+                  </button>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <CardContent className="space-y-3 border-t border-border/60 pt-4 text-base text-muted-foreground">
+                    {row.abstract ? <p className="whitespace-pre-wrap leading-relaxed">{row.abstract}</p> : null}
+                    <div className="flex flex-wrap gap-3">
+                      {row.pdf_url ? (
+                        <a
+                          href={row.pdf_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 font-medium text-primary hover:underline"
+                        >
+                          <FileDown className="h-3.5 w-3.5" />
+                          Download PDF
+                        </a>
+                      ) : null}
+                      {row.url ? (
+                        <a
+                          href={row.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 font-medium text-primary hover:underline"
+                        >
+                          Open link <ExternalLink className="h-3.5 w-3.5" />
+                        </a>
+                      ) : null}
+                    </div>
+                  </CardContent>
+                </CollapsibleContent>
+              </Card>
+            </Collapsible>
           ))}
         </div>
       )}
