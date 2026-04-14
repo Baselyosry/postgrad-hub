@@ -15,7 +15,7 @@ export function PageHeader({ title, description }: PageHeaderProps) {
     >
       <h1 className="break-words font-heading text-2xl font-bold tracking-[0.5px] text-primary sm:text-3xl md:text-4xl">{title}</h1>
       {description && (
-        <p className="mt-2 max-w-2xl break-words text-[14px] leading-[1.6] text-text-light">{description}</p>
+        <p className="mt-2 max-w-2xl break-words text-base leading-relaxed text-text-light md:text-lg">{description}</p>
       )}
     </motion.div>
   );
