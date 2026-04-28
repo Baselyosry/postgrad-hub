@@ -292,7 +292,7 @@ const Admin = () => {
         <Card className="rounded-[1.8rem] border-border/70 bg-[linear-gradient(145deg,rgba(26,43,95,0.98),rgba(26,43,95,0.92)_58%,rgba(16,133,69,0.92))] text-white shadow-[0_36px_80px_-42px_rgba(15,39,68,0.58)] dark:border-border dark:shadow-[0_36px_80px_-42px_rgba(0,0,0,0.76)]">
           <CardContent className="p-6">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/80">Priority queue</p>
-            <p className="mt-3 font-heading text-3xl font-bold">
+            <p className="mt-3 font-heading text-3xl font-bold text-white">
               {pendingCount + thesisPending + unreadCount}
             </p>
             <p className="mt-2 text-sm leading-7 text-white/85">
@@ -301,15 +301,15 @@ const Admin = () => {
             <div className="mt-6 grid gap-3">
               <div className="rounded-xl bg-white/10 px-3 py-2">
                 <p className="text-xs uppercase tracking-wide text-white/70">Student applications</p>
-                <p className="mt-1 font-semibold">{pendingCount} pending</p>
+                <p className="mt-1 font-semibold text-white">{pendingCount} pending</p>
               </div>
               <div className="rounded-xl bg-white/10 px-3 py-2">
                 <p className="text-xs uppercase tracking-wide text-white/70">Submission portal (PDFs)</p>
-                <p className="mt-1 font-semibold">{thesisPending} pending</p>
+                <p className="mt-1 font-semibold text-white">{thesisPending} pending</p>
               </div>
               <div className="rounded-xl bg-white/10 px-3 py-2">
                 <p className="text-xs uppercase tracking-wide text-white/70">Inquiries</p>
-                <p className="mt-1 font-semibold">{unreadCount} unread</p>
+                <p className="mt-1 font-semibold text-white">{unreadCount} unread</p>
               </div>
             </div>
             <div className="mt-5 flex gap-2">
