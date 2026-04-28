@@ -86,7 +86,7 @@ export default function Submissions({ embedded = false }: { embedded?: boolean }
   return (
     <div className="relative overflow-hidden">
       {!embedded && <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[linear-gradient(180deg,rgba(26,43,95,0.05),transparent)] dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.04),transparent)]" aria-hidden />}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-full bg-[radial-gradient(circle_at_top,rgba(16,133,69,0.08),transparent_28%),linear-gradient(180deg,#ffffff_0%,#f8f9fa_100%)] dark:bg-[radial-gradient(circle_at_top,rgba(16,133,69,0.12),transparent_24%),linear-gradient(180deg,#0f172a_0%,#111827_100%)]" aria-hidden />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-full bg-[radial-gradient(circle_at_top,rgba(16,133,69,0.08),transparent_28%),linear-gradient(180deg,#ffffff_0%,#f8f9fa_100%)] dark:bg-[radial-gradient(circle_at_top,rgba(16,133,69,0.12),transparent_30%),linear-gradient(180deg,rgba(11,18,35,1)_0%,rgba(15,24,43,1)_100%)]" aria-hidden />
 
       <div className={cn("relative", !embedded && "container mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12")}>
         {!embedded && (
@@ -94,7 +94,7 @@ export default function Submissions({ embedded = false }: { embedded?: boolean }
             variant="hero"
             title="Submission Portal"
             description="Upload your proposal or thesis document and submit it through the postgraduate portal."
-            heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,249,250,0.98)_54%,rgba(236,247,244,0.94))] dark:bg-[linear-gradient(135deg,rgba(17,24,39,0.98),rgba(17,24,39,0.96)_54%,rgba(12,38,27,0.92))]"
+            heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,249,250,0.98)_54%,rgba(236,247,244,0.94))] dark:bg-[linear-gradient(135deg,rgba(14,22,41,0.96),rgba(18,30,52,0.98)_54%,rgba(15,54,51,0.82))]"
             heroAccentClassName="bg-[linear-gradient(90deg,#108545,#1A2B5F,#0EA5A4)]"
             heroBadges={[
               { icon: UploadCloud },

@@ -25,6 +25,10 @@ import {
   FlaskConical,
   Wrench,
   FileUp,
+  Sparkles,
+  ArrowRight,
+  Activity,
+  Shield,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ADMIN_PATHS } from '@/lib/adminRoutes';
@@ -197,7 +201,7 @@ const Admin = () => {
       queryClient.invalidateQueries({ queryKey: ['admin-submissions'] });
       toast({ title: 'Status updated' });
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
       toast({ title: 'Update failed', description: err.message, variant: 'destructive' });
     },
   });
@@ -231,94 +235,125 @@ const Admin = () => {
     { label: 'Events', value: eventsCount ?? 0, icon: PartyPopper },
   ];
 
+  const quickActions = [
+    { label: 'Staff CV', icon: Users, path: ADMIN_PATHS.staffCv },
+    { label: 'Study plan & regulations', icon: FlaskConical, path: ADMIN_PATHS.studyPlanRegulations },
+    { label: 'Schedules', icon: CalendarDays, path: ADMIN_PATHS.schedules },
+    { label: 'Academic calendar', icon: Calendar, path: ADMIN_PATHS.academicCalendar },
+    { label: 'Research database', icon: Database, path: ADMIN_PATHS.researchDatabase },
+    { label: 'Templates', icon: FileDown, path: ADMIN_PATHS.templates },
+    { label: 'Research & thesis archive', icon: Archive, path: ADMIN_PATHS.thesisArchive },
+    { label: 'Degree requirements', icon: BookOpen, path: ADMIN_PATHS.degreeRequirements },
+    { label: 'Admission pages', icon: FileText, path: ADMIN_PATHS.admissionPages },
+    { label: 'News', icon: Newspaper, path: ADMIN_PATHS.news },
+    { label: 'Events', icon: PartyPopper, path: ADMIN_PATHS.events },
+    { label: 'Services', icon: Wrench, path: ADMIN_PATHS.services },
+  ];
+
   return (
-    <div>
+    <div className="space-y-8">
       <PageHeader
+        variant="hero"
         title="Admin Dashboard"
         description="Manage portal content. Student applications (Submit Application) appear below; proposal/thesis PDFs from /submissions have their own admin page."
+        heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(249,249,250,0.98)_52%,rgba(236,247,244,0.94))] dark:bg-[linear-gradient(135deg,rgba(14,22,41,0.96),rgba(18,30,52,0.98)_52%,rgba(15,54,51,0.82))]"
+        heroAccentClassName="bg-[linear-gradient(90deg,#108545,#1A2B5F,#0EA5A4)]"
+        heroBadges={[
+          { icon: Shield },
+          { icon: Activity, className: 'bg-white text-header-navy dark:bg-card dark:text-foreground dark:ring-1 dark:ring-white/10' },
+          { icon: Sparkles, className: 'bg-accent-green text-white' },
+        ]}
       />
 
-      <div className="mb-8 flex flex-wrap gap-3">
-        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to={ADMIN_PATHS.staffCv} className="gap-2">
-            <Users className="h-4 w-4" />
-            Staff CV
-          </Link>
-        </Button>
-        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to={ADMIN_PATHS.studyPlanRegulations} className="gap-2">
-            <FlaskConical className="h-4 w-4" />
-            Study plan & regulations
-          </Link>
-        </Button>
-        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to={ADMIN_PATHS.schedules} className="gap-2">
-            <CalendarDays className="h-4 w-4" />
-            Schedules
-          </Link>
-        </Button>
-        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to={ADMIN_PATHS.academicCalendar} className="gap-2">
-            <Calendar className="h-4 w-4" />
-            Academic calendar
-          </Link>
-        </Button>
-        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to={ADMIN_PATHS.researchDatabase} className="gap-2">
-            <Database className="h-4 w-4" />
-            Research database
-          </Link>
-        </Button>
-        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to={ADMIN_PATHS.templates} className="gap-2">
-            <FileDown className="h-4 w-4" />
-            Templates
-          </Link>
-        </Button>
-        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to={ADMIN_PATHS.thesisArchive} className="gap-2">
-            <Archive className="h-4 w-4" />
-            Research & thesis archive
-          </Link>
-        </Button>
-        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to={ADMIN_PATHS.degreeRequirements} className="gap-2">
-            <BookOpen className="h-4 w-4" />
-            Degree requirements
-          </Link>
-        </Button>
-        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to={ADMIN_PATHS.admissionPages} className="gap-2">
-            <FileText className="h-4 w-4" />
-            Admission pages
-          </Link>
-        </Button>
-        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to={ADMIN_PATHS.news} className="gap-2">
-            <Newspaper className="h-4 w-4" />
-            News
-          </Link>
-        </Button>
-        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to={ADMIN_PATHS.events} className="gap-2">
-            <PartyPopper className="h-4 w-4" />
-            Events
-          </Link>
-        </Button>
-        <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
-          <Link to={ADMIN_PATHS.services} className="gap-2">
-            <Wrench className="h-4 w-4" />
-            Services
-          </Link>
-        </Button>
+      <div className="grid gap-6 lg:grid-cols-[1.4fr_0.9fr]">
+        <Card className="overflow-hidden rounded-[1.8rem] border-border/70 bg-card/95 shadow-[0_30px_85px_-52px_rgba(15,39,68,0.35)] dark:border-border dark:bg-card/95 dark:shadow-[0_30px_85px_-52px_rgba(0,0,0,0.72)]">
+          <CardHeader className="border-b border-border/60 pb-4">
+            <CardTitle className="font-heading text-xl text-header-navy dark:text-foreground">Quick actions</CardTitle>
+          </CardHeader>
+          <CardContent className="grid gap-3 p-4 sm:grid-cols-2 lg:grid-cols-3">
+            {quickActions.map((action) => (
+              <Link
+                key={action.path}
+                to={action.path}
+                className="group flex min-h-[74px] items-center justify-between rounded-2xl border border-border/70 bg-background/70 px-4 py-3 transition-all duration-200 hover:-translate-y-0.5 hover:border-accent-green/45 hover:bg-accent-green/5"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-header-navy/8 text-header-navy dark:bg-white/10 dark:text-foreground">
+                    <action.icon className="h-4 w-4" />
+                  </span>
+                  <span className="text-sm font-medium leading-snug text-foreground">{action.label}</span>
+                </div>
+                <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-accent-green" />
+              </Link>
+            ))}
+          </CardContent>
+        </Card>
+
+        <Card className="rounded-[1.8rem] border-border/70 bg-[linear-gradient(145deg,rgba(26,43,95,0.98),rgba(26,43,95,0.92)_58%,rgba(16,133,69,0.92))] text-white shadow-[0_36px_80px_-42px_rgba(15,39,68,0.58)] dark:border-border dark:shadow-[0_36px_80px_-42px_rgba(0,0,0,0.76)]">
+          <CardContent className="p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/80">Priority queue</p>
+            <p className="mt-3 font-heading text-3xl font-bold">
+              {pendingCount + thesisPending + unreadCount}
+            </p>
+            <p className="mt-2 text-sm leading-7 text-white/85">
+              Items currently waiting for admin action across applications, PDF submissions, and inquiries.
+            </p>
+            <div className="mt-6 grid gap-3">
+              <div className="rounded-xl bg-white/10 px-3 py-2">
+                <p className="text-xs uppercase tracking-wide text-white/70">Student applications</p>
+                <p className="mt-1 font-semibold">{pendingCount} pending</p>
+              </div>
+              <div className="rounded-xl bg-white/10 px-3 py-2">
+                <p className="text-xs uppercase tracking-wide text-white/70">Submission portal (PDFs)</p>
+                <p className="mt-1 font-semibold">{thesisPending} pending</p>
+              </div>
+              <div className="rounded-xl bg-white/10 px-3 py-2">
+                <p className="text-xs uppercase tracking-wide text-white/70">Inquiries</p>
+                <p className="mt-1 font-semibold">{unreadCount} unread</p>
+              </div>
+            </div>
+            <div className="mt-5 flex gap-2">
+              <Button asChild className="h-10 rounded-full bg-white text-header-navy hover:bg-white/90 dark:bg-white/95 dark:text-header-navy">
+                <Link to={ADMIN_PATHS.contactInquiries}>Open inquiries</Link>
+              </Button>
+              <Button asChild variant="outline" className="h-10 rounded-full border-white/35 bg-transparent text-white hover:bg-white/10 dark:border-white/45 dark:text-white">
+                <Link to={ADMIN_PATHS.thesisUploadSubmissions}>Open PDFs</Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+        {stats.map((s, i) => (
+          <motion.div key={s.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
+            <Card className="card-institutional rounded-2xl border-border/70 bg-card/95 dark:border-border dark:bg-card/90">
+              <CardContent className="space-y-4 p-5">
+                <div className="flex items-center justify-between">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-notice-bg text-accent-green shadow-sm dark:bg-accent-green/15 dark:text-accent-green">
+                    <s.icon className="h-5 w-5" />
+                  </div>
+                  {s.extra && <Badge variant="destructive" className="text-xs">{s.extra}</Badge>}
+                </div>
+                <div>
+                  <p className="text-3xl font-bold tracking-tight text-foreground">{s.value}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{s.label}</p>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        ))}
+      </div>
+
+      <div className="flex flex-wrap gap-3">
         <Button
           asChild
           variant="outline"
-          className="gap-2 border-header-navy/25 text-header-navy hover:bg-notice-bg hover:text-header-navy dark:border-border dark:text-foreground dark:hover:bg-muted"
+          className="gap-2 border-border text-foreground hover:bg-muted/70 dark:border-border dark:text-foreground dark:hover:bg-muted"
         >
           <Link to={ADMIN_PATHS.contactInquiries} className="gap-2">
             <Mail className="h-4 w-4" />
-            Inquiries
+            Contact inquiries
           </Link>
         </Button>
         <Button asChild className="btn-primary-institutional gap-2 shadow-sm">
@@ -329,37 +364,18 @@ const Admin = () => {
         </Button>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 mb-8">
-        {stats.map((s, i) => (
-          <motion.div key={s.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
-            <Card className="card-institutional border-header-navy/10 dark:border-border">
-              <CardContent className="flex items-center gap-4 p-5">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-notice-bg text-accent-green shadow-sm dark:bg-accent-green/15 dark:text-accent-green">
-                  <s.icon className="h-5 w-5" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-foreground">{s.value}</p>
-                  <p className="text-sm text-muted-foreground">{s.label}</p>
-                  {s.extra && <Badge variant="destructive" className="mt-1 text-xs">{s.extra}</Badge>}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        ))}
-      </div>
-
-      <Tabs defaultValue="submissions">
-        <TabsList className="flex h-auto w-full flex-wrap gap-1 border border-header-navy/10 bg-white p-1 sm:inline-flex sm:h-10 sm:w-auto dark:border-border dark:bg-muted/40">
+      <Tabs defaultValue="submissions" className="space-y-4">
+        <TabsList className="flex h-auto w-full flex-wrap gap-1 border border-border bg-background p-1 sm:inline-flex sm:h-10 sm:w-auto dark:border-border dark:bg-muted/40">
           <TabsTrigger value="submissions">Student applications</TabsTrigger>
           <TabsTrigger value="inquiries">Inquiries</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="submissions">
-          <Card>
-            <CardHeader>
+        <TabsContent value="submissions" className="mt-0">
+          <Card className="rounded-[1.6rem] border-border/70 bg-card/95 shadow-[0_24px_70px_-45px_rgba(15,39,68,0.3)] dark:border-border dark:bg-card/95 dark:shadow-[0_24px_70px_-45px_rgba(0,0,0,0.68)]">
+            <CardHeader className="border-b border-border/60">
               <CardTitle className="font-heading">Student applications</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-5 sm:p-6">
               {loadingSubs ? (
                 <div className="space-y-3"><SkeletonCard /><SkeletonCard /></div>
               ) : !submissions?.length ? (
@@ -367,7 +383,7 @@ const Admin = () => {
               ) : (
                 <div className="space-y-3">
                   {submissions.map((sub) => (
-                    <div key={sub.id} className="rounded-lg border border-border p-4">
+                    <div key={sub.id} className="rounded-xl border border-border/70 bg-background/65 p-4">
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0 flex-1">
                           <p className="font-medium text-foreground">{sub.title}</p>
@@ -413,12 +429,12 @@ const Admin = () => {
           </Card>
         </TabsContent>
 
-        <TabsContent value="inquiries">
-          <Card>
-            <CardHeader>
+        <TabsContent value="inquiries" className="mt-0">
+          <Card className="rounded-[1.6rem] border-border/70 bg-card/95 shadow-[0_24px_70px_-45px_rgba(15,39,68,0.3)] dark:border-border dark:bg-card/95 dark:shadow-[0_24px_70px_-45px_rgba(0,0,0,0.68)]">
+            <CardHeader className="border-b border-border/60">
               <CardTitle className="font-heading">Recent Inquiries</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-5 sm:p-6">
               {loadingInq ? (
                 <div className="space-y-3"><SkeletonCard /><SkeletonCard /></div>
               ) : !inquiries?.length ? (
@@ -426,7 +442,7 @@ const Admin = () => {
               ) : (
                 <div className="space-y-3">
                   {inquiries.slice(0, 20).map((inq) => (
-                    <div key={inq.id} className="flex items-start gap-3 rounded-lg border border-border p-4">
+                    <div key={inq.id} className="flex items-start gap-3 rounded-xl border border-border/70 bg-background/65 p-4">
                       {!inq.is_read && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-secondary" />}
                       <div className="min-w-0 flex-1">
                         <div className="flex items-baseline gap-2">

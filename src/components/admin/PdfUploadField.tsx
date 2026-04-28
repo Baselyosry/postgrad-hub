@@ -67,6 +67,7 @@ export function PdfUploadField({
           type="button"
           variant="outline"
           size="sm"
+          className="border-header-navy/30 bg-white text-header-navy hover:border-accent-green hover:bg-accent-green/10 hover:text-accent-green dark:border-white/25 dark:bg-card dark:text-foreground dark:hover:border-accent-green/50 dark:hover:bg-accent-green/12 dark:hover:text-accent-green"
           disabled={uploading}
           onClick={() => inputRef.current?.click()}
         >
@@ -75,7 +76,13 @@ export function PdfUploadField({
         </Button>
         {value ? (
           <>
-            <Button type="button" variant="secondary" size="sm" asChild>
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              className="bg-accent-green text-white hover:bg-accent-green/90 dark:bg-accent-green dark:text-white dark:hover:bg-accent-green/90"
+              asChild
+            >
               <a href={value} target="_blank" rel="noopener noreferrer">
                 Open PDF
               </a>
@@ -84,7 +91,7 @@ export function PdfUploadField({
               type="button"
               variant="ghost"
               size="icon"
-              className="h-8 w-8 text-destructive"
+              className="h-8 w-8 border border-destructive/30 text-destructive hover:bg-destructive/10 dark:border-destructive/40 dark:text-red-300 dark:hover:bg-destructive/20"
               onClick={() => onChange('')}
               aria-label="Remove PDF"
             >

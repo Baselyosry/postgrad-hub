@@ -78,7 +78,7 @@ export default function AcademicCalendar() {
           {data.map((row) => (
             <Card key={row.id} className="border-header-navy/10 shadow-sm">
               <CardHeader className="pb-2">
-                <CardTitle className="font-heading text-lg text-header-navy">{row.title}</CardTitle>
+                <CardTitle className="font-heading text-lg text-header-navy dark:text-foreground">{row.title}</CardTitle>
                 {row.description ? (
                   <p className="text-sm text-muted-foreground">{row.description}</p>
                 ) : null}

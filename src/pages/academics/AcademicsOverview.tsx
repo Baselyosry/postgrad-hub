@@ -79,19 +79,19 @@ const links = [
 
 export default function AcademicsOverview() {
   return (
-    <div className="relative overflow-hidden bg-[radial-gradient(circle_at_top,rgba(16,133,69,0.08),transparent_28%),linear-gradient(180deg,#ffffff_0%,#f8f9fa_100%)]">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[linear-gradient(180deg,rgba(26,43,95,0.05),transparent)]" aria-hidden />
+    <div className="relative overflow-hidden bg-[radial-gradient(circle_at_top,rgba(16,133,69,0.08),transparent_28%),linear-gradient(180deg,#ffffff_0%,#f8f9fa_100%)] dark:bg-[radial-gradient(circle_at_top,rgba(16,133,69,0.12),transparent_30%),linear-gradient(180deg,rgba(11,18,35,1)_0%,rgba(15,24,43,1)_100%)]">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[linear-gradient(180deg,rgba(26,43,95,0.05),transparent)] dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.04),transparent)]" aria-hidden />
 
       <div className="container relative mx-auto max-w-6xl px-4 py-10 md:px-6 md:py-12">
         <PageHeader
           variant="hero"
           title="Academics"
           description="Postgraduate academics: staff, study plan and regulations, research planning, submissions, and schedules."
-          heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(247,249,252,0.98)_54%,rgba(230,244,255,0.92))]"
+          heroClassName="bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(247,249,252,0.98)_54%,rgba(230,244,255,0.92))] dark:bg-[linear-gradient(135deg,rgba(14,22,41,0.96),rgba(18,30,52,0.98)_54%,rgba(20,44,62,0.84))]"
           heroAccentClassName="bg-[linear-gradient(90deg,#108545,#1A2B5F,#2C7BE5)]"
           heroBadges={[
             { icon: Users },
-            { icon: BookMarked, className: 'bg-white text-header-navy' },
+            { icon: BookMarked, className: 'bg-white text-header-navy dark:bg-card dark:text-foreground dark:ring-1 dark:ring-white/10' },
             { icon: FlaskConical, className: 'bg-accent-green text-white' },
           ]}
         />
@@ -108,7 +108,7 @@ export default function AcademicsOverview() {
             >
               <Card
                 className={cn(
-                  'relative flex h-full min-h-[190px] flex-col overflow-hidden rounded-[1.6rem] border border-header-navy/10 bg-white/92 shadow-[0_24px_70px_-44px_rgba(15,39,68,0.3)] transition-[transform,box-shadow,border-color] duration-200 group-hover:-translate-y-1 group-hover:border-accent-green/35 group-hover:shadow-[0_30px_90px_-48px_rgba(15,39,68,0.36)]',
+                  'relative flex h-full min-h-[190px] flex-col overflow-hidden rounded-[1.6rem] border border-header-navy/10 bg-white/92 shadow-[0_24px_70px_-44px_rgba(15,39,68,0.3)] transition-[transform,box-shadow,border-color] duration-200 group-hover:-translate-y-1 group-hover:border-accent-green/35 group-hover:shadow-[0_30px_90px_-48px_rgba(15,39,68,0.36)] dark:border-white/10 dark:bg-card/95 dark:shadow-[0_24px_70px_-44px_rgba(0,0,0,0.68)] dark:hover:shadow-[0_30px_90px_-48px_rgba(0,0,0,0.76)]',
                   cardClassName
                 )}
               >
@@ -121,7 +121,7 @@ export default function AcademicsOverview() {
                   <div className="flex items-start justify-between gap-4">
                     <span
                       className={cn(
-                        'flex h-12 w-12 shrink-0 items-center justify-center rounded-[1rem] bg-header-navy/8 text-header-navy transition-colors duration-200 group-hover:bg-accent-green/12 group-hover:text-accent-green',
+                        'flex h-12 w-12 shrink-0 items-center justify-center rounded-[1rem] bg-header-navy/8 text-header-navy transition-colors duration-200 group-hover:bg-accent-green/12 group-hover:text-accent-green dark:bg-white/10 dark:text-foreground dark:group-hover:bg-accent-green/16',
                         iconClassName
                       )}
                     >
@@ -129,7 +129,7 @@ export default function AcademicsOverview() {
                     </span>
                     <ArrowUpRight
                       className={cn(
-                        'h-5 w-5 shrink-0 text-header-navy/40 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent-green',
+                        'h-5 w-5 shrink-0 text-header-navy/40 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent-green dark:text-muted-foreground dark:group-hover:text-accent-green',
                         arrowClassName
                       )}
                       aria-hidden
@@ -139,7 +139,7 @@ export default function AcademicsOverview() {
                   <div className="mt-auto pt-10">
                     <CardTitle
                       className={cn(
-                        'font-heading text-[1.7rem] font-semibold leading-tight tracking-tight text-header-navy sm:text-[1.9rem]',
+                        'font-heading text-[1.7rem] font-semibold leading-tight tracking-tight text-header-navy dark:text-foreground sm:text-[1.9rem]',
                         titleClassName
                       )}
                     >

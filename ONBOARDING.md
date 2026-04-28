@@ -227,4 +227,4 @@ If you need **true in-page PDF preview** (embedded), that would be a **new** pat
 
 ---
 
-*Generated from a parallel codebase scan (architecture, database, data access, auth, deployment/UI patterns) and aligned with the repo state at onboarding time.*
+*Generated from a parallel codebase scan (architecture, database, data access, auth, deployment/UI patterns) and aligned with repo state as of 2026-04-28.*

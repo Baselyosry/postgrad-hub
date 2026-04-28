@@ -64,14 +64,19 @@ export function RegulationPdfBlock({ title, fileUrl, compact, surface = "researc
       <Button
         type="button"
         size={compact ? "sm" : "default"}
-        className="gap-1.5"
+        className="gap-1.5 bg-header-navy text-white hover:bg-header-navy/90 dark:bg-header-navy dark:text-white dark:hover:bg-header-navy/90"
         disabled={busy}
         onClick={() => void onDownload()}
       >
         {busy ? <Loader2 className="h-4 w-4 shrink-0 animate-spin" aria-hidden /> : <Download className="h-4 w-4 shrink-0" aria-hidden />}
         Download PDF
       </Button>
-      <Button variant="outline" size={compact ? "sm" : "default"} className="gap-1.5" asChild>
+      <Button
+        variant="outline"
+        size={compact ? "sm" : "default"}
+        className="gap-1.5 border-header-navy/35 bg-white text-header-navy hover:border-accent-green hover:bg-accent-green/10 hover:text-accent-green dark:border-white/25 dark:bg-card dark:text-foreground dark:hover:border-accent-green/50 dark:hover:bg-accent-green/12 dark:hover:text-accent-green"
+        asChild
+      >
         <a href={href} target="_blank" rel="noopener noreferrer">
           <ExternalLink className="h-4 w-4 shrink-0" aria-hidden />
           Open PDF
