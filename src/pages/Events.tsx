@@ -6,9 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { CalendarDays, Clock, MapPin } from "lucide-react";
-import { cn } from "@/lib/utils";
-
-const assetUrl = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
+import { cn, resolvePublicMediaUrl } from "@/lib/utils";
 
 function formatEventParts(iso: string | null) {
   if (!iso) return null;
@@ -88,7 +86,7 @@ const Events = ({ embedded = false }: { embedded?: boolean }) => {
               const parts = formatEventParts(row.starts_at ?? null);
               const timeText = row.time?.trim() ? row.time.trim() : parts?.timeShort ?? null;
               const locationText = row.location?.trim() || "Venue TBA";
-              const imgSrc = row.image_url?.trim() || assetUrl("hero/slide-1.jpg");
+              const imgSrc = resolvePublicMediaUrl(row.image_url?.trim());
               const desc = row.description?.trim() || "";
 
               return (
@@ -97,11 +95,15 @@ const Events = ({ embedded = false }: { embedded?: boolean }) => {
                   className="group overflow-hidden rounded-[24px] border border-border/80 bg-card shadow-[0_16px_45px_-30px_rgba(15,39,68,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_-32px_rgba(15,39,68,0.42)] dark:border-white/10 dark:shadow-[0_16px_45px_-30px_rgba(0,0,0,0.7)] dark:hover:shadow-[0_24px_60px_-32px_rgba(0,0,0,0.78)]"
                 >
                   <div className="relative aspect-[5/4] w-full shrink-0 overflow-hidden bg-muted">
-                    <img
-                      src={imgSrc}
-                      alt=""
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                    />
+                    {imgSrc ? (
+                      <img
+                        src={imgSrc}
+                        alt={row.title}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                      />
+                    ) : (
+                      <div className="h-full w-full bg-gradient-to-br from-muted to-muted/70" aria-hidden />
+                    )}
 
                     {parts ? (
                       <div className="absolute left-4 top-4 z-10 flex min-w-[68px] flex-col items-center justify-center rounded-2xl bg-header-navy/95 px-3 py-3 text-center text-white shadow-lg backdrop-blur-sm">
